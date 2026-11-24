@@ -37,7 +37,7 @@ ap.add_argument('--extra', default='', help='extra nb7 arguments, e.g. "--obs-er
 ap.add_argument('--delta', type=float, default=None)
 ap.add_argument('--root', default=None, help='project root (default: data_path.toml)')
 ap.add_argument('--sim-dir', default=None, help='default: [outputs].simulations of data_path.toml')
-ap.add_argument('--script', default=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'nb7_DA_ERT_synthetic.py'))
+ap.add_argument('--script', default=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'da_ert_synthetic.py'))
 ap.add_argument('--log-dir', default=None, help='default: [outputs].logs of data_path.toml')
 ap.add_argument('--dry-run', action='store_true')
 ap.add_argument('--force', action='store_true')

@@ -6,7 +6,7 @@ Hydrological simulation of the Agripolis infiltration test (UNIPD, Oct 2023) wit
 | Flavour | Observations | Truth known? | Scripts |
 |---|---|---|---|
 | **Real data** | measured ERT (`st5t<ii>.tldat`, `st1t<ii>.tldat`) | no | `nb5_DA_ERT_soil3D_nc.py` (EnKF / PF), `nb6_ESMDA_ERT_soil3D_nc.py` (ES-MDA), `nb5_DA_ERT_soil3D_nc_plots.py` |
-| **Synthetic twin** | ERT simulated from a known truth (5 % noise) | yes | `nb6_synth_truth_ERT.py` -> `nb7_DA_ERT_synthetic.py` -> `nb8_plots_synthetic.py` |
+| **Synthetic twin** | ERT simulated from a known truth (5 % noise) | yes | `synthetic_truth_ert.py` -> `da_ert_synthetic.py` -> `plots_synthetic.py` |
 
 Two soil cases are modelled: **NC** (uncompacted, `nb1`) and **HC** (heavily compacted band, `nb2`).
 Everything is driven from `notebook/`; `notebook/run_twin.sh` is the single entry point.
@@ -35,10 +35,11 @@ data/
 notebook/
   project_paths.py             reads data_path.toml (every script imports it)
   run_registry.py, run_manifest.py  run registry (csv) and per-run reproducibility manifest
-  nb1_*, nb2_*, nb3_*          forward models (NC, HC) and measurement-vs-model comparison
+  forward_model_nc.py, nb2_*, nb3_*  forward models (NC, HC) and measurement-vs-model comparison
   nb4*, nb4a*                  twin experiment on soil moisture (TDR) only
   nb5_*, nb6_ESMDA_*           real-data ERT DA
-  nb6_synth_*, nb7_*, nb8_*    synthetic ERT twin: truth -> DA -> scores/figures
+  synthetic_truth_ert.py, da_ert_synthetic.py, plots_synthetic.py (+ plots_synthetic_helpers.py)
+                               synthetic ERT twin: truth -> DA -> scores/figures
   model_config.py, nc_model.py case configuration (soil tables, grid, IC, ERT paths) and helpers
   make_scenarios.py            generates the synthetic scenarios (NC + HC)
   make_scenario_nc_VGP.py      generates scenario_nc_ERT.toml (real-data scenarios)
@@ -95,7 +96,7 @@ reproduce the historical layout (scripts run from `notebook/`, root = `../`). A 
 ## 4. Pipelines
 
 ### 4.1 Forward models and checks
-- `nb1_cathy_soil3D_nc.py` (NC) and `nb2_cathy_soil3D_hc.py` (HC): CATHY infiltration models, reference runs.
+- `forward_model_nc.py` (NC) and `nb2_cathy_soil3D_hc.py` (HC): CATHY infiltration models, reference runs.
 - `nb3_compare_meas_vs_mod.py`: measured TDR vs model.
 - `nb4a_DA_solution_soil3D_nc.py` -> `nb4_DA_soil3D_nc.py` (+ `_plots`): small twin experiment assimilating synthetic soil moisture only.
 
@@ -112,17 +113,17 @@ Biased prior ensemble (from a scenario) -> CATHY forecast per ERT window -> satu
 make_scenarios.py ──► scenarios (NC_*, HC_*)                              ┐
 model_config.py   ──► truth parameters / biased prior soil table          │
                                                                            ▼
-nb6_synth_truth_ERT.py   truth run ─► sw, psi ─► Archie ─► pyGIMLi forward ─► 5 % noise ─► .tldat
+synthetic_truth_ert.py   truth run ─► sw, psi ─► Archie ─► pyGIMLi forward ─► 5 % noise ─► .tldat
         └─ writes data/3d/synthetic/<CASE>/{truth_<CASE>.pkl, procdata/*.tldat, tdr_synth_<CASE>.csv}
                                                                            │
-nb7_DA_ERT_synthetic.py  prior ensemble ─► CATHY window ─► ERT forward ─► EnKF | PF | ES-MDA update
+da_ert_synthetic.py  prior ensemble ─► CATHY window ─► ERT forward ─► EnKF | PF | ES-MDA update
         └─ writes <simulations>/<run>/ and <simulations>/<run>_meta/run_meta.json
                                                                            │
-nb8_plots_synthetic.py   compares every run with the TRUE sw, psi and parameters
+plots_synthetic.py   compares every run with the TRUE sw, psi and parameters
         └─ writes <figures_synth>/<CASE>/ (figures, summary.csv, parameters_summary.csv)
 ```
 
-**Step 1 - `nb6_synth_truth_ERT.py --case NC|HC`** (about 3 min for NC):
+**Step 1 - `synthetic_truth_ert.py --case NC|HC`** (about 3 min for NC):
 1. Truth = the model of `nb1`/`nb2` with the **true** parameters, on the same time vector as the DA
    (survey times of the case). CATHY does not print at the requested times, so the output is dense
    (`--out-dt`, default 300 s) and linearly interpolated to the exact atmbc times.
@@ -135,7 +136,7 @@ nb8_plots_synthetic.py   compares every run with the TRUE sw, psi and parameters
 5. Files with the format and names of the real data (`st5t<ii>.tldat`), the virtual TDR series (15, 30,
    50 cm, not assimilated) and `truth_<CASE>.pkl` (sw, psi, parameters, times, noise settings).
 
-**Step 2 - `nb7_DA_ERT_synthetic.py`** (one run = one case/scenario/DA type/N/seed):
+**Step 2 - `da_ert_synthetic.py`** (one run = one case/scenario/DA type/N/seed):
 - reads the synthetic `.tldat`; checks that DA and truth share the atmbc times and cell size;
 - builds the prior ensemble from the scenario (`--prior-bias biased` applies Ks x5, SATCELL_VG x1.3,
   n_VG -0.08, thetar_VG +0.01; `none` centres the prior on the truth); the prior is cached so that the DA
@@ -146,7 +147,7 @@ nb8_plots_synthetic.py   compares every run with the TRUE sw, psi and parameters
 - run name: `SYN_<CASE>_<scenario>_<enkf|pf|esmda>_N<nens>_s<seed>[_noDA][_unbiased]`;
 - states are stored compactly (`compact_states`, `--store-full all|analysis`, `--cleanup-vtk`).
 
-**Step 3 - `nb8_plots_synthetic.py --case NC`** (see section 7 for the outputs).
+**Step 3 - `plots_synthetic.py --case NC`** (see section 7 for the outputs).
 
 More detail, decisions and known limits (inverse crime, single Archie set, Ks anisotropy, memory of HC at
 0.1 m): `notebook/synthetic_twin_plan.md`.
@@ -363,6 +364,16 @@ Nothing is recomputed; states, vtk and pickles are never copied.
 | Old name | New name |
 |---|---|
 | `notebook/ligher_run.py` | `notebook/lighten_run.py` |
+| `notebook/nb1_cathy_soil3D_nc.py` | `notebook/forward_model_nc.py` |
+| `notebook/nb6_synth_truth_ERT.py` | `notebook/synthetic_truth_ert.py` |
+| `notebook/nb7_DA_ERT_synthetic.py` | `notebook/da_ert_synthetic.py` |
+| `notebook/nb8_plots_synthetic.py` | `notebook/plots_synthetic.py` |
+| `notebook/nb8_helpers.py` | `notebook/plots_synthetic_helpers.py` |
+
+Done with `git mv`, so `git log --follow <new name>` shows the full history. Runs made before the rename (their
+`manifest.json`, `run_meta.json`, logs, `truth_meta_<CASE>.json`, the registry) record the command with the OLD names:
+that is a historical record and was left as it is. The short names `nb6` / `nb7` / `nb8` in comments, and the output
+folder `figures_nb8/`, are unchanged.
 
 ---
 

@@ -1,5 +1,5 @@
 # =============================================================================
-# Truth-aware helpers of nb8_plots_synthetic.py (pure numpy / pandas: no pyCATHY import, unit-tested)
+# Truth-aware helpers of plots_synthetic.py (pure numpy / pandas: no pyCATHY import, unit-tested)
 # =============================================================================
 # df_DA layout (see nb5_plot_helpers.py): LONG table, one row per (cycle 'time', member 'Ensemble_nb', node);
 # the node id is the position inside each (time, member, OL) block. Cycle c = state at the END of window c =

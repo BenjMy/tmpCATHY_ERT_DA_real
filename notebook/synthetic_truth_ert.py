@@ -2,8 +2,8 @@
 # nb6: synthetic truth + synthetic ERT (+ virtual TDR) for the twin experiment
 # =============================================================================
 # Run from the notebook/ folder (like nb5):
-#       python nb6_synth_truth_ERT.py --case NC
-#       python nb6_synth_truth_ERT.py --case HC --delta 0.25
+#       python synthetic_truth_ert.py --case NC
+#       python synthetic_truth_ert.py --case HC --delta 0.25
 #
 # 1. TRUTH: the hydrological solution of nb1 (NC) / nb2 (HC), built by model_config.setup_model with the
 #    TRUTH parameters, on the same time vector as the DA (ERT survey times of schedule2023_3d.csv).

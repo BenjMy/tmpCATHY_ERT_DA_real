@@ -16,8 +16,8 @@
 #     run_meta.json (config + checks) next to the results
 # Needs the pyCATHY fixes of pycathy_twin_fixes (nodal porosity, zone_material, Ks, c-lite).
 #
-#   python nb7_DA_ERT_synthetic.py --case NC --scenario ic_VGP_upd --da-type enkf --nens 100 --seed 42
-#   python nb7_DA_ERT_synthetic.py --case HC --scenario ic_Ks_upd --prior-bias none --no-da   (open loop)
+#   python da_ert_synthetic.py --case NC --scenario ic_VGP_upd --da-type enkf --nens 100 --seed 42
+#   python da_ert_synthetic.py --case HC --scenario ic_Ks_upd --prior-bias none --no-da   (open loop)
 # Run from the notebook/ folder (ROOT = '../'), after nb6 for the same case / delta.
 # =============================================================================
 import argparse
@@ -620,4 +620,4 @@ if USE_ESMDA and not args.dry_run and args.cleanup_vtk != 'none':
     simuDA._cleanup_vtk_files(args.cleanup_vtk)       # run_DA_sequential does it itself through DAConfig.cleanup_vtk
 print("DA run finished:", da_name)
 print("run_meta:", META_FILE)
-print("(df_DA / ET_DA_xr backups are in", _prj, ") -> run nb8_plots_synthetic.py")
+print("(df_DA / ET_DA_xr backups are in", _prj, ") -> run plots_synthetic.py")

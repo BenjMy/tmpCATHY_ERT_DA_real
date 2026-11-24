@@ -28,11 +28,11 @@ Date: 2026-10-23. Status: step 0 (config), nb6 (truth + synthetic ERT), library 
 |---|---|
 | `model_config.py` | Generalises `nc_model.py`: `CASES = {'NC': {...}, 'HC': {...}}`; `setup_model(simu, case, soil=…, ic_values=…, extra_times=…)`; ERT paths per case. Keeps all `nc_model` helpers (`build_times`, `snap_to_times`, `filter_tldat`, …). |
 | `make_scenarios.py` | Replaces `make_scenario_nc_VGP.py`: writes one toml per case, including Ks, zones, Archie, layered IC. |
-| `nb6_synth_truth_ERT.py` | Truth run, truth export, synthetic ERT `.tldat`, virtual TDR. |
-| `nb7_DA_ERT_synthetic.py` | nb5 driver, parametrised (CLI), reads the synthetic files, writes `run_meta.json`. |
+| `synthetic_truth_ert.py` | Truth run, truth export, synthetic ERT `.tldat`, virtual TDR. |
+| `da_ert_synthetic.py` | nb5 driver, parametrised (CLI), reads the synthetic files, writes `run_meta.json`. |
 | `run_matrix.py` | Loops over the scenario matrix and the seeds. |
-| `nb8_helpers.py` | Truth-aware helpers on top of `nb5_plot_helpers.py`. |
-| `nb8_plots_synthetic.py` | Comparison and validation figures and tables. |
+| `plots_synthetic_helpers.py` | Truth-aware helpers on top of `nb5_plot_helpers.py`. |
+| `plots_synthetic.py` | Comparison and validation figures and tables. |
 
 ---
 
@@ -50,7 +50,7 @@ Date: 2026-10-23. Status: step 0 (config), nb6 (truth + synthetic ERT), library 
 
 ---
 
-## 3. Step 1: `nb6_synth_truth_ERT.py`
+## 3. Step 1: `synthetic_truth_ert.py`
 
 For each case (`NC`, `HC`):
 
@@ -73,7 +73,7 @@ For each case (`NC`, `HC`):
 
 ---
 
-## 4. Step 2: `nb7_DA_ERT_synthetic.py`
+## 4. Step 2: `da_ert_synthetic.py`
 
 Copy of nb5 with these changes only:
 
@@ -112,7 +112,7 @@ Do not run the full product. Order: (1) ic-only EnKF with and without bias, NC; 
 
 ---
 
-## 6. Step 4: `nb8_plots_synthetic.py` (+ `nb8_helpers.py`)
+## 6. Step 4: `plots_synthetic.py` (+ `plots_synthetic_helpers.py`)
 
 Reuse `nb5_plot_helpers.py` (ensemble stats, probes, profiles, `parm_evolution`, `parm_shift_table`, rejections). Add:
 
@@ -188,7 +188,7 @@ All new files are in `twin/`; library changes are in `pycathy_twin_fixes.patch` 
 | `model_config.py` | `CASES` NC/HC copied from nb1/nb2 (soil tables, IC, band, irrigation, rain, ET); `setup_model`, `biased_overrides`, `truth_parameters`, `sensor_phi`, `ert_paths(synthetic=True)`; re-exports the `nc_model` helpers | `test_model_config.py` (tables equal nb1/nb2, band, irrigation, bias, sensor porosity) |
 | `synth_tools.py` | `.tldat` read/write keeping the real file layout, seeded multiplicative log-normal noise, Archie, time lookup | `test_synth_tools.py` on the real `st5t00.tldat` (2837 good rows, sigma_log10 ~ 0.0217 for 5 %, round trip, accepted by `filter_tldat`) |
 | `ert_frame.py` | ERT <-> CATHY frame choice factored out of nb5 | compiled |
-| `nb6_synth_truth_ERT.py` | truth run -> sw/psi/nodal porosity -> Archie -> `trace_mesh` -> pyGIMLi forward -> 5 % noise -> `.tldat` with the real quadrupoles; virtual TDR; `truth_<case>.pkl` + json | py_compile only (needs CATHY + pyGIMLi) |
+| `synthetic_truth_ert.py` | truth run -> sw/psi/nodal porosity -> Archie -> `trace_mesh` -> pyGIMLi forward -> 5 % noise -> `.tldat` with the real quadrupoles; virtual TDR; `truth_<case>.pkl` + json | py_compile only (needs CATHY + pyGIMLi) |
 | `make_scenarios.py` | 7 scenarios per case (ic, ic+VGP, +VGP upd, +Ks upd, Archie upd, VGP+Ks, full) with `material` (NC) / `zone_material` (HC); biased or unbiased prior; `Kz_ratio` stub (off) | `test_make_scenarios.py` (all 14 pass the library validator) |
 
 ### 11.2 Library changes (`pycathy_twin_fixes.patch`)
@@ -288,10 +288,10 @@ States vs truth at probes and profiles (RMSE, bias), spread-skill ratio, 90 % co
 | 2 | `synth_tools.py`, `ert_frame.py`, nb6 | written, nb6 not run |
 | 3 | Library patch L1-L5 + tests | done, no regression |
 | 4 | `make_scenarios.py` | done |
-| 5 | `nb7_DA_ERT_synthetic.py` | written (py_compile + pyflakes clean, `--help` works, not run): nb5 with CLI, case config, synthetic ERT (times read from `truth_<case>.pkl`), generated scenarios, biased prior, `ERT_DATA_ERR = 5`, `fwdNoiseAbs = 0`, unique run name `SYN_<case>_<scenario>_<da>_N<nens>_s<seed>`, `cache/`, `run_meta.json` (config, checks, status, traceback), asserts that DA and truth share atm times and delta |
+| 5 | `da_ert_synthetic.py` | written (py_compile + pyflakes clean, `--help` works, not run): nb5 with CLI, case config, synthetic ERT (times read from `truth_<case>.pkl`), generated scenarios, biased prior, `ERT_DATA_ERR = 5`, `fwdNoiseAbs = 0`, unique run name `SYN_<case>_<scenario>_<da>_N<nens>_s<seed>`, `cache/`, `run_meta.json` (config, checks, status, traceback), asserts that DA and truth share atm times and delta |
 | 6 | `run_matrix.py`, `twin_names.py` | written: presets quick / main / ens, `--open-loop` adds the no-DA reference, resumes (skips `finished` runs), one log per run, `--dry-run` tested |
-| 7 | `nb8_helpers.py`, `nb8_plots_synthetic.py` | written; helpers unit-tested (`test_nb8_helpers.py`), whole script tested end to end on fake truth + fake runs with a stub DA class (`test_nb8_e2e.py`); real df_DA / dict_parm_pert layout still to confirm at the first run. Per run: states at the sensor nodes (+ virtual TDR), profiles, metrics in time (all / inside / outside the ERT block: RMSE, spread-skill, 90 % coverage, CRPS), parameters vs truth. Across runs: summary.csv, heat maps scenario x DA, box plots over seeds, parameter z / contraction / coverage, ensemble-size study |
-| 8 | First real run NC (nb6 -> nb7 -> nb8), then HC | **next, needs CATHY + pyGIMLi**: `python nb6_synth_truth_ERT.py --case NC`, then `python run_matrix.py --preset quick --dry-run`, then without `--dry-run`, then `python nb8_plots_synthetic.py --case NC` |
+| 7 | `plots_synthetic_helpers.py`, `plots_synthetic.py` | written; helpers unit-tested (`test_plots_synthetic_helpers.py`), whole script tested end to end on fake truth + fake runs with a stub DA class (`test_nb8_e2e.py`); real df_DA / dict_parm_pert layout still to confirm at the first run. Per run: states at the sensor nodes (+ virtual TDR), profiles, metrics in time (all / inside / outside the ERT block: RMSE, spread-skill, 90 % coverage, CRPS), parameters vs truth. Across runs: summary.csv, heat maps scenario x DA, box plots over seeds, parameter z / contraction / coverage, ensemble-size study |
+| 8 | First real run NC (nb6 -> nb7 -> nb8), then HC | **next, needs CATHY + pyGIMLi**: `python synthetic_truth_ert.py --case NC`, then `python run_matrix.py --preset quick --dry-run`, then without `--dry-run`, then `python plots_synthetic.py --case NC` |
 | 9 | `Kz_ratio` extension, multi-zone Archie | optional |
 
 ### Decisions taken (23 Oct 2026, from your answers)

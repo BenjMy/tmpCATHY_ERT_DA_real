@@ -57,7 +57,7 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [ ] Explain the synthetic ERT DA pipeline
 - [ ] Explain how to use the `scenario.toml` file
 - [x] Add a "Lighter DA folder" section (`lighten_run.py` docstring already points to it)
-- [ ] Add a table old name → new name once files are renamed (section 8)
+- [x] Add a table old name → new name once files are renamed (section 8; done for the files renamed so far, to extend with the next renames)
 
 ## 5. Scientific checks on the DA runs
 
@@ -224,33 +224,40 @@ of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous tes
 
 *Goal: better readability.*
 
-*Status 2026-11-24: only the safe, checkable part is done (below). The big renames and the split of the plotters are NOT done on purpose, see "Why not yet".*
+*Status 2026-11-24: no run is in progress any more, so the five renames of the synthetic-twin chain are done (below). The split of the plotters and the names still to decide are open, see "Still open".*
 
 **Done**
 - [x] `ligher_run.py` → `lighten_run.py` (`git mv`; README, tests, `lighter_protocol.py`, `export_results.py` updated; `grep -r ligher` finds only this note)
+- [x] The synthetic-twin chain renamed with `git mv` (history kept), every reference updated in `README.md`, `run_twin.sh`, `run_matrix.py`, `nb4_DA_soil3D_nc.py` (comment), `synthetic_twin_plan.md`, the scripts' own docstrings and `tests/test_nb8_summarize.py` (import):
 
-**Proposal for the other renames (to confirm before doing them)**
+| Old | New |
+|---|---|
+| `nb1_cathy_soil3D_nc.py` | `forward_model_nc.py` |
+| `nb6_synth_truth_ERT.py` | `synthetic_truth_ert.py` |
+| `nb7_DA_ERT_synthetic.py` | `da_ert_synthetic.py` |
+| `nb8_plots_synthetic.py` | `plots_synthetic.py` |
+| `nb8_helpers.py` | `plots_synthetic_helpers.py` |
 
-| Old | Proposed new | Files that mention the old name |
-|---|---|---|
-| `nb1_cathy_soil3D_nc.py` | `forward_model_nc.py` | 2 |
-| `nb6_synth_truth_ERT.py` | `synthetic_truth_ert.py` | 5 |
-| `nb7_DA_ERT_synthetic.py` | `da_ert_synthetic.py` | 10 |
-| `nb8_plots_synthetic.py` | `plots_synthetic.py` | 16 |
-| `nb8_helpers.py` | `plots_synthetic_helpers.py` | 4 |
-| `nb2`, `nb3`, `nb4`, `nb4a`, `nb5`, `nb6_ESMDA`, `plot_6_ESMDA_synthetic.py`, `nc_model.py` / `model_config.py`, `ert_*.py` | *to decide: names not proposed without reading what each one is used for* | 1 to 11 |
+- [x] Old → new table added to the README ("Renamed files")
+- *Checked: `git grep` finds no old name left outside this todo, the historical logs and `truth_meta_NC.json`; `bash -n run_twin.sh`, `py_compile` of all scripts, `pytest` (60 tests: 53 passed, 6 skipped, 1 failed = the already known `test_evolution_and_shift_flags` of section 2; `test_nb5_dryrun.py` and `test_scenario_nc_ERT.py` cannot be collected here, no pyCATHY). **No CATHY / pyGIMLi run was done after the rename**: do a `./run_twin.sh ... --dry-run` on the workstation first.*
+- *Left as it is on purpose: the old names inside `notebook/logs/*.log`, `data/3d/synthetic/NC/truth_meta_NC.json`, run `manifest.json` / `run_meta.json` and the registry (historical record of what was run); the short names `nb6` / `nb7` / `nb8` in comments; the output folder `figures_nb8/` (a path written by the code, other tools read it); the test file names (`test_nb8_summarize.py`, `test_nb5_plot_helpers.py`).*
 
-**Why not yet**
-- A run is in progress: `run_twin.sh pair` calls `nb7` twice (DA, then `--no-da`) and bash reads the script while it runs; renaming `nb7` or editing `run_twin.sh` mid-run can break it. Do it when no run is active.
-- The run registry, `manifest.json` and logs of existing runs record the command with the OLD names (rebuilding a run needs the old commit anyway, see section 3).
-- None of the `nbX` scripts can be run without CATHY + pyGIMLi, so only `grep` + `pytest` (stubs) would check a rename of them.
-- `nb8_plots_synthetic.py` (541 lines), `nb5_DA_ERT_soil3D_nc_plots.py` (597) are scripts with module-level state (`args`, `truth`, `RUN`, `scores_of`...) that the figure functions read as globals: splitting them into a `plotting/` package means passing that state explicitly, which needs a real `plots` run to verify.
+**Still open: names to decide (not proposed without reading what each one is used for)**
+
+- `nb2_cathy_soil3D_hc.py`, `nb3_compare_meas_vs_mod.py`, `nb4_*`, `nb4a_*`
+- `nb5_DA_ERT_soil3D_nc*.py`, `nb6_ESMDA_ERT_soil3D_nc.py`, `plot_6_ESMDA_synthetic.py`, `nb5_plot_helpers.py`
+- `nc_model.py` / `model_config.py`, `ert_*.py`
+
+**Why the plotters are not split yet**
+- `plots_synthetic.py` (541 lines), `nb5_DA_ERT_soil3D_nc_plots.py` (597) are scripts with module-level state (`args`, `truth`, `RUN`, `scores_of`...) that the figure functions read as globals: splitting them into a `plotting/` package means passing that state explicitly, which needs a real `plots` run to verify.
+- None of the `nbX` scripts can be run without CATHY + pyGIMLi, so only `grep` + `pytest` (stubs) can check a change here.
 
 - [ ] **Plotters in separate files** (a `plotting/` package or `*_plots.py` modules)
-  - Split the figure functions out of `nb8_plots_synthetic.py` (`fig_states`, `fig_profiles`, `fig_metrics`, `fig_params`, `compare_*`), `nb5_DA_ERT_soil3D_nc_plots.py`, `nb4_DA_soil3D_nc_plots.py`, `plot_6_ESMDA_synthetic.py`, `nb5_plot_helpers.py` / `nb8_helpers.py`
+  - Split the figure functions out of `plots_synthetic.py` (`fig_states`, `fig_profiles`, `fig_metrics`, `fig_params`, `compare_*`), `nb5_DA_ERT_soil3D_nc_plots.py`, `nb4_DA_soil3D_nc_plots.py`, `plot_6_ESMDA_synthetic.py`, `nb5_plot_helpers.py` / `plots_synthetic_helpers.py`
   - The `nbX` scripts keep only the CLI (arguments, loop over runs, calling the plotters)
 - [ ] **Rename files whose name does not say what they do.** Candidates:
-  - `nb1..nb8` → e.g. `forward_model_nc.py`, `synthetic_truth_ert.py`, `da_ert_synthetic.py`, `plots_synthetic.py`
+  - ~~`nb1`, `nb6_synth`, `nb7`, `nb8`~~ *done: `forward_model_nc.py`, `synthetic_truth_ert.py`, `da_ert_synthetic.py`, `plots_synthetic.py`*
+  - still to do: `nb2`, `nb3`, `nb4`, `nb4a`, `nb5`, `nb6_ESMDA` (real-data and soil-moisture-only twin scripts)
   - `fig0_infiltr_compatt` / `fig1_infiltr_scheme` notebooks
   - `plot_6_ESMDA_synthetic.py`
   - ~~`ligher_run.py` (typo vs `lighten_run.py` in its docstring)~~ *done: `git mv` to `lighten_run.py`*

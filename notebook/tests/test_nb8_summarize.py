@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 
-import nb8_helpers as H
+import plots_synthetic_helpers as H
 
 
 def _sc(t, rmse):

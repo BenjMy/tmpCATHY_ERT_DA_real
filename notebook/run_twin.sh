@@ -183,7 +183,7 @@ fi
 
 nb7() {  # nb7 <scenario> [more args]
   local sc="$1"; shift
-  $PY "$HERE/nb7_DA_ERT_synthetic.py" --case "$CASE" --scenario "$sc" --da-type "$DA" --nens "$NENS" \
+  $PY "$HERE/da_ert_synthetic.py" --case "$CASE" --scenario "$sc" --da-type "$DA" --nens "$NENS" \
       --seed "$SEED" --prior-bias "$BIAS" --root "$ROOT" "${SIMARG[@]}" $EXTRA "$@"
 }
 run_status() {  # table of the runs of the case: what each one left on disk (pyCATHY.DA.run_status)
@@ -365,7 +365,7 @@ case "$cmd" in
     flag=""; [ "$BIAS" = "none" ] && flag="--no-bias"
     $PY "$HERE/make_scenarios.py" $flag ${KZ_RATIO:+--kz-ratio} "$@" ;;
   truth)
-    $PY "$HERE/nb6_synth_truth_ERT.py" --case "$CASE" --root "$ROOT" --noise-pct "${NOISE:-5}" "$@" ;;
+    $PY "$HERE/synthetic_truth_ert.py" --case "$CASE" --root "$ROOT" --noise-pct "${NOISE:-5}" "$@" ;;
   da)        [ $# -ge 1 ] || { usage; exit 1; }; sc="$1"; shift; nb7 "$sc" "$@" ;;
   openloop)  [ $# -ge 1 ] || { usage; exit 1; }; sc="$1"; shift; DA=enkf nb7 "$sc" --no-da "$@" ;;
   pair)      [ $# -ge 1 ] || { usage; exit 1; }; sc="$1"; shift; nb7 "$sc" "$@"; DA=enkf nb7 "$sc" --no-da "$@" ;;
@@ -386,7 +386,7 @@ case "$cmd" in
     a=(--case "$CASE" --root "$ROOT" "${SIMARG[@]}")
     [ -n "${RUNS:-}" ] && a+=(--runs $RUNS)
     [ -n "${INCLUDE_RUNNING:-}" ] && a+=(--include-running)
-    rc=0; $PY "$HERE/nb8_plots_synthetic.py" "${a[@]}" "$@" || rc=$?
+    rc=0; $PY "$HERE/plots_synthetic.py" "${a[@]}" "$@" || rc=$?
     if [ -n "$REAL_PLOTS" ] && [ "${REAL:-1}" != "0" ]; then real_plots || true; fi
     exit $rc ;;
   real-plots) real_plots "$@" ;;

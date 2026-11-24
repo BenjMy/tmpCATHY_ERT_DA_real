@@ -1,13 +1,13 @@
 # =============================================================================
 # Synthetic twin experiment: results, validation against the TRUE sw / psi / parameters, comparison of scenarios
 # =============================================================================
-# Plotting + scoring only (reads the runs of nb7 and the truth of nb6). Pure functions are in nb8_helpers.py
+# Plotting + scoring only (reads the runs of nb7 and the truth of nb6). Pure functions are in plots_synthetic_helpers.py
 # (unit-tested); the per-run layout follows nb5_DA_ERT_soil3D_nc_plots.py (median + 5-95 % band + thin members,
 # DA vs open loop, hours since irrigation, markers of irrigation / ERT surveys).
 #
-#   python nb8_plots_synthetic.py --case NC                       # every finished run of NC in ../simulations
-#   python nb8_plots_synthetic.py --case HC --runs SYN_HC_ic_Ks_upd_enkf_N100_s42
-#   python nb8_plots_synthetic.py --case NC --detail-seed 42 --t-from-h 0
+#   python plots_synthetic.py --case NC                       # every finished run of NC in ../simulations
+#   python plots_synthetic.py --case HC --runs SYN_HC_ic_Ks_upd_enkf_N100_s42
+#   python plots_synthetic.py --case NC --detail-seed 42 --t-from-h 0
 #
 # Output (<sim-dir>/figures_nb8/<case>/): per run (seed = --detail-seed)
 #   <run>_states.png      truth vs ensemble (DA, open loop) at the sensor nodes, sw and theta (+ virtual TDR)
@@ -37,7 +37,7 @@ import pandas as pd
 mpl.use('Agg')
 import matplotlib.pyplot as plt  # noqa: E402
 
-import nb8_helpers as H  # noqa: E402
+import plots_synthetic_helpers as H  # noqa: E402
 
 mpl.rcParams.update({"axes.grid": True, "grid.color": "gray", "grid.linestyle": '--', "grid.alpha": 0.4,
                      "figure.constrained_layout.use": True, "axes.spines.top": False, "axes.spines.right": False})
