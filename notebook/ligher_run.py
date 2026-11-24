@@ -1,8 +1,8 @@
 """Where does the disk space of a DA run go, and how to shrink it.
 
-    python lighten_run.py report  [RUN_DIR ...]      # default: every run folder of [outputs].simulations
-    python lighten_run.py convert FILE.pkl [--keep]   # legacy long df_DA pickle -> compact parquet (float32, zstd)
-    python lighten_run.py prune   RUN_DIR [--apply]   # list (or delete) what nb8 does not need
+    python ligher_run.py report  [RUN_DIR ...]      # default: every run folder of [outputs].simulations
+    python ligher_run.py convert FILE.pkl [--keep]   # legacy long df_DA pickle -> compact parquet (float32, zstd)
+    python ligher_run.py prune   RUN_DIR [--apply]   # list (or delete) what nb8 does not need
 
 What is heavy (see README, "Lighter DA folder"):
   * member CATHY output, mostly .vtk, in <run>/DA_Ensemble/   -> nb7 --cleanup-vtk all (default) removes it at the end
@@ -74,4 +74,74 @@ def report(run_dirs, top=5):
             print(f"    {c:11s} {fmt(n):>10s}  {100 * n / max(tot, 1):4.0f} %")
         for n, p in files[:top]:
             print(f"      {fmt(n):>10s}  {os.path.relpath(p, d)}")
-        if cats.get('vtk', 0) > 0.3 * tot: 
+        if cats.get('vtk', 0) > 0.3 * tot:
+            print("    -> mostly vtk: rerun nb7 with --cleanup-vtk all (default), or delete <run>/DA_Ensemble/**/*.vtk")
+    print(f"\ntotal: {fmt(grand)} in {len(run_dirs)} run folder(s)")
+    return grand
+
+
+def convert(pkl, keep=True):
+    """Legacy long df_DA pickle -> parquet (float32, zstd) next to it; returns (path, bytes_before, bytes_after)."""
+    import pandas as pd
+    df = pd.read_pickle(pkl)
+    if 'idnode' not in df.columns and {'time', 'Ensemble_nb'} <= set(df.columns):
+        df['idnode'] = df.groupby(['time', 'Ensemble_nb'], sort=False).cumcount().to_numpy()   # node id = position in block
+    for c in df.columns:
+        if df[c].dtype == 'float64':
+            df[c] = df[c].astype('float32')
+    out = os.path.splitext(pkl)[0] + '.parquet'
+    df.to_parquet(out, compression='zstd', index=False)
+    before, after = os.path.getsize(pkl), os.path.getsize(out)
+    if not keep:
+        os.remove(pkl)
+    return out, before, after
+
+
+def prune(run_dir, apply=False):
+    """Legacy long tables of a run that has a compact store. Returns the list of files (deleted if apply)."""
+    if not has_compact_store(run_dir):
+        print(f"{run_dir}: no compact store, nothing to prune (nb8 would need the long table)")
+        return []
+    files = legacy_tables(run_dir)
+    for f in files:
+        print(f"{'delete' if apply else 'would delete'}  {fmt(os.path.getsize(f)):>10s}  {f}")
+        if apply:
+            os.remove(f)
+    if not files:
+        print(f"{run_dir}: nothing to prune")
+    return files
+
+
+def default_runs():
+    import project_paths as PP
+    sim = PP.get().simulations
+    if not sim or not os.path.isdir(sim):
+        sys.exit("no RUN_DIR given and [outputs].simulations of data_path.toml not found")
+    return sorted(os.path.join(sim, d) for d in os.listdir(sim)
+                  if os.path.isdir(os.path.join(sim, d)) and not d.endswith('_meta'))
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
+    sub = ap.add_subparsers(dest='cmd', required=True)
+    r = sub.add_parser('report')
+    r.add_argument('runs', nargs='*')
+    c = sub.add_parser('convert')
+    c.add_argument('file')
+    c.add_argument('--keep', action='store_true', default=True, help='(default) keep the pickle')
+    c.add_argument('--delete', action='store_true', help='delete the pickle after writing the parquet')
+    pr = sub.add_parser('prune')
+    pr.add_argument('run')
+    pr.add_argument('--apply', action='store_true')
+    a = ap.parse_args(argv)
+    if a.cmd == 'report':
+        report(a.runs or default_runs())
+    elif a.cmd == 'convert':
+        out, b, n = convert(a.file, keep=not a.delete)
+        print(f"{out}: {fmt(b)} -> {fmt(n)}")
+    else:
+        prune(a.run, a.apply)
+
+
+if __name__ == '__main__':
+    main()
