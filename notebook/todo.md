@@ -1,5 +1,13 @@
 Repo: https://github.com/BenjMy/tmpCATHY_ERT_DA_real/tree/feature/data-paths-registry-readme
 
+
+- [ ] Make this todo more friendly (with sections etc..) other difficult to read
+- [ ] /home/ben/Nextcloud/BenCSIC/Codes/BenjMy/tmpCATHY_ERT_DA_real/data/3d/synthetic/NC/truth_NC.pkl is ncluding in the git but I added *.pkl in the gitignore
+- [ ] improve the gitignore to have the folder that ends with _meta and *.log like this one SYN_NC_full_upd_pf_N32_s1_unbiased_issues.log type file: see tmp_treedir_typical
+- [ ] run ligher version cmd ?
+- [ ] check for filter inbreeding as well in SYN_NC_full_upd_pf_N32_s1_unbiased_issues
+
+- [ ] I'm not sure the unbiased cases are really unbiased for instance when I run SYN_NC_full_upd_pf_N32_s1_unbiased the SYN_NC_full_upd_pf_N32_s1_unbiased_profiles.png show that the truth is within the ensemble but the profile with depth between the mean of the ensemble and the truth is not the same 
 - [x] Add a manifest file for each run to check which version of CATHY DA ERT (including the branch) is used and which version of CATHY and pyCATHY as well (including the branch). And other usefuls things as you consider for reproducibility.
 - [x] feat/withIrr-on-main or feature/eta-assimilation-improvements or twin-experiment? Help me to choice the last updated DA ERT branch.  Should I rebase?
   (checked 2026-11-24 on BenjMy/pycathy_wrapper; the branches live there, not in this repo)

@@ -14,10 +14,10 @@
     "n": 1.7
   },
   "porosity_mode": "nodal",
-  "fwd_mesh": "../data/3d/mesh_Luca_Agripolis3d/meshForward.vtk",
-  "da_mesh": "../data/3d/mesh_Luca_Agripolis3d/meshForward.vtk",
+  "fwd_mesh": "/home/ben/Nextcloud/BenCSIC/Codes/BenjMy/tmpCATHY_ERT_DA_real/data/3d/mesh_Luca_Agripolis3d/meshForward.vtk",
+  "da_mesh": "/home/ben/Nextcloud/BenCSIC/Codes/BenjMy/tmpCATHY_ERT_DA_real/data/3d/mesh_Luca_Agripolis3d/meshForward.vtk",
   "same_mesh": true,
   "n_surveys": 23,
-  "argv": "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/nb6_synth_truth_ERT.py --case NC --root ../ --noise-pct 5",
-  "data_dir": "../data/3d/synthetic/NC/procdata"
+  "argv": "/home/ben/Nextcloud/BenCSIC/Codes/BenjMy/tmpCATHY_ERT_DA_real/notebook/nb6_synth_truth_ERT.py --case NC --root /home/ben/Nextcloud/BenCSIC/Codes/BenjMy/tmpCATHY_ERT_DA_real/ --noise-pct 5",
+  "data_dir": "/home/ben/Nextcloud/BenCSIC/Codes/BenjMy/tmpCATHY_ERT_DA_real/data/3d/synthetic/NC/procdata"
 }

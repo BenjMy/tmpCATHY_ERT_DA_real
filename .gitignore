@@ -1,1 +1,3 @@
 simulations*
+*.pkl
+data/3d/synthetic/NC/truth_NC.pkl
