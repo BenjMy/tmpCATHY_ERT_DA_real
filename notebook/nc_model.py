@@ -171,6 +171,14 @@ ERT_COMP_LEVELS = {
 def ert_paths(root='../', comp_level='no_comp'):
     """Return dict with data_dir, sequence, mesh (3D campaign)."""
     _, prefix, suffix = ERT_COMP_LEVELS[comp_level]
+    import project_paths as _PP
+    _P = _PP.get()
+    if _P.is_root(root):            # data_path.toml decides the folders when root is the project root
+        return dict(
+            data_dir=os.path.join(_P.data_3d, prefix + suffix, 'procdata'),
+            sequence=os.path.join(_P.sequence_dir, 'seq3d_from_st5t00tldat.shm'),
+            mesh=_P.mesh_forward,
+        )
     d3 = os.path.join(root, 'data', '3d')
     return dict(
         data_dir=os.path.join(d3, prefix + suffix, 'procdata'),

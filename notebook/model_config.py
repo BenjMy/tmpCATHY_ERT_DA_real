@@ -200,12 +200,16 @@ def ert_paths(root='../', case='NC', synthetic=False):
     import os
     cfg = CASES[case]
     p = _nc.ert_paths(root, COMP_LEVEL[case])
-    p['sequence'] = os.path.join(root, 'data', '3d', cfg['sequence'])
+    import project_paths as _PP
+    _P = _PP.get()
+    _toml = _P.is_root(root)        # data_path.toml decides the folders when root is the project root
+    p['sequence'] = os.path.join(_P.sequence_dir if _toml else os.path.join(root, 'data', '3d'), cfg['sequence'])
     if not cfg['sequence_verified']:
         warnings.warn(f"{case}: electrode sequence {cfg['sequence']} is NOT verified for this campaign "
                       "(check CASES[...]['sequence'])")
     if synthetic:
-        p['data_dir'] = os.path.join(root, 'data', '3d', 'synthetic', case, 'procdata')
+        p['data_dir'] = os.path.join(_P.synthetic_dir if _toml else os.path.join(root, 'data', '3d', 'synthetic'),
+                                     case, 'procdata')
     return p
 
 

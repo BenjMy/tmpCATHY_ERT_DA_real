@@ -33,6 +33,8 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pyvista as pv
 
+import project_paths as _PP0                  # data_path.toml: [code].pycathy (clone of pycathy_wrapper) in sys.path
+_PP0.get().setup_sys_path()
 from pyCATHY.DA.cathy_DA import DA
 import pyCATHY.plotters.cathy_plots as cplt
 from nc_model import (X, Y, ZR_THICK, IRR_START_HOUR, SENSOR_DEPTHS, SENSOR_PHI, build_times)
@@ -43,8 +45,10 @@ mpl.rcParams.update({"axes.grid": True, "grid.color": "gray", "grid.linestyle": 
                      "axes.spines.top": False, "axes.spines.right": False})
 
 # %% Settings (must match nb5)
-ROOT = '../'
-path2prj = "../simulations/"
+import project_paths as PP
+P = PP.get()
+ROOT = P.root_str                  # data_path.toml
+path2prj = P.simulations_str
 PARAM_NAMES = ['ic']
 # Scenario, method and VGP control come from the command line (run_twin.sh real-plots passes them);
 # the defaults are the former hard-coded values:
@@ -90,15 +94,15 @@ SMC_BIN_H = 0.5                    # average the raw sensor series in bins of th
 # TDR sensors of nb3 (data/sensors/st5.csv = NC, st1.csv = HC; time reference = INFILTRATION_START of
 # data/site_params.json). Used first if the file exists; otherwise the generic SMC loader above.
 COMP_LEVEL = 'no_comp'             # as in nb5: 'no_comp' -> st5/NC | 'heavy_comp' -> st1/HC
-TDR_FILE = os.path.join(ROOT, 'data', 'sensors', 'st5.csv' if COMP_LEVEL == 'no_comp' else 'st1.csv')
-TDR_SITE_PARAMS = os.path.join(ROOT, 'data', 'site_params.json')
+TDR_FILE = os.path.join(P.sensors_dir, 'st5.csv' if COMP_LEVEL == 'no_comp' else 'st1.csv')
+TDR_SITE_PARAMS = P.site_params
 TDR_LABEL = 'NC' if COMP_LEVEL == 'no_comp' else 'HC'
 TDR_BIN_H = None                   # None = raw TDR readings (dots); a number = bin average [h]
 SMC_SIGMA_VWC = None               # sensor error [m3/m3] -> error bars (e.g. 0.02); None = no bars
 
 BACKUP_PREFER = ('.pkl', '.parquet')   # use ('.parquet', '.pkl') for a faster load of the 250 MB df_DA
 
-fig_dir = os.path.join(path2prj, 'figures_nb5', f'{DA_METHOD}_{RUN_TAG}')     # one folder per method and scenario
+fig_dir = os.path.join(P.figures_real, f'{DA_METHOD}_{RUN_TAG}')     # one folder per method and scenario
 os.makedirs(fig_dir, exist_ok=True)
 
 
@@ -259,7 +263,7 @@ section('soil moisture observations')
 def find_smc_file():
     hits = []
     for pat in ('*smc*', '*vwc*', '*tdr*', '*moisture*', '*soil_moist*'):
-        hits += glob.glob(os.path.join(ROOT, 'data', '**', pat), recursive=True)
+        hits += glob.glob(os.path.join(P.data, '**', pat), recursive=True)
     hits = sorted({h for h in hits if os.path.splitext(h)[1].lower() in
                    ('.csv', '.txt', '.dat', '.xlsx', '.xls', '.parquet', '.pkl')})
     if len(hits) == 1:

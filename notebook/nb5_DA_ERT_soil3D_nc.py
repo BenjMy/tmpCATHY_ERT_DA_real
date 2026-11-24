@@ -43,6 +43,8 @@ import json
 import numpy as np
 import pyvista as pv
 
+import project_paths as _PP0                  # data_path.toml: [code].pycathy (clone of pycathy_wrapper) in sys.path
+_PP0.get().setup_sys_path()
 from pyCATHY.DA.cathy_DA import DA, dictObs_2pd
 from pyCATHY.DA.observations import read_observations, make_data_cov
 from pyCATHY.DA import perturbate
@@ -69,7 +71,9 @@ WITH_DA = os.environ.get('REAL_WITH_DA', '1') == '1'     # run_twin.sh real-seq:
 #   data    : <ROOT>data/3d/st5NC/procdata/st5t00.tldat, st5t01.tldat, ...
 #   sequence: <ROOT>data/3d/seq3d_from_st5t00tldat.shm   (electrodes + sequence)
 #   mesh    : <ROOT>data/3d/mesh_Luca_Agripolis3d/meshForward.vtk
-ROOT = '../'
+import project_paths as PP
+P = PP.get()
+ROOT = P.root_str             # project root from data_path.toml (default: ../)
 COMP_LEVEL = 'no_comp'        # 'heavy_comp' | 'light_comp' | 'no_comp'
 ERT_DATA_ERR = 10           # [%] (was 5: with 5 % the innovation was 3.7 sigma at cycle 0 and 14 sigma at cycle 1)   of each |rhoa|: R_ii = (ERT_DATA_ERR/100 * |rhoa_i|)**2
                             #     (metadata_ERT['data_err_unit'] = 'percent'; the old
@@ -85,8 +89,8 @@ ERT_NOISE_FLOOR_V = None
 # REAL acquisition times: column '5-NC' of schedule2023_3d.csv (same file and convention as
 # infiltration_utils.read_infiltration_log; row index = survey index -> st5t<ii>.tldat, day-first dates).
 # INFILTRATION_START comes from site_params.json (as nb3), so ERT, TDR/SMC and model share ONE reference.
-SITE_PARAMS = ROOT + 'data/site_params.json'
-ERT_SCHEDULE_FILE = ROOT + 'data/3d/schedule2023_3d.csv'
+SITE_PARAMS = P.site_params
+ERT_SCHEDULE_FILE = P.ert_schedule
 assert os.path.isfile(ERT_SCHEDULE_FILE), f"schedule not found: {os.path.abspath(ERT_SCHEDULE_FILE)}"
 INFILTRATION_START = ES.load_infiltration_start(SITE_PARAMS, COMP_LEVEL)
 _acq = ES.read_schedule_2023(ERT_SCHEDULE_FILE, COMP_LEVEL)
@@ -229,7 +233,7 @@ DA_CONFIG = DAConfig(
     save_results=True,          # df_DA / ET_DA_xr written every cycle: a crash keeps them
 )
 
-path2prj = "../simulations/"
+path2prj = P.simulations_str
 RUN_TAG = SCENARIO + ('_mat' if VGP_CONTROL == 'material' else '')   # separate folder per VGP control
 da_name = ('NC_ERT_PF_' if USE_PF else 'NC_ERT_') + ('withDA_' if WITH_DA else 'withoutDA_') + RUN_TAG
 OBS_ERR = ERT_DATA_ERR if WITH_DA else 1e99   # open loop: R huge (finite in float64)
@@ -588,7 +592,8 @@ for _w in df_ens.attrs['warnings']:
 # same ensemble; the file name carries a hash of scenario, NENS and SEED.
 REUSE_PRIOR = True
 _h = hashlib.sha1(json.dumps([scenario_selected, NENS, SEED], sort_keys=True, default=str).encode()).hexdigest()[:8]
-PRIOR_CACHE = f'prior_ensemble_{SCENARIO}_NENS{NENS}_{_h}.pkl'   # editing the toml changes the name
+os.makedirs(P.cache, exist_ok=True)
+PRIOR_CACHE = os.path.join(P.cache, f'prior_ensemble_{SCENARIO}_NENS{NENS}_{_h}.pkl')   # editing the toml changes the name
 def _prior_transf_ok(d):
     """The cached prior must carry the transform of the updated Archie parameters (the cache name only
     hashes scenario + NENS + SEED, so a prior built by an older pyCATHy would be reused silently)."""

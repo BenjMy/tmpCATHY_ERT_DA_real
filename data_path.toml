@@ -1,0 +1,39 @@
+# data_path.toml -- ONE place that controls every path of the project.
+#
+# Read by notebook/project_paths.py (used by nb5, nb6, nb7, nb8, run_matrix.py, run_twin.sh, ...).
+#   - Relative paths are resolved against [project].root; [project].root is resolved against THIS file's folder.
+#   - Absolute paths, "~" and $ENV_VARS are accepted anywhere.
+#   - An empty string "" means "derive it from the parent folder" (see each key).
+#   - Use another file with:  DATA_PATH_TOML=/path/to/other.toml  (all scripts), or edit this one.
+#   - Check what is resolved:  python notebook/project_paths.py
+# The defaults below reproduce the historical layout (scripts run from notebook/, root = ../).
+
+[project]
+root = "."                                   # project folder (contains data/ and simulations/)
+
+[inputs]                                     # what you provide
+data            = "data"
+data_3d         = "data/3d"                  # <prefix><NC|HC|LC>/procdata/*.tldat, sequences, schedule
+site_params     = "data/site_params.json"
+ert_schedule    = "data/3d/schedule2023_3d.csv"
+sequence_dir    = "data/3d"                  # electrode sequence files (seq3d_from_st5t00tldat.shm, ...)
+mesh_dir        = "data/3d/mesh_Luca_Agripolis3d"
+mesh_forward    = "meshForward.vtk"          # file name inside mesh_dir (or an absolute path)
+sensors_dir     = "data/sensors"             # TDR / soil moisture files (st5.csv, st1.csv)
+
+[scenarios]                                  # scenario definition files
+real            = "notebook/scenario_nc_ERT.toml"
+synthetic       = "notebook/scenarios_twin.toml"   # written by make_scenarios.py
+
+[outputs]                                    # what the code writes
+synthetic_dir   = "data/3d/synthetic"        # <case>/truth_<case>.pkl, <case>/procdata/*.tldat (nb6)
+simulations     = "simulations"              # one folder per run + <run>_meta/run_meta.json
+figures_real    = ""                         # "" -> <simulations>/figures_nb5
+figures_synth   = ""                         # "" -> <simulations>/figures_nb8
+cache           = "notebook/cache"           # cached prior ensembles
+logs            = "notebook/logs"            # run_matrix.py logs + matrix_summary.json
+run_registry    = "registry/runs_registry.csv"   # one row per run: what has been done or not
+
+[code]
+notebook        = "notebook"                 # folder of the .py files
+pycathy         = ""                         # clone of pycathy_wrapper (folder containing pyCATHY/); "" = installed package

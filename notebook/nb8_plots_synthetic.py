@@ -23,6 +23,8 @@
 # =============================================================================
 import argparse
 import gc
+import project_paths as _PP0                  # data_path.toml: [code].pycathy (clone of pycathy_wrapper) in sys.path
+_PP0.get().setup_sys_path()
 import os
 import pickle
 import traceback
@@ -44,7 +46,7 @@ HOUR = 3600.0
 
 ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
 ap.add_argument('--case', choices=['NC', 'HC'], default='NC')
-ap.add_argument('--root', default='../')
+ap.add_argument('--root', default=None, help='project root (default: data_path.toml)')
 ap.add_argument('--sim-dir', default=None)
 ap.add_argument('--runs', nargs='+', default=None, help='run names (default: every finished DA run of the case)')
 ap.add_argument('--detail-seed', type=int, default=None, help='seed of the runs plotted in detail (default: smallest)')
@@ -58,11 +60,14 @@ ap.add_argument('--prefer', default='pkl', choices=['pkl', 'parquet'])
 ap.add_argument('--debug', action='store_true', help='print tracebacks (default: one line per problem)')
 args = ap.parse_args()
 
-CASE, ROOT = args.case, args.root
-SIM_DIR = args.sim_dir or os.path.join(ROOT, 'simulations')
-OUT = args.out or os.path.join(SIM_DIR, 'figures_nb8', CASE)
+import project_paths as PP
+P = PP.get()
+CASE, ROOT = args.case, (args.root or P.root_str)
+_TOML = P.is_root(ROOT)
+SIM_DIR = args.sim_dir or (P.simulations if _TOML else os.path.join(ROOT, 'simulations'))
+OUT = args.out or (os.path.join(P.figures_synth, CASE) if _TOML and not args.sim_dir else os.path.join(SIM_DIR, 'figures_nb8', CASE))
 os.makedirs(OUT, exist_ok=True)
-TRUTH_FILE = args.truth or os.path.join(ROOT, 'data', '3d', 'synthetic', CASE, f'truth_{CASE}.pkl')
+TRUTH_FILE = args.truth or os.path.join(P.synthetic_case_dir(CASE) if _TOML else os.path.join(ROOT, 'data', '3d', 'synthetic', CASE), f'truth_{CASE}.pkl')
 
 
 def section(t):

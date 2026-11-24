@@ -105,8 +105,14 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"          # folder of this file = folder of the .py files
 NB_DIR="${NB_DIR:-$HERE}"                                      # working directory of the runs (scripts use ROOT=../)
-ROOT="${ROOT:-../}"
 PY="${PY:-python}"
+# every folder comes from data_path.toml (project_paths.py); ROOT / SIM_DIR / SYN_DIR / PYCATHY still override it
+pp() { $PY "$HERE/project_paths.py" --get "$1" 2>/dev/null || true; }
+SIMARG=(); [ -z "${SIM_DIR:-}" ] || SIMARG=(--sim-dir "$SIM_DIR")      # forwarded to nb7 / run_matrix / nb8 only when set explicitly
+ROOT="${ROOT:-$(pp root_str)}"; ROOT="${ROOT:-../}"
+SIM="${SIM_DIR:-$(pp simulations)}"; SIM="${SIM:-${ROOT}simulations}"
+SYN_DIR="${SYN_DIR:-$(pp synthetic_dir)}"; SYN_DIR="${SYN_DIR:-${ROOT}data/3d/synthetic}"
+[ -z "${PYCATHY:-}" ] && PYCATHY="$(pp pycathy)"
 
 # pyCATHY: already importable, or a clone given by PYCATHY, or a clone found next to this folder
 if [ -z "${PYCATHY:-}" ] && ! $PY -c "import pyCATHY" 2>/dev/null; then
@@ -178,10 +184,10 @@ fi
 nb7() {  # nb7 <scenario> [more args]
   local sc="$1"; shift
   $PY "$HERE/nb7_DA_ERT_synthetic.py" --case "$CASE" --scenario "$sc" --da-type "$DA" --nens "$NENS" \
-      --seed "$SEED" --prior-bias "$BIAS" --root "$ROOT" $EXTRA "$@"
+      --seed "$SEED" --prior-bias "$BIAS" --root "$ROOT" "${SIMARG[@]}" $EXTRA "$@"
 }
 run_status() {  # table of the runs of the case: what each one left on disk (pyCATHY.DA.run_status)
-  $PY -m pyCATHY.DA.run_status "${ROOT}simulations" --glob "${STATUS_GLOB:-SYN_${CASE}_*}" "$@" \
+  $PY -m pyCATHY.DA.run_status "$SIM" --glob "${STATUS_GLOB:-SYN_${CASE}_*}" "$@" \
     || echo "(pyCATHY.DA.run_status not available: update pyCATHY)"
 }
 real_plots() {  # real_plots [scenario ...]: figures of every finished real run (method x scenario); missing folders are skipped
@@ -191,7 +197,7 @@ real_plots() {  # real_plots [scenario ...]: figures of every finished real run 
   for sc in "${scs[@]}"; do
     for da in $REAL_PLOT_DAS; do
       case "$da" in esmda) pre="NC_ERT_ESMDA_";; pf) pre="NC_ERT_PF_";; *) pre="NC_ERT_";; esac
-      if [ ! -d "${ROOT}simulations/${pre}withDA_${sc}${REAL_RUN_SUFFIX}" ]; then
+      if [ ! -d "$SIM/${pre}withDA_${sc}${REAL_RUN_SUFFIX}" ]; then
         echo "[skip] plots $da $sc: no run folder"; continue
       fi
       echo "================ real plots: $da  $sc ================"
@@ -229,7 +235,7 @@ real_loop() {  # real_loop <kind: seq|pf|enkf|esmda> [scenario ...]: one run per
           pf)    prj="NC_ERT_PF_${tag}_${sc}${REAL_RUN_SUFFIX}";    marker="_finished.txt"; pf=1 ;;
           *)     prj="NC_ERT_${tag}_${sc}${REAL_RUN_SUFFIX}";       marker="_finished.txt" ;;
         esac
-        if [ -f "${ROOT}simulations/$prj/${prj}${marker}" ] && [ "${REAL_FORCE:-0}" != "1" ] && [ "${REAL_DRY_RUN:-0}" != "1" ]; then
+        if [ -f "$SIM/$prj/${prj}${marker}" ] && [ "${REAL_FORCE:-0}" != "1" ] && [ "${REAL_DRY_RUN:-0}" != "1" ]; then
           echo "[skip] $da $tag $sc: finished (REAL_FORCE=1 to redo)"; continue
         fi
         echo "================ real $da: $tag  $sc ================"
@@ -256,7 +262,7 @@ real_run() {  # real_run <da: enkf|pf|esmda> <w: 1 = withDA | 0 = withoutDA> <sc
     pf)    prj="NC_ERT_PF_${tag}_${sc}${REAL_RUN_SUFFIX}";    marker="_finished.txt"; pf=1 ;;
     *)     prj="NC_ERT_${tag}_${sc}${REAL_RUN_SUFFIX}";       marker="_finished.txt" ;;
   esac
-  if [ -f "${ROOT}simulations/$prj/${prj}${marker}" ] && [ "${REAL_FORCE:-0}" != "1" ] && [ "${REAL_DRY_RUN:-0}" != "1" ]; then
+  if [ -f "$SIM/$prj/${prj}${marker}" ] && [ "${REAL_FORCE:-0}" != "1" ] && [ "${REAL_DRY_RUN:-0}" != "1" ]; then
     echo "[skip] $da $tag $sc: finished (REAL_FORCE=1 to redo)"; return 0
   fi
   echo "================ real $da: $tag  $sc ================"
@@ -296,7 +302,7 @@ real_parallel() {  # real_parallel "<da:w> ..." [scenario ...]: scenarios in par
   ncpu=$(nproc); usable=$(( ncpu - REAL_RESERVE_CORES )); [ "$usable" -ge 1 ] || usable=1
   [ "$REAL_JOBS" -le "$usable" ] || { echo "REAL_JOBS=$REAL_JOBS > $usable usable cores: using $usable"; REAL_JOBS=$usable; }
   per=$(( usable / REAL_JOBS ))
-  logdir="${ROOT}simulations/real_logs"; mkdir -p "$logdir"
+  logdir="$SIM/real_logs"; mkdir -p "$logdir"
   echo "parallel: $REAL_JOBS jobs x $per cores (cores 0-$(( REAL_JOBS * per - 1 )) of $ncpu; $(( ncpu - REAL_JOBS * per )) left free), logs: $logdir/<scenario>.log"
   for sc in "${scs[@]}"; do
     while :; do                                                  # wait for a free slot and enough RAM
@@ -328,8 +334,8 @@ real_parallel() {  # real_parallel "<da:w> ..." [scenario ...]: scenarios in par
   return $failed
 }
 real_has() { case " $REAL_DAS " in *" $1 "*) return 0;; esac; return 1; }   # is <enkf|pf> in REAL_DAS ?
-truth_file() { echo "${ROOT}data/3d/synthetic/$1/truth_$1.pkl"; }
-matrix() { $PY "$HERE/run_matrix.py" --root "$ROOT" --prior-bias "$BIAS" ${EXTRA:+--extra "$EXTRA"} "$@"; }
+truth_file() { echo "$SYN_DIR/$1/truth_$1.pkl"; }
+matrix() { $PY "$HERE/run_matrix.py" --root "$ROOT" "${SIMARG[@]}" --prior-bias "$BIAS" ${EXTRA:+--extra "$EXTRA"} "$@"; }
 
 case "$cmd" in
   plan)
@@ -377,7 +383,7 @@ case "$cmd" in
   status) run_status "$@" ;;
   plots)
     run_status || true                                          # which runs can be plotted, and why not (one line each)
-    a=(--case "$CASE" --root "$ROOT")
+    a=(--case "$CASE" --root "$ROOT" "${SIMARG[@]}")
     [ -n "${RUNS:-}" ] && a+=(--runs $RUNS)
     [ -n "${INCLUDE_RUNNING:-}" ] && a+=(--include-running)
     rc=0; $PY "$HERE/nb8_plots_synthetic.py" "${a[@]}" "$@" || rc=$?

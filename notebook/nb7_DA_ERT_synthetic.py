@@ -35,6 +35,8 @@ import warnings
 import numpy as np
 import pyvista as pv
 
+import project_paths as _PP0                  # data_path.toml: [code].pycathy (clone of pycathy_wrapper) in sys.path
+_PP0.get().setup_sys_path()
 from pyCATHY.DA.cathy_DA import DA, dictObs_2pd
 from pyCATHY.DA.observations import read_observations, make_data_cov
 from pyCATHY.DA import perturbate
@@ -49,6 +51,7 @@ from ert_frame import choose_ert_frame
 from model_config import (HOUR, NSTR, build_times, snap_to_times, obs_window_start, filter_tldat,
                           unreliable_quadrupoles, load_ert_electrodes)
 import make_scenarios as MS
+import project_paths as PP            # data_path.toml: every folder of the project
 from twin_names import run_name
 
 # =============================================================================
@@ -77,8 +80,8 @@ ap.add_argument('--prior-bias', choices=['biased', 'none'], default='biased',
                 help="'biased': biased_overrides soil table + biased scenario nominals; 'none': prior = truth")
 ap.add_argument('--ic-prior-mean', type=float, default=None, help='override the scenario prior mean of ic [m]')
 ap.add_argument('--delta', type=float, default=None, help='CATHY cell size [m]: SAME as nb6')
-ap.add_argument('--root', default='../')
-ap.add_argument('--sim-dir', default=None, help='default <root>simulations/')
+ap.add_argument('--root', default=None, help='project root (default: data_path.toml)')
+ap.add_argument('--sim-dir', default=None, help='default: [outputs].simulations of data_path.toml')
 ap.add_argument('--truth', default=None, help='truth_<case>.pkl (default data/3d/synthetic/<case>/)')
 ap.add_argument('--param-bounds', choices=['clip', 'reflect'], default='reflect')
 ap.add_argument('--tag', default='', help='suffix of the run name')
@@ -99,7 +102,8 @@ ap.add_argument('--keep-prior-figs', action='store_true')
 args = ap.parse_args()
 assert not (args.da_type == 'esmda' and args.no_da), "open loop is the same for every DA type: run it with --da-type enkf --no-da"
 
-CASE, ROOT = args.case, args.root
+P = PP.get()
+CASE, ROOT = args.case, (args.root or P.root_str)
 cfg = MC.get_case(CASE, args.delta)
 COMP_LEVEL = MC.COMP_LEVEL[CASE]
 WITH_DA = not args.no_da
@@ -118,9 +122,10 @@ MAX_SNAP_MIN = 30
 SAVE_PRIOR_FIGS = args.keep_prior_figs
 PSI_BOUNDS = (-1.0e3, -1.0e-2)
 
-SITE_PARAMS = ROOT + 'data/site_params.json'
-ERT_SCHEDULE_FILE = ROOT + 'data/3d/schedule2023_3d.csv'
-OUT_ROOT = os.path.join(ROOT, 'data', '3d', 'synthetic', CASE)
+_TOML = P.is_root(ROOT)                                     # --root other than the project root: legacy layout under it
+SITE_PARAMS = P.site_params if _TOML else ROOT + 'data/site_params.json'
+ERT_SCHEDULE_FILE = P.ert_schedule if _TOML else ROOT + 'data/3d/schedule2023_3d.csv'
+OUT_ROOT = P.synthetic_case_dir(CASE) if _TOML else os.path.join(ROOT, 'data', '3d', 'synthetic', CASE)
 TRUTH_FILE = args.truth or os.path.join(OUT_ROOT, f'truth_{CASE}.pkl')
 
 # Archie (same constants as nb5/nb6: the truth uses the prior values unless nb6 --archie offset)
@@ -174,9 +179,9 @@ if USE_ESMDA and 'ic' not in list_parm2update:
 
 _da_tag = args.da_type
 da_name = run_name(CASE, SCENARIO, _da_tag, NENS, SEED, WITH_DA, BIASED, args.tag)
-path2prj = args.sim_dir or (ROOT + 'simulations/')
+path2prj = args.sim_dir or (P.simulations_str if _TOML else ROOT + 'simulations/')
 os.makedirs(path2prj, exist_ok=True)
-CACHE_DIR = os.path.abspath('cache')   # absolute: CATHY changes the working directory
+CACHE_DIR = P.cache if _TOML else os.path.abspath('cache')   # absolute: CATHY changes the working directory
 os.makedirs(CACHE_DIR, exist_ok=True)
 
 STORE_NODES = None

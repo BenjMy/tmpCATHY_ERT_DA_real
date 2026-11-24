@@ -14,6 +14,7 @@ import subprocess
 import sys
 import time
 
+import project_paths as PP
 from twin_names import run_name
 
 PRESETS = {
@@ -33,14 +34,17 @@ ap.add_argument('--prior-bias', choices=['biased', 'none'], default='biased')
 ap.add_argument('--open-loop', action='store_true', help='also run each combination without assimilation')
 ap.add_argument('--extra', default='', help='extra nb7 arguments, e.g. "--obs-err 10 --inflation 1.2"')
 ap.add_argument('--delta', type=float, default=None)
-ap.add_argument('--root', default='../')
-ap.add_argument('--sim-dir', default=None)
+ap.add_argument('--root', default=None, help='project root (default: data_path.toml)')
+ap.add_argument('--sim-dir', default=None, help='default: [outputs].simulations of data_path.toml')
 ap.add_argument('--script', default=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'nb7_DA_ERT_synthetic.py'))
-ap.add_argument('--log-dir', default='logs')
+ap.add_argument('--log-dir', default=None, help='default: [outputs].logs of data_path.toml')
 ap.add_argument('--dry-run', action='store_true')
 ap.add_argument('--force', action='store_true')
 ap.add_argument('--stop-on-fail', action='store_true')
 a = ap.parse_args()
+P = PP.get()
+a.root = a.root or P.root_str
+a.log_dir = a.log_dir or P.logs
 
 P = PRESETS.get(a.preset, dict(cases=['NC'], scenarios=['ic_VGP_upd'], da=['enkf'], seeds=[42], nens=100))
 cases = a.cases or P['cases']
@@ -48,7 +52,7 @@ scenarios = a.scenarios or P['scenarios']
 das = a.da or P['da']
 seeds = a.seeds or P['seeds']
 nens_list = a.nens or [P['nens'] or 100] if a.preset != 'ens' or a.nens else [32, 64, 128]
-sim_dir = a.sim_dir or os.path.join(a.root, 'simulations')
+sim_dir = a.sim_dir or (P.simulations if P.is_root(a.root) else os.path.join(a.root, 'simulations'))
 biased = a.prior_bias == 'biased'
 
 

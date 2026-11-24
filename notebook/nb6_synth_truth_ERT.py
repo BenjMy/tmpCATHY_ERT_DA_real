@@ -48,7 +48,7 @@ from nc_model import (HOUR, X, Y, ELEVATION, ZR_THICK, ERT_COMP_LEVELS, build_ti
 # =============================================================================
 ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
 ap.add_argument('--case', default='NC', choices=list(M.CASES))
-ap.add_argument('--root', default='../')
+ap.add_argument('--root', default=None, help='project root (default: data_path.toml)')
 ap.add_argument('--delta', type=float, default=None, help='horizontal cell size [m] (default: the case value)')
 ap.add_argument('--noise-pct', type=float, default=5.0, help='relative noise on rhoa [%%]')
 ap.add_argument('--seed-noise', type=int, default=1234)
@@ -65,7 +65,10 @@ ap.add_argument('--tdr-sigma', type=float, default=0.02, help='virtual TDR noise
 ap.add_argument('--keep-project', action='store_true', help='do not delete an existing truth project')
 args = ap.parse_args()
 
-CASE, ROOT = args.case, args.root
+import project_paths as PP
+P = PP.get()
+CASE, ROOT = args.case, (args.root or P.root_str)
+_TOML = P.is_root(ROOT)
 cfg = M.get_case(CASE, args.delta)
 COMP_LEVEL = M.COMP_LEVEL[CASE]
 _, PREFIX, _ = ERT_COMP_LEVELS[COMP_LEVEL]
@@ -79,9 +82,9 @@ rFLUID = 1 / (WATER_EC_uScm * (1e-6 / 1e-2))
 ARCHIE_PRIOR = dict(a=0.3, m=1.7, n=1.7)
 ARCHIE_TRUTH = ARCHIE_PRIOR if args.archie == 'prior' else dict(a=0.4, m=1.85, n=1.55)
 
-SITE_PARAMS = ROOT + 'data/site_params.json'
-SCHEDULE_FILE = ROOT + 'data/3d/schedule2023_3d.csv'
-path2prj = ROOT + 'simulations/'
+SITE_PARAMS = P.site_params if _TOML else ROOT + 'data/site_params.json'
+SCHEDULE_FILE = P.ert_schedule if _TOML else ROOT + 'data/3d/schedule2023_3d.csv'
+path2prj = P.simulations_str if _TOML else ROOT + 'simulations/'
 prj_name = f'TRUTH_{CASE}' + (f'_d{args.delta}' if args.delta else '')
 
 paths_real = M.ert_paths(ROOT, CASE)                       # real data (templates), sequence, DA mesh
@@ -124,6 +127,8 @@ print(f"[{CASE}] {len(surveys)} surveys, CATHY times [h]: {np.round(np.asarray(e
 # =============================================================================
 # 2. Truth run (model_config.setup_model with the TRUTH parameters, DA time vector)
 # =============================================================================
+import project_paths as _PP0                  # data_path.toml: [code].pycathy (clone of pycathy_wrapper) in sys.path
+_PP0.get().setup_sys_path()
 from pyCATHY import cathy_tools
 from pyCATHY import meshtools as mt
 from pyCATHY.ERT import simulate_ERT as SE
