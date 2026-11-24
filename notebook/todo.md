@@ -26,7 +26,8 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [x] Make this todo friendlier (sections, contents, legend)
 - [x] `truth_NC.pkl` was tracked although `*.pkl` is in `.gitignore` → untracked (`git rm --cached`, file kept on disk)
 - [x] Improve `.gitignore`: folders ending with `_meta` and `*.log` files (e.g. `SYN_NC_full_upd_pf_N32_s1_unbiased_issues.log`, see `tmp_treedir_typical.md`)
-- [ ] Run the lighter version: which command? (see section 7)
+- [x] Run the lighter version: `CASE=NC DA=pf BIAS=none NENS=32 EXTRA="--store-full analysis --store-stride 10 --cleanup-vtk all" ./run_twin.sh pair full_upd` (wrap in `lighter_protocol.py measure` to record time / RSS / disk, see 7.0). *Scenarios run on the workstation, results not yet interpreted: see 7.6*
+- [ ] Interpret the scenarios already run: send the files listed in 7.6
 - [ ] Run `pf_inbreeding.py` on the real PF run (the IC prior fix is done, see 5.1 (a); rerun needed)
 
 ## 2. Repository hygiene
@@ -54,7 +55,7 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [ ] Create a new branch on GitHub and add a README explaining the whole code architecture: input types, how to run, scenario construction, output data and plots
 - [ ] Explain the synthetic ERT DA pipeline
 - [ ] Explain how to use the `scenario.toml` file
-- [ ] Add a "Lighter DA folder" section (`ligher_run.py` docstring already points to it)
+- [x] Add a "Lighter DA folder" section (`ligher_run.py` docstring already points to it)
 - [ ] Add a table old name → new name once files are renamed (section 8)
 
 ## 5. Scientific checks on the DA runs
@@ -170,6 +171,28 @@ of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous tes
 - [ ] New defaults behind flags
 - [x] README section "Lighter DA folder"
 - [x] `ligher_run.py` completed (report / convert / prune) + `lighter_protocol.py measure|accept` with tests (`tests/test_lighter_protocol.py`); [ ] rename, see section 8
+
+### 7.6 Comparison analysis of the runs already done
+
+*What is needed to interpret the runs (small files only; no `_states/`, `.npz`, `.nc`, `.vtk`, `.pkl`). Paths relative to the project root; the simulations folder is `[outputs].simulations` of `data_path.toml`.*
+
+**Files to provide**
+- [ ] `registry/runs_registry.csv`: which runs exist, status, `duration_min`, commit, branch
+- [ ] Output of `CASE=NC ./run_twin.sh status` (one line per run: ok / partial / no states / failed)
+- [ ] nb8 tables: `<simulations>/figures_nb8/summary.csv` and `parameters_summary.csv` (RMSE, spread, 90 % coverage, CRPS; z prior → final). Figures (`compare_*.png`) only if wanted
+- [ ] Per run `<run>_meta/manifest.json` and `run_meta.json`: exact command (incl. `EXTRA`), seed, nens, git state
+- [ ] `python ligher_run.py report <run>` text of each run: disk per category
+- [ ] `lighter_protocol.py measure` json of each run (wall time, peak RSS, disk), if the run was wrapped
+- [ ] The `*_issues.log` of runs marked `failed` / `partial` (e.g. `SYN_NC_full_upd_enkf_N32_s1_noDA_unbiased`: 28 chunks but status failed, 1 error)
+- [ ] State which run is the baseline and which one is the lighter variant (same seed, same scenario, only one option changed)
+- *One command to collect them (adjust the paths): `zip send.zip registry/runs_registry.csv simulations/figures_nb8/*.csv simulations/*_meta/manifest.json simulations/*_meta/run_meta.json simulations/*_issues.log`*
+
+**Comparison analysis: what exists / what is missing**
+- Exists: `lighter_protocol.py accept` (scores of lighter vs baseline seeds: within the baseline seed-to-seed std, needs >= 2 baseline seeds), `run_manifest.py compare <run_a> <run_b>` (what differs between two runs), nb8 `compare_*` figures and tables (`compare-da`, `compare-scenarios`, `compare-bias`, `compare-nens`), `ligher_run.py report`
+- [ ] Table of 7.5 (option, disk / RAM / time saved, score change): a `lighter_protocol.py table` subcommand joining the measure json, the report and the summary.csv of baseline vs lighter. *Not implemented*
+- [ ] Run baseline and lighter on 3 seeds each (`SEED=1 2 3`), otherwise `accept` cannot decide
+- [ ] The PF run `SYN_NC_full_upd_pf_N32_s1_unbiased` had only 9 cycles when plotted (`INCLUDE_RUNNING=1`): rerun `plots` once finished, its scores are partial until then
+- [ ] Check why the open loop `..._noDA_unbiased` is `failed` before using its `skill_vs_ol`
 
 ### 7.P pyCATHY wrapper side
 
