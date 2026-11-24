@@ -20,12 +20,38 @@ Repo: https://github.com/BenjMy/tmpCATHY_ERT_DA_real/tree/feature/data-paths-reg
 - [ ] I want a data_path.toml where I can control all the path for inputs, outputs, plots, codes lib etc ...
 - [ ] Register all the run in a csv files where I can keep track what has been done or not
 - [ ] Investigate if it is possible to get ligher DA folder (.pkl files are heavy)
-  Protocol for a lighter simulation (investigation only, nothing implemented; written 2026-11-24 from the code + synthetic_twin_plan.md s.16)
+  Protocol for lighter DA RUNS (investigation only, nothing implemented; written 2026-11-24 from this repo + synthetic_twin_plan.md s.16
+  + a read of pycathy_wrapper@main pyCATHY/DA/cathy_DA.py and cathy_tools.py). Most of the weight is on the pyCATHY side, see item P.
   Already there: compact float32 StateStore (`_states/cycle_*.npz`, 314 MB long df_DA -> ~35-65 MB), `--store-full analysis
   --store-stride`, `--cleanup-vtk` at the END of a run, `ligher_run.py report|convert|prune`. Known gaps: README has no
   "Lighter DA folder" section although ligher_run.py's docstring points to it; `_df_DA.pkl` is still written once at the end;
   cleanup_vtk acts only at the end (peak disk = NENS x ~38 MB x ..., vtk is ~31 of 38 MB per member); plan s.16 "not done":
   VTKF=0 for the truth run (1.4 GB vtk, untested), sw as uint16.
+  - [ ] P. pyCATHY wrapper side (candidates found by reading the code; each one to MEASURE first, sizes below are not measured)
+        P1. Member folders: `_create_subfolders_ensemble` copies `input/ output/ vtk/ prepro/` + the CATHY executable into
+            `DA_Ensemble/cathy_origin`, then `copytree` of all of it NENS times. The `vtk/` and `output/` of the forward run are
+            copied too (N+1 copies). Test: copy only what a window needs; share exe / prepro / static input by symlink or hardlink
+            (Windows: copy fallback); do not copy the forward-run vtk/output
+        P2. vtk: members print vtk every window (VTKF=2 in nb7) and `_cleanup_vtk_files` runs only at the END (cathy_DA.py ~865).
+            Test (a) VTKF=0 for members: are sw/psi read from `output/` text files only? what needs the vtk (the per-member
+            `saveMeshPath` ~2556/2648 "converted" mesh, ERT forward)? (b) otherwise a `cleanup_vtk='per_cycle'` mode in DAConfig
+        P3. Per-cycle backups are O(cycles^2) I/O: `_save_step_outputs` calls `backup_results_DA` (rewrites dict_parm_pert, df_obs,
+            ET_DA_xr, df_Archie every cycle) AND `backup_simu()` (pickles the whole object, `<project>.pkl`) AND `ET_DA.nc`.
+            Measure each file size after cycle 1 / 10 / last. Candidates: write them every k cycles + at the end + on crash
+            (atexit / try-finally), `backup_simu` off by default (DAConfig flag), dict_parm_pert as compact arrays (npz / netcdf)
+            instead of a pickle of nested dicts, float32
+        P4. `backup_fort777` copies each member's fort.777 at every cycle (`DAnb<N>fort.777`, NENS x cycles files) when
+            `config.backup_fort777` is on: check the default, keep one stacked file per cycle instead
+        P5. Outputs printed: window run uses TIMPRTi=[0, diff_time] (start/end only, good); check CATHY's other outputs per
+            member (mbeconv, hgraph, cumulative files) and which `IPRT1` level they need; DAConfig option to keep only
+            psi/sw/ET and delete the rest after reading
+        P6. Compact store: sw as uint16 / psi float32 (state_store.py); optional zstd netcdf chunks; `load_backup` /
+            `states` must still read old runs
+        P7. RAM: per-cycle objects kept in memory for every member (prediction matrices, `dict_parm_pert` growth); peak RSS
+            vs NENS and nodes (HC 41 616 nodes); run members with a pool whose size is set from free RAM (cf. REAL_MIN_FREE_GB)
+        P8. Put the options in `DAConfig` with documented defaults that keep today's behaviour (`light=False`), plus a
+            `light=True` preset; unit tests on stubs like tests/test_compact_states.py; changes go to pycathy_wrapper on a
+            branch rebased on main AFTER the eta-assimilation-improvements rebase (same files: cathy_DA.py, cathy_tools.py)
   - [ ] 0. Baseline (one reference run, never changed): NC, scenario ic_Ks_upd, EnKF, N=8, seed 1 (22 surveys, ~25 min on 2 cores)
         + the same on HC with N=8. Record: `du -sh` per category (`ligher_run.py report`), peak RSS (`/usr/bin/time -v`),
         wall time split CATHY windows / ERT forward (pyGIMLi) / analysis (add timers), and the manifest.json of the run.
