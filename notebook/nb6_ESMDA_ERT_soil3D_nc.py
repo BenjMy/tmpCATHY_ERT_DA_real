@@ -181,7 +181,7 @@ A_ARCHIE, M_ARCHIE, N_ARCHIE = 0.3, 1.7, 1.7
 #   'nc_ERT_ic_VGP_pert_Archie_upd'  VGP perturbed only; the 3 Archie parameters updated with the states
 #   'nc_ERT_ic_VGP_Archie_upd'       VGP + Archie updated (48 parameters)
 #   Archie: scalar (one value for the whole domain), rFluid_Archie stays fixed (collinear with a_Archie).
-SCENARIO_FILE = 'scenario_nc_ERT.toml'
+SCENARIO_FILE = P.scenario_real          # [scenarios].real of data_path.toml (default notebook/scenario_nc_ERT.toml)
 # 2026-10-21, first '_upd' run (NENS = 32, 5 %): the first analysis threw 40+ of the 45 VGP out of their
 # bounds in ALL members at once (SATCELL_VG2 -0.7 vs [0.1, 2], n_VG5 2.9 vs [1.05, 2.5], thetar_VG4 0.58
 # vs [0, 0.15]); clipping made every member identical (spread 0.159 -> 0.014); all members crashed in
