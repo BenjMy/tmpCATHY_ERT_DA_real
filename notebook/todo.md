@@ -113,10 +113,10 @@ of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous tes
 - Compact float32 `StateStore` (`_states/cycle_*.npz`): long `df_DA` 314 MB → ~35–65 MB
 - `--store-full analysis`, `--store-stride`
 - `--cleanup-vtk` at the END of a run
-- `ligher_run.py report|convert|prune`
+- `ligher_run.py report|convert|prune` (*the committed file was cut after `report`, 77 lines, did not compile: completed and tested, 2026-11-24*)
 
 **Known gaps**
-- README has no "Lighter DA folder" section although the `ligher_run.py` docstring points to it
+- ~~README has no "Lighter DA folder" section~~ *(added)*
 - `_df_DA.pkl` is still written once at the end
 - `cleanup_vtk` acts only at the end: peak disk = NENS × ~38 MB × …, vtk is ~31 of 38 MB per member
 - Plan s.16 "not done": `VTKF=0` for the truth run (1.4 GB vtk, untested), `sw` as uint16
@@ -124,6 +124,7 @@ of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous tes
 ### 7.0 Baseline (one reference run, never changed)
 
 - [ ] NC, scenario `ic_Ks_upd`, EnKF, N=8, seed 1 (22 surveys, ~25 min on 2 cores), plus the same on HC with N=8
+- *Tool ready: `lighter_protocol.py measure OUT.json --run-dir RUN -- CMD` (wall, peak RSS, disk per category). The runs themselves need CATHY + pyGIMLi: to do on the workstation.*
 - Record:
   - `du -sh` per category (`ligher_run.py report`)
   - peak RSS (`/usr/bin/time -v`)
@@ -145,7 +146,8 @@ of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous tes
 
 - [ ] Measure peak RSS vs NENS (8/16/32/64) with `--store-full all` and `analysis`
 - [ ] Check that nb8 never rebuilds the long `df_DA` (property) for HC
-- [ ] `--max-nodes` for scores
+  - *Read of `nb8_plots_synthetic.py` only: it calls `load_backup(prefer=..., df_DA=False)` and uses the long table only when `states` is missing (old runs). Whether `load_backup` itself rebuilds it inside pyCATHY is NOT checked (pyCATHY not available); measure peak RSS on an HC run.*
+- [x] `--max-nodes` for scores: already in `nb8_plots_synthetic.py` (default 4000 nodes, stride on the node axis)
 - [ ] One chunk per cycle must stay O(1) in memory
 
 ### 7.3 Compute time (each trade-off needs the 3-seed check of 7.4)
@@ -160,13 +162,14 @@ of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous tes
 ### 7.4 Validation rule
 
 - [ ] A lighter setting is accepted if, on 3 seeds, the nb8 scores stay within the seed-to-seed spread of the baseline (`run_manifest.py compare` checks that only the intended option changed)
+  - *Rule implemented: `lighter_protocol.py accept BASE*.csv --light LIGHT*.csv` (shift <= k x baseline std, default k=1, exit code 0/1). Still to run on real seeds.*
 
 ### 7.5 Deliverables
 
 - [ ] Table: option, disk / RAM / time saved, score change
 - [ ] New defaults behind flags
-- [ ] README section "Lighter DA folder"
-- [ ] Updated `ligher_run.py` (renamed, see section 8)
+- [x] README section "Lighter DA folder"
+- [x] `ligher_run.py` completed (report / convert / prune) + `lighter_protocol.py measure|accept` with tests (`tests/test_lighter_protocol.py`); [ ] rename, see section 8
 
 ### 7.P pyCATHY wrapper side
 

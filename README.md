@@ -312,6 +312,42 @@ run (one line on stderr). `git_branch` and `pycathy_version` are also in the reg
 
 ---
 
+## Lighter DA folder
+
+Where the disk goes, and what is already available (no change of the DA result expected):
+
+| What | Size order | How to reduce |
+|---|---|---|
+| member CATHY output, mostly `.vtk`, in `<run>/DA_Ensemble/` | ~31 of ~38 MB per member | `nb7 --cleanup-vtk all` (default; acts at the END of the run, so the peak is still NENS x ~38 MB) |
+| legacy long table `<run>_df_DA.pkl` (float64, node ids repeated) | ~314 MB | compact store (default, `compact_states=True`): `<run>_states/cycle_*.npz`, float32, ~35-65 MB |
+| compact store | ~35-65 MB | `--store-full analysis` + `--store-stride N` (probe nodes only) |
+
+```bash
+python notebook/ligher_run.py report [RUN_DIR ...]      # bytes per category (vtk / pkl / npz / nc / ...), biggest files
+python notebook/ligher_run.py prune RUN_DIR [--apply]   # list (or delete) the legacy long table, only if the compact store exists
+python notebook/ligher_run.py convert FILE_df_DA.pkl [--delete]   # legacy pickle -> parquet (float32, zstd)
+```
+
+`prune` never touches the vtk and never touches runs without a compact store (nb8 then needs the long table).
+The real-data runs of nb5/nb6 have no compact store.
+
+**Measuring and accepting a lighter setting** (protocol of `notebook/todo.md`, section 7):
+
+```bash
+# 7.0 baseline: wall time, peak RSS and disk per category of one run, as json
+python notebook/lighter_protocol.py measure baseline_s1.json --run-dir <RUN_DIR> -- ./notebook/run_twin.sh ...
+
+# 7.4 a lighter setting is accepted if, for each score of nb8 summary.csv, its mean over the seeds is
+#     within the seed-to-seed spread of the baseline (>= 2 baseline seeds, 3 recommended); exit code 0 = accepted
+python notebook/lighter_protocol.py accept base_s1.csv base_s2.csv base_s3.csv --light light_s1.csv light_s2.csv light_s3.csv
+```
+
+`measure` records the peak RSS of the child processes, so run it on the command that starts the whole DA.
+`run_manifest.py compare <run_a> <run_b>` checks that only the intended option changed between the two runs.
+Nothing was measured on a real DA run yet: the sizes above are those of `notebook/synthetic_twin_plan.md` section 16.
+
+---
+
 ## Status and limits
 - This branch was checked with unit tests (pytest, stubs for pyCATHY/pyGIMLi) and `py_compile`/`bash -n`;
   **no CATHY/pyGIMLi run was done with these changes**. Run `python notebook/project_paths.py` and a small
