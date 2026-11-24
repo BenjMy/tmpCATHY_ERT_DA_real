@@ -34,6 +34,7 @@ data/
   2d/                          2D time-lapse inversions (pre-processing, not used by the DA)
 notebook/
   project_paths.py             reads data_path.toml (every script imports it)
+  run_registry.py, run_manifest.py  run registry (csv) and per-run reproducibility manifest
   nb1_*, nb2_*, nb3_*          forward models (NC, HC) and measurement-vs-model comparison
   nb4*, nb4a*                  twin experiment on soil moisture (TDR) only
   nb5_*, nb6_ESMDA_*           real-data ERT DA
@@ -246,6 +247,7 @@ Known limit: the van Genuchten parameters are drawn independently (no mutual cor
 | Truth, synthetic ERT, virtual TDR | `<synthetic_dir>/<CASE>/` | nb6 (synthetic) |
 | Run folder (CATHY, ensemble, states) | `<simulations>/<run>/` (`<run>_states/cycle_*.npz`, `<run>_states.nc`, `<run>_df_DA.pkl` once at the end, `<run>_dict_parm_pert.pkl`, `<run>_ERT_checks.json`, `<run>_rejections.json`) | nb7 / nb5 |
 | Run metadata | `<simulations>/<run>_meta/run_meta.json` (all options, checks, status, traceback) | nb7 |
+| Run manifest | `<simulations>/<run>_meta/manifest.json` (+ `uncommitted.patch`, `pycathy_uncommitted.patch`, `inputs/`) : code versions, branches, inputs, environment (section 8) | nb5-nb7 (run_registry) |
 | Filtered ERT files | `<simulations>/ert_filtered_<run>/` | nb7 |
 | Prior ensemble cache | `<cache>/prior_*.pkl` | nb5-nb7 |
 | Real-data run folders | `<simulations>/NC_ERT_[PF_|ESMDA_]{withDA|withoutDA}_<scenario>[_mat]/` with `_finished.txt` (ES-MDA: `_esmda_result.pkl`) | nb5 / nb6 |
@@ -272,13 +274,39 @@ see what has been done and what has not. One row per run name, updated in place
 (`started` -> `finished` | `failed`; a run that dies without reporting is closed as `failed` when the process
 exits):
 
-`run, kind (synthetic|real), case, scenario, da_type, nens, seed, prior_bias, with_da, status, started, finished, duration_min, folder, log, git_commit`
+`run, kind (synthetic|real), case, scenario, da_type, nens, seed, prior_bias, with_da, status, started, finished, duration_min, folder, log, git_commit, git_branch, pycathy_version, manifest`
 
 ```bash
 python notebook/run_registry.py list [--status failed] [--case NC]   # table of the runs
 python notebook/run_registry.py summary                              # counts per status / case / DA type
 python notebook/run_registry.py backfill                             # register past runs found in <simulations>
 ```
+
+### Run manifest (reproducibility)
+
+When a run starts, `run_registry.track()` also writes `<simulations>/<run>_meta/manifest.json` (completed with
+status / duration when the run ends; nb5, nb6 and nb7 need no change; `track(..., manifest=False)` disables it).
+It answers "exactly what produced this run?":
+
+| Section | Content |
+|---|---|
+| `cathy_da_ert` | this repo: full commit, **branch**, upstream, remote url (credentials stripped), `git describe`, dirty flag + list of modified files. A dirty tree is saved as `uncommitted.patch` (and its sha256) so the run can be rebuilt |
+| `pycathy` | version, folder it is imported from (without importing it), and if it is a git clone (editable install or `[code].pycathy`): commit, **branch**, remote, dirty flag (`pycathy_uncommitted.patch`), e.g. your local twin fixes |
+| `cathy` | the Fortran model: git commit/branch of its source folder (`[code].cathy`, `$CATHY_SRC`, or next to pyCATHY) and sha256 / size / date of the executable found in the run folder (`$CATHY_EXE` to force it) |
+| `packages`, `key_packages` | every installed package version (pip freeze like), and numpy / scipy / pandas / xarray / pygimli ... on top |
+| `python`, `platform`, `environment` | interpreter, OS, host, CPU count, conda / venv, thread variables (`OMP_NUM_THREADS`, ...) |
+| `inputs` | sha256 of `data_path.toml`, the scenario `.toml` files, `site_params.json`, the ERT schedule, the forward mesh; name+size digest of `data/3d`, `sensors`, `mesh` folders (no full read); copies of the small config files in `<run>_meta/inputs/` |
+| `command`, `fields` | command line + working directory; seed, nens, da_type, scenario, ... as given to the registry |
+
+```bash
+python notebook/run_manifest.py show    <run>            # one-screen summary of a run
+python notebook/run_manifest.py compare <run_a> <run_b>  # what differs: commits, branches, versions, inputs, seed
+python notebook/run_manifest.py collect                  # the manifest of the current environment (before a run)
+```
+
+To rebuild a run: check out `cathy_da_ert.commit`, `git apply uncommitted.patch` if it was dirty, do the same in
+the pyCATHY clone, then run again with the recorded `command` and `fields.seed`. A manifest problem never stops a
+run (one line on stderr). `git_branch` and `pycathy_version` are also in the registry csv.
 
 ---
 

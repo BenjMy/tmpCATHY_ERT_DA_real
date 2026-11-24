@@ -37,3 +37,4 @@ run_registry    = "registry/runs_registry.csv"   # one row per run: what has bee
 [code]
 notebook        = "notebook"                 # folder of the .py files
 pycathy         = ""                         # clone of pycathy_wrapper (folder containing pyCATHY/); "" = installed package
+cathy           = ""                         # CATHY (Fortran) source folder, only used to record its git commit/branch in manifest.json; "" = look in $CATHY_SRC / next to pyCATHY

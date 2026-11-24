@@ -1,7 +1,8 @@
 """CSV registry of the runs: what has been done and what has not.
 
 One row per run name in [outputs].run_registry of data_path.toml (default registry/runs_registry.csv),
-updated in place. Safe with parallel runs (file lock + atomic rewrite). A registry problem never stops a run:
+updated in place. Each tracked run also gets <simulations>/<run>_meta/manifest.json (code versions + branches of
+CATHY DA ERT / pyCATHY / CATHY, inputs hashes, environment: see run_manifest.py); `track(..., manifest=False)` skips it. Safe with parallel runs (file lock + atomic rewrite). A registry problem never stops a run:
 it is reported in one line.
 
 In a driver script:
@@ -26,7 +27,8 @@ import sys
 import time
 
 COLUMNS = ['run', 'kind', 'case', 'scenario', 'da_type', 'nens', 'seed', 'prior_bias', 'with_da', 'status',
-           'started', 'finished', 'duration_min', 'folder', 'log', 'git_commit']
+           'started', 'finished', 'duration_min', 'folder', 'log', 'git_commit', 'git_branch', 'pycathy_version',
+           'manifest']
 _NOW = '%Y-%m-%d %H:%M:%S'
 
 
@@ -103,21 +105,53 @@ def upsert(run, path=None, **fields):
         return False
 
 
+def manifest_dir(run, path=None):
+    """Folder of the run's manifest: <simulations>/<run>_meta (next to nb7's run_meta.json). With a custom
+    registry file (tests, other projects) it is <registry folder>/<run>_meta instead, so nothing is written
+    in the project's simulations folder."""
+    import project_paths as PP
+    P = PP.get()
+    if path is None or os.path.abspath(path) == os.path.abspath(P.run_registry):
+        return os.path.join(P.simulations, run + '_meta')
+    return os.path.join(os.path.dirname(os.path.abspath(path)), run + '_meta')
+
+
 class Tracker:
-    def __init__(self, run, path=None, **fields):
+    def __init__(self, run, path=None, manifest=True, **fields):
         self.run, self.path, self.done = run, path, False
         self.t0 = time.time()
+        self.meta_dir = None
         fields.setdefault('status', 'started')
         fields.setdefault('started', time.strftime(_NOW))
         fields.setdefault('git_commit', _git_commit())
         fields.setdefault('finished', '')
+        if manifest:
+            fields.update(self._write_manifest(fields))
         upsert(run, path, **fields)
         atexit.register(self._at_exit)
 
+    def _write_manifest(self, fields):
+        """Write <run>_meta/manifest.json (code versions, inputs, environment); returns registry columns."""
+        try:
+            import run_manifest as RM
+            self.meta_dir = manifest_dir(self.run, self.path)
+            f = RM.write(self.run, self.meta_dir, run_dir=fields.get('folder'), fields=fields)
+            if not f:
+                return {}
+            m = RM.read(self.meta_dir)
+            return {'git_branch': (m.get('cathy_da_ert') or {}).get('branch') or 'detached',
+                    'pycathy_version': (m.get('pycathy') or {}).get('version'), 'manifest': f}
+        except Exception as e:                   # never stop a run because of the manifest
+            print(f"[run_registry] manifest not written: {type(e).__name__}: {e}", file=sys.stderr)
+            return {}
+
     def finish(self, status='finished', **extra):
         self.done = True
-        upsert(self.run, self.path, status=status, finished=time.strftime(_NOW),
-               duration_min=f"{(time.time() - self.t0) / 60:.1f}", **extra)
+        finished, dur = time.strftime(_NOW), f"{(time.time() - self.t0) / 60:.1f}"
+        if self.meta_dir:
+            import run_manifest as RM
+            RM.update(self.meta_dir, status=status, finished=finished, duration_min=dur)
+        upsert(self.run, self.path, status=status, finished=finished, duration_min=dur, **extra)
 
     def _at_exit(self):
         if not self.done:                        # crashed / killed by an exception without finish()

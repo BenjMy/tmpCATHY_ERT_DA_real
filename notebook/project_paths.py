@@ -31,7 +31,7 @@ DEFAULTS = {
         'figures_synth': '', 'cache': 'notebook/cache', 'logs': 'notebook/logs',
         'run_registry': 'registry/runs_registry.csv',
     },
-    'code': {'notebook': 'notebook', 'pycathy': ''},
+    'code': {'notebook': 'notebook', 'pycathy': '', 'cathy': ''},
 }
 
 
@@ -55,7 +55,7 @@ def find_toml(explicit=None):
 class ProjectPaths:
     """Resolved (absolute) paths. Attributes: root, data, data_3d, site_params, ert_schedule, sequence_dir,
     mesh_dir, mesh_forward, sensors_dir, scenario_real, scenario_synthetic, synthetic_dir, simulations,
-    figures_real, figures_synth, cache, logs, run_registry, notebook, pycathy ('' if not set)."""
+    figures_real, figures_synth, cache, logs, run_registry, notebook, pycathy, cathy ('' if not set)."""
 
     def __init__(self, toml_file=None):
         self.toml_file = find_toml(toml_file)
@@ -90,6 +90,8 @@ class ProjectPaths:
         self.notebook = res(val('code', 'notebook'))
         py = val('code', 'pycathy')
         self.pycathy = res(py) if py else ''
+        ca = val('code', 'cathy')
+        self.cathy = res(ca) if ca else ''
 
     # --- legacy string forms: `ROOT + 'data/...'` and `path2prj + name` need a trailing slash -------------
     @property

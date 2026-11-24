@@ -1,6 +1,6 @@
 Repo: https://github.com/BenjMy/tmpCATHY_ERT_DA_real/tree/feature/data-paths-registry-readme
 
-- [ ] Add a manifest file for each run to check which version of CATHY DA ERT (including the branch) is used and which version of CATHY and pyCATHY as well (including the branch). And other usefuls things as you consider for reproducibility.
+- [x] Add a manifest file for each run to check which version of CATHY DA ERT (including the branch) is used and which version of CATHY and pyCATHY as well (including the branch). And other usefuls things as you consider for reproducibility.
 - [ ] feat/withIrr-on-main or feature/eta-assimilation-improvements or twin-experiment? Help me to choice the last updated DA ERT branch.  Should I rebase?
 - [ ] By the way can I close origin/feat/material-vgp-control? and origin/mesh-vtk-properties? 
 - [ ] I want a data_path.toml where I can control all the path for inputs, outputs, plots, codes lib etc ...
