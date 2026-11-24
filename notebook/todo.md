@@ -27,7 +27,7 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [x] `truth_NC.pkl` was tracked although `*.pkl` is in `.gitignore` → untracked (`git rm --cached`, file kept on disk)
 - [x] Improve `.gitignore`: folders ending with `_meta` and `*.log` files (e.g. `SYN_NC_full_upd_pf_N32_s1_unbiased_issues.log`, see `tmp_treedir_typical.md`)
 - [ ] Run the lighter version: which command? (see section 7)
-- [ ] Check filter inbreeding in `SYN_NC_full_upd_pf_N32_s1_unbiased_issues` (see section 5)
+- [ ] Run `pf_inbreeding.py` on the real PF run and decide the IC prior fix (see section 5)
 
 ## 2. Repository hygiene
 
@@ -37,13 +37,17 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
   - `notebook/cache/*.pkl` (6 files, `prior_NC_*`)
   - `notebook/logs/*.log` (24 files, `SYN_NC_*`)
 - [ ] Untrack `__pycache__/` and `.ipynb_checkpoints/` (40 tracked files) and add them to `.gitignore`
+- [ ] Failing test on the untouched branch: `tests/test_nb5_plot_helpers.py::test_evolution_and_shift_flags` (`parm_shift_table` flag for `n_VG0`: expects `SHIFT` and `COLLAPSE`)
 - [ ] Decide where the large tracked files go: `notebook/logs`, `data/**/duckdb.exe` (3 × 24 MB)
 
 ## 3. Reproducibility and run tracking
 
 - [x] Manifest file for each run: version of CATHY DA ERT (with branch), CATHY and pyCATHY (with branch), and other useful reproducibility info → `run_manifest.py`
 - [x] Register all the runs in a CSV file to track what has been done or not → `registry/runs_registry.csv`
-- [ ] `data_path.toml` to control all the paths: inputs, outputs, plots, code lib, etc.
+- [x] `data_path.toml` to control all the paths: inputs, outputs, plots, code lib, etc. → `data_path.toml` + `project_paths.py` (commit `9f999c5`, 6 tests)
+  - read by nb5–nb8, `run_matrix.py`, `run_twin.sh`; check with `python notebook/project_paths.py`
+  - nb1–nb4a (incl. nb3 sensors / `site_params.json`) were still hardcoded (`../simulations/`, `../data/…`): now read the toml
+  - [ ] still hardcoded: `infiltration_utils.py` (`rootfilePath + 'data/3d/…'`, `../data/2d/`, `../data/3d/`), `model_config.ert_paths` / `nc_model.ert_paths` default `root='../'` (the toml wins when `root` is the project root)
 
 ## 4. Documentation (README)
 
@@ -55,10 +59,36 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 
 ## 5. Scientific checks on the DA runs
 
-- [ ] Check filter inbreeding in `SYN_NC_full_upd_pf_N32_s1_unbiased_issues`
-- [ ] Are the "unbiased" cases really unbiased?
-  - Example: `SYN_NC_full_upd_pf_N32_s1_unbiased`
-  - `..._profiles.png`: the truth is inside the ensemble, but the depth profile of (ensemble mean − truth) is not zero/consistent
+*Tools and findings from reading the code (`make_scenarios.py`, `nb7`, `pyCATHY/DA/pf.py`, `perturbate.py`) and from simulating the priors. **Not yet confirmed on a real run**: `simulations/` is not in the repo.*
+
+### 5.1 Are the "unbiased" cases really unbiased?
+
+*`--prior-bias none` only means "prior nominals = truth values". Tool: `python notebook/prior_bias_check.py [--case NC] [--scenario full_upd] [--biased]` (offset of the SAMPLED prior mean from the truth, in prior sigmas, on the scale the filter works on; 6 tests).*
+
+- [x] Tool written (`prior_bias_check.py`, `tests/test_prior_bias_check.py`)
+- [x] **Found: the initial-condition prior is not centred on the truth, with or without `--prior-bias none`.** `make_scenarios.entries()` hardcodes `ic` = −1.5 (σ 0.5) and nb7 starts the DA model from `ic_values=[[−1.5]]*3`, but the truth is layered `[−2.4, −1.3, −1.15]`: offset **+1.8σ** (layer 0), −0.4σ, −0.7σ → the ensemble mean is wetter than the truth at the top and drier below, which shows up in the profile of (ensemble mean − truth), while the truth can still lie inside the ensemble (|offset| < 2σ). One scalar cannot match 3 layers.
+- [x] Checked and fine (|offset| < 0.06σ): VGP (SATCELL, n, thetar) and Archie (a, m, n) nominals = truth.
+- [x] Ks: sampled as a truncated normal (σ = nominal, lower bound nominal/100) → arithmetic mean ×1.29, median ×1.2 of the truth, but on the log scale the filter uses the offset is only −0.02σ. Not a filter bias; only matters when the arithmetic ensemble-mean Ks is plotted against the truth. (The comment in `make_scenarios.py` about draws piling up at the lower bound is outdated: the library now truncates.)
+- [ ] Decide how to fix the IC prior (changes the results, so not done):
+  - (a) per-layer `ic` parameter (library change), prior mean = `ic_true`
+  - (b) centred scalar for `none` mode: mean of `ic_true` = −1.62 (zero column-average offset, layers still ±)
+  - (c) keep it and document that the IC prior is biased in every case; then the "unbiased" label should be renamed (e.g. `nobias_params`)
+- [ ] Rerun the unbiased PF case after the decision and compare the `*_profiles.png` (mean − truth by depth)
+- [ ] Other (non-bias) reasons the mean differs from the truth, to separate from the above: finite N (σ/√N), nonlinearity (mean of sw ≠ sw at the mean parameters), PF collapse (5.2)
+
+### 5.2 Filter inbreeding (`SYN_NC_full_upd_pf_N32_s1_unbiased_issues`)
+
+*Tool: `python notebook/pf_inbreeding.py <project>_states/ [--csv ..] [--plot ..]` (reads `cycle_*.npz`, no pyCATHY; 4 tests). It recovers the resampling parents because the analysed state is an exact copy of the parent's state (`use_enkf_update=False`, `pf_jitter_std_state=0`), chains them and reports distinct founders, founders ESS, distinct states and spread per cycle.*
+
+- [x] Tool written (`pf_inbreeding.py`, `tests/test_pf_inbreeding.py`: known genealogies recovered exactly)
+- [x] Why it is expected from the nb7 settings (`pf_resample_threshold=1.0`, `pf_jitter_std_state=0.0`, `pf_temper_neff_frac=0.3`, `pf_liu_west_a=0.98`):
+  - tempering only guarantees N_eff ≥ 0.3·N, but the threshold 1.0·N is above any N_eff → **resampling at every analysis** (22 surveys → 22 times)
+  - states get no jitter, so copies of a particle are identical at the analysis; only the parameters are rejuvenated (Liu–West, noise std √(1−a²) ≈ 0.2 × weighted std)
+  - *simulation, not your run*: N=32, tempered N_eff ≈ 12, resampling every cycle → 2 founders left after 22 cycles. Static parameters (Ks, VGP, Archie) then descend from 2–3 initial draws and can only move by the Liu–West noise
+- [ ] **Run `pf_inbreeding.py` on the real N32 run** (and N64) and confirm: founders left, distinct states, spread loss; add `--plot`
+- [ ] Compare with EnKF at the same seed / N / scenario (`--da-type enkf`): same bias profile? then the cause is the prior (5.1), not the PF
+- [ ] Candidate remedies, each to TEST (nothing changed): `pf_jitter_std_state` > 0; larger N; resample only when N_eff < N/2 (check first that the weights are carried between cycles when not resampling: not verified); use the PF only for parameters
+- [ ] pyCATHY side: store the resampling indices per cycle (tiny change in `pf.py` / `AnalysisResult.extra`) so the genealogy is exact instead of reconstructed
 
 ## 6. Warnings to check
 
