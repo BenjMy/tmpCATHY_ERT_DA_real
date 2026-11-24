@@ -121,6 +121,7 @@ WITH_DA = os.environ.get('REAL_WITH_DA', '1') == '1'     # run_twin.sh real-esmd
 #   sequence: <ROOT>data/3d/seq3d_from_st5t00tldat.shm   (electrodes + sequence)
 #   mesh    : <ROOT>data/3d/mesh_Luca_Agripolis3d/meshForward.vtk
 import project_paths as PP
+import run_registry as RR
 P = PP.get()
 ROOT = P.root_str             # project root from data_path.toml (default: ../)
 COMP_LEVEL = 'no_comp'        # 'heavy_comp' | 'light_comp' | 'no_comp'
@@ -308,6 +309,8 @@ da_dir = os.path.join(path2prj, da_name)
 if os.path.exists(da_dir):
     shutil.rmtree(da_dir)
 
+REG = RR.track(da_name, kind='real', case='NC', scenario=SCENARIO, da_type='esmda', nens=NENS, seed=SEED,
+               with_da=WITH_DA, folder=os.path.abspath(da_dir))
 simuDA = DA(dirName=path2prj, prj_name=da_name)
 
 # survey files and their CATHY times (needed BEFORE building the model so that
@@ -744,6 +747,7 @@ if DRY_RUN:
     # the library has already printed and logged the strategy, the atmbc period and the assimilation windows
     # (INFO lines above); `result` is the same information as a dict (keys: period, windows, n_data, alphas, ...)
     print('[ES-MDA] DRY RUN - nothing was simulated: the plan above is what a real run would do.')
+    REG.finish('dry_run')
     raise SystemExit('dry run finished: set DRY_RUN = False to run the smoother')
 
 # =============================================================================
@@ -783,6 +787,7 @@ import dataclasses
 _to_save = result if SAVE_PREDICTIONS else dataclasses.replace(result, prediction_history=[])
 with open(os.path.join(_prj, simuDA.project_name + '_esmda_result.pkl'), 'wb') as _f:
     pickle.dump(_to_save, _f)
+REG.finish('finished')
 
 # More: the predictions of every run are in result.prediction_history (in memory; saved only with SAVE_PREDICTIONS) (rows = the kept quadrupoles of
 # all surveys stacked in time order, columns = members; NaN = dropped member), the ERT checks in

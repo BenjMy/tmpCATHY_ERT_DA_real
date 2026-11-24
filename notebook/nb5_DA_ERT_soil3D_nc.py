@@ -72,6 +72,7 @@ WITH_DA = os.environ.get('REAL_WITH_DA', '1') == '1'     # run_twin.sh real-seq:
 #   sequence: <ROOT>data/3d/seq3d_from_st5t00tldat.shm   (electrodes + sequence)
 #   mesh    : <ROOT>data/3d/mesh_Luca_Agripolis3d/meshForward.vtk
 import project_paths as PP
+import run_registry as RR
 P = PP.get()
 ROOT = P.root_str             # project root from data_path.toml (default: ../)
 COMP_LEVEL = 'no_comp'        # 'heavy_comp' | 'light_comp' | 'no_comp'
@@ -245,6 +246,8 @@ da_dir = os.path.join(path2prj, da_name)
 if os.path.exists(da_dir):
     shutil.rmtree(da_dir)
 
+REG = RR.track(da_name, kind='real', case='NC', scenario=SCENARIO, da_type='pf' if USE_PF else 'enkf', nens=NENS,
+               seed=SEED, with_da=WITH_DA, folder=os.path.abspath(da_dir))
 simuDA = DA(dirName=path2prj, prj_name=da_name)
 
 # survey files and their CATHY times (needed BEFORE building the model so that
@@ -680,3 +683,4 @@ print("Open next: ", *[os.path.join(_prj, simuDA.project_name + s) for s in
       ("_ERT_checks.json", "_rejections.json")], sep="\n  ")
 print("(df_DA / ET_DA_xr backups are in", _prj, ") -> run nb5_DA_ERT_soil3D_nc_plots.py")
 open(os.path.join(_prj, simuDA.project_name + "_finished.txt"), "w").write("ok\n")   # read by run_twin.sh (resume)
+REG.finish('finished')

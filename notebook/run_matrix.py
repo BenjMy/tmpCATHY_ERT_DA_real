@@ -15,6 +15,7 @@ import sys
 import time
 
 import project_paths as PP
+import run_registry as RR
 from twin_names import run_name
 
 PRESETS = {
@@ -42,9 +43,9 @@ ap.add_argument('--dry-run', action='store_true')
 ap.add_argument('--force', action='store_true')
 ap.add_argument('--stop-on-fail', action='store_true')
 a = ap.parse_args()
-P = PP.get()
-a.root = a.root or P.root_str
-a.log_dir = a.log_dir or P.logs
+PTH = PP.get()        # (P below is the preset)
+a.root = a.root or PTH.root_str
+a.log_dir = a.log_dir or PTH.logs
 
 P = PRESETS.get(a.preset, dict(cases=['NC'], scenarios=['ic_VGP_upd'], da=['enkf'], seeds=[42], nens=100))
 cases = a.cases or P['cases']
@@ -52,7 +53,7 @@ scenarios = a.scenarios or P['scenarios']
 das = a.da or P['da']
 seeds = a.seeds or P['seeds']
 nens_list = a.nens or [P['nens'] or 100] if a.preset != 'ens' or a.nens else [32, 64, 128]
-sim_dir = a.sim_dir or (P.simulations if P.is_root(a.root) else os.path.join(a.root, 'simulations'))
+sim_dir = a.sim_dir or (PTH.simulations if PTH.is_root(a.root) else os.path.join(a.root, 'simulations'))
 biased = a.prior_bias == 'biased'
 
 
@@ -103,6 +104,11 @@ for k, (name, cmd) in enumerate(runs, 1):
     with open(os.path.join(a.log_dir, name + '.log'), 'w') as log:
         rc = subprocess.call(cmd, stdout=log, stderr=subprocess.STDOUT)
     res = 'ok' if rc == 0 and status(name) == 'finished' else f'FAILED (rc={rc}, status={status(name)})'
+    if not res == 'ok':      # nb7 may have died before it could register itself (import error, bad argument ...)
+        _row = next((r for r in RR.read() if r['run'] == name), None)
+        if _row is None or _row['status'] in ('started', ''):
+            RR.upsert(name, status='failed', finished=time.strftime('%Y-%m-%d %H:%M:%S'),
+                      log=os.path.join(a.log_dir, name + '.log'))
     print(f"    {res} in {(time.time() - t0) / 60:.1f} min -> {a.log_dir}/{name}.log")
     summary.append((name, res))
     if res != 'ok' and a.stop_on_fail:

@@ -52,6 +52,7 @@ from model_config import (HOUR, NSTR, build_times, snap_to_times, obs_window_sta
                           unreliable_quadrupoles, load_ert_electrodes)
 import make_scenarios as MS
 import project_paths as PP            # data_path.toml: every folder of the project
+import run_registry as RR             # CSV of the runs (what has been done or not)
 from twin_names import run_name
 
 # =============================================================================
@@ -241,6 +242,9 @@ def save_meta():
 
 
 save_meta()
+REG = RR.track(da_name, path=P.run_registry if _TOML else None, kind='synthetic', case=CASE, scenario=SCENARIO,
+               da_type=args.da_type, nens=NENS, seed=SEED, prior_bias=args.prior_bias, with_da=WITH_DA,
+               folder=os.path.abspath(da_dir), log=os.path.join(P.logs, da_name + '.log'))
 
 simuDA = DA(dirName=path2prj, prj_name=da_name)
 
@@ -558,6 +562,7 @@ except Exception:
 finally:
     run_meta['finished'] = time.strftime('%Y-%m-%d %H:%M:%S')
     save_meta()
+    REG.finish(run_meta['status'] if run_meta['status'] in ('finished', 'failed', 'dry_run') else 'failed')
 
 # =============================================================================
 # 7. Results
