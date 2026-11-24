@@ -323,9 +323,9 @@ Where the disk goes, and what is already available (no change of the DA result e
 | compact store | ~35-65 MB | `--store-full analysis` + `--store-stride N` (probe nodes only) |
 
 ```bash
-python notebook/ligher_run.py report [RUN_DIR ...]      # bytes per category (vtk / pkl / npz / nc / ...), biggest files
-python notebook/ligher_run.py prune RUN_DIR [--apply]   # list (or delete) the legacy long table, only if the compact store exists
-python notebook/ligher_run.py convert FILE_df_DA.pkl [--delete]   # legacy pickle -> parquet (float32, zstd)
+python notebook/lighten_run.py report [RUN_DIR ...]      # bytes per category (vtk / pkl / npz / nc / ...), biggest files
+python notebook/lighten_run.py prune RUN_DIR [--apply]   # list (or delete) the legacy long table, only if the compact store exists
+python notebook/lighten_run.py convert FILE_df_DA.pkl [--delete]   # legacy pickle -> parquet (float32, zstd)
 ```
 
 `prune` never touches the vtk and never touches runs without a compact store (nb8 then needs the long table).
@@ -357,6 +357,12 @@ It copies what already exists (nb8 `summary.csv` / `parameters_summary.csv`, fig
 `manifest.json`, `run_meta.json`, issues log and, for failed runs, the end of the run log) and writes one
 `overview.csv` (a row per run: status, duration, disk, key scores) and a `README.txt` that explains the columns.
 Nothing is recomputed; states, vtk and pickles are never copied.
+
+**Renamed files**
+
+| Old name | New name |
+|---|---|
+| `notebook/ligher_run.py` | `notebook/lighten_run.py` |
 
 ---
 

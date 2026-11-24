@@ -1,8 +1,8 @@
 """Where does the disk space of a DA run go, and how to shrink it.
 
-    python ligher_run.py report  [RUN_DIR ...]      # default: every run folder of [outputs].simulations
-    python ligher_run.py convert FILE.pkl [--keep]   # legacy long df_DA pickle -> compact parquet (float32, zstd)
-    python ligher_run.py prune   RUN_DIR [--apply]   # list (or delete) what nb8 does not need
+    python lighten_run.py report  [RUN_DIR ...]      # default: every run folder of [outputs].simulations
+    python lighten_run.py convert FILE.pkl [--keep]   # legacy long df_DA pickle -> compact parquet (float32, zstd)
+    python lighten_run.py prune   RUN_DIR [--apply]   # list (or delete) what nb8 does not need
 
 What is heavy (see README, "Lighter DA folder"):
   * member CATHY output, mostly .vtk, in <run>/DA_Ensemble/   -> nb7 --cleanup-vtk all (default) removes it at the end

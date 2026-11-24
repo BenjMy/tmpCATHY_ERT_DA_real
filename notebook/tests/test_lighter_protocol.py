@@ -1,4 +1,4 @@
-"""ligher_run.py (report / convert / prune) and lighter_protocol.py (measure / accept)."""
+"""lighten_run.py (report / convert / prune) and lighter_protocol.py (measure / accept)."""
 import json
 import os
 import sys
@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-import ligher_run as L
+import lighten_run as L
 import lighter_protocol as LP
 
 

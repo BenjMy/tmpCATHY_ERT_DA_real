@@ -4,7 +4,7 @@
     python lighter_protocol.py accept  BASE.csv [BASE.csv ...] --light LIGHT.csv [LIGHT.csv ...] [--cols ...]
 
 measure   needs nothing but the standard library (peak RSS = ru_maxrss of the children, so it also works without
-          /usr/bin/time). Pass --run-dir RUN_DIR (before the `--`) to add the `ligher_run.py` byte count per category
+          /usr/bin/time). Pass --run-dir RUN_DIR (before the `--`) to add the `lighten_run.py` byte count per category
           of that folder after the command ended.
 accept    each csv is a nb8 `summary.csv` of ONE seed. A lighter setting is accepted when, for every score column,
           the lighter value (mean over its seeds) is inside the seed-to-seed spread of the baseline:
@@ -34,7 +34,7 @@ def measure(cmd, run_dir=None):
     mb = rss / 1024 / 1024 if sys.platform == 'darwin' else rss / 1024
     out = dict(command=cmd, returncode=rc, wall_s=round(wall, 1), peak_rss_mb=round(mb, 1))
     if run_dir:
-        import ligher_run as L
+        import lighten_run as L
         cats, _ = L.scan(run_dir)
         out['disk_bytes'] = cats
         out['disk_total_bytes'] = sum(cats.values())

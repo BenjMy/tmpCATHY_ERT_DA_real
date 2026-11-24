@@ -3,7 +3,7 @@
     python export_results.py OUT_DIR [--runs GLOB ...] [--only-ok] [--figures none|compare|all] [--zip] [--toml FILE]
 
 Reads the paths of data_path.toml (registry, simulations, nb8 folder) and COPIES what already exists:
-  OUT_DIR/overview.csv           ONE row per run: registry (status, duration, commit) + disk (ligher_run.py) + the key
+  OUT_DIR/overview.csv           ONE row per run: registry (status, duration, commit) + disk (lighten_run.py) + the key
                                  nb8 scores of summary.csv. The only new file; it recomputes nothing.
   OUT_DIR/README.txt             how to read it (run names, columns, caveats)
   OUT_DIR/tables/                nb8 summary.csv / parameters_summary.csv (one subfolder per case) + the runs registry
@@ -23,7 +23,7 @@ import sys
 
 import project_paths as PP
 import run_registry as RR
-import ligher_run as L
+import lighten_run as L
 
 SCORE_COLS = ['sw_all_rmse', 'sw_all_rmse_ol', 'sw_all_skill_vs_ol', 'sw_all_spread_skill', 'sw_all_coverage',
               'sw_all_crps', 'sw_in_ERT_block_rmse', 'sw_outside_ERT_block_rmse', 'psi_all_rmse', 'psi_all_coverage',

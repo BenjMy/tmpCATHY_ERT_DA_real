@@ -38,7 +38,7 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [ ] Still tracked although now ignored (a `.gitignore` never untracks): decide whether to `git rm --cached` them
   - `notebook/cache/*.pkl` (6 files, `prior_NC_*`)
   - `notebook/logs/*.log` (24 files, `SYN_NC_*`)
-- [ ] Untrack `__pycache__/` and `.ipynb_checkpoints/` (40 tracked files) and add them to `.gitignore`
+- [x] Untrack `__pycache__/` and `.ipynb_checkpoints/` (40 tracked files) and add them to `.gitignore`
 - [ ] Failing test on the untouched branch: `tests/test_nb5_plot_helpers.py::test_evolution_and_shift_flags` (`parm_shift_table` flag for `n_VG0`: expects `SHIFT` and `COLLAPSE`)
 - [ ] Decide where the large tracked files go: `notebook/logs`, `data/**/duckdb.exe` (3 × 24 MB)
 
@@ -56,7 +56,7 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [ ] Create a new branch on GitHub and add a README explaining the whole code architecture: input types, how to run, scenario construction, output data and plots
 - [ ] Explain the synthetic ERT DA pipeline
 - [ ] Explain how to use the `scenario.toml` file
-- [x] Add a "Lighter DA folder" section (`ligher_run.py` docstring already points to it)
+- [x] Add a "Lighter DA folder" section (`lighten_run.py` docstring already points to it)
 - [ ] Add a table old name → new name once files are renamed (section 8)
 
 ## 5. Scientific checks on the DA runs
@@ -115,7 +115,7 @@ of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous tes
 - Compact float32 `StateStore` (`_states/cycle_*.npz`): long `df_DA` 314 MB → ~35–65 MB
 - `--store-full analysis`, `--store-stride`
 - `--cleanup-vtk` at the END of a run
-- `ligher_run.py report|convert|prune` (*the committed file was cut after `report`, 77 lines, did not compile: completed and tested, 2026-11-24*)
+- `lighten_run.py report|convert|prune` (*the committed file was cut after `report`, 77 lines, did not compile: completed and tested, 2026-11-24*)
 
 **Known gaps**
 - ~~README has no "Lighter DA folder" section~~ *(added)*
@@ -128,7 +128,7 @@ of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous tes
 - [ ] NC, scenario `ic_Ks_upd`, EnKF, N=8, seed 1 (22 surveys, ~25 min on 2 cores), plus the same on HC with N=8
 - *Tool ready: `lighter_protocol.py measure OUT.json --run-dir RUN -- CMD` (wall, peak RSS, disk per category). The runs themselves need CATHY + pyGIMLi: to do on the workstation.*
 - Record:
-  - `du -sh` per category (`ligher_run.py report`)
+  - `du -sh` per category (`lighten_run.py report`)
   - peak RSS (`/usr/bin/time -v`)
   - wall time split: CATHY windows / ERT forward (pyGIMLi) / analysis (add timers)
   - the `manifest.json` of the run
@@ -171,7 +171,7 @@ of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous tes
 - [ ] Table: option, disk / RAM / time saved, score change
 - [ ] New defaults behind flags
 - [x] README section "Lighter DA folder"
-- [x] `ligher_run.py` completed (report / convert / prune) + `lighter_protocol.py measure|accept` with tests (`tests/test_lighter_protocol.py`); [ ] rename, see section 8
+- [x] `lighten_run.py` completed (report / convert / prune) + `lighter_protocol.py measure|accept` with tests (`tests/test_lighter_protocol.py`); renamed `lighten_run.py` (section 8)
 
 ### 7.6 Comparison analysis of the runs already done
 
@@ -182,14 +182,14 @@ of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous tes
 - [ ] Output of `CASE=NC ./run_twin.sh status` (one line per run: ok / partial / no states / failed)
 - [ ] nb8 tables: `<simulations>/figures_nb8/summary.csv` and `parameters_summary.csv` (RMSE, spread, 90 % coverage, CRPS; z prior → final). Figures (`compare_*.png`) only if wanted
 - [ ] Per run `<run>_meta/manifest.json` and `run_meta.json`: exact command (incl. `EXTRA`), seed, nens, git state
-- [ ] `python ligher_run.py report <run>` text of each run: disk per category
+- [ ] `python lighten_run.py report <run>` text of each run: disk per category
 - [ ] `lighter_protocol.py measure` json of each run (wall time, peak RSS, disk), if the run was wrapped
 - [ ] The `*_issues.log` of runs marked `failed` / `partial` (e.g. `SYN_NC_full_upd_enkf_N32_s1_noDA_unbiased`: 28 chunks but status failed, 1 error)
 - [ ] State which run is the baseline and which one is the lighter variant (same seed, same scenario, only one option changed)
 - *One command to collect them (adjust the paths): `zip send.zip registry/runs_registry.csv simulations/figures_nb8/*.csv simulations/*_meta/manifest.json simulations/*_meta/run_meta.json simulations/*_issues.log`*
 
 **Comparison analysis: what exists / what is missing**
-- Exists: `lighter_protocol.py accept` (scores of lighter vs baseline seeds: within the baseline seed-to-seed std, needs >= 2 baseline seeds), `run_manifest.py compare <run_a> <run_b>` (what differs between two runs), nb8 `compare_*` figures and tables (`compare-da`, `compare-scenarios`, `compare-bias`, `compare-nens`), `ligher_run.py report`
+- Exists: `lighter_protocol.py accept` (scores of lighter vs baseline seeds: within the baseline seed-to-seed std, needs >= 2 baseline seeds), `run_manifest.py compare <run_a> <run_b>` (what differs between two runs), nb8 `compare_*` figures and tables (`compare-da`, `compare-scenarios`, `compare-bias`, `compare-nens`), `lighten_run.py report`
 - [x] `export_results.py OUT_DIR [--runs GLOB] [--only-ok] [--figures none|compare|all] [--zip]`: packages the files above + `overview.csv` (registry + disk + key scores per run) + `README.txt` for a colleague; copies, recomputes nothing (README section "Sharing the results")
 - [ ] Table of 7.5 (option, disk / RAM / time saved, score change): a `lighter_protocol.py table` subcommand joining the measure json, the report and the summary.csv of baseline vs lighter. *Not implemented*
 - [ ] Run baseline and lighter on 3 seeds each (`SEED=1 2 3`), otherwise `accept` cannot decide
@@ -224,6 +224,28 @@ of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous tes
 
 *Goal: better readability.*
 
+*Status 2026-11-24: only the safe, checkable part is done (below). The big renames and the split of the plotters are NOT done on purpose, see "Why not yet".*
+
+**Done**
+- [x] `ligher_run.py` → `lighten_run.py` (`git mv`; README, tests, `lighter_protocol.py`, `export_results.py` updated; `grep -r ligher` finds only this note)
+
+**Proposal for the other renames (to confirm before doing them)**
+
+| Old | Proposed new | Files that mention the old name |
+|---|---|---|
+| `nb1_cathy_soil3D_nc.py` | `forward_model_nc.py` | 2 |
+| `nb6_synth_truth_ERT.py` | `synthetic_truth_ert.py` | 5 |
+| `nb7_DA_ERT_synthetic.py` | `da_ert_synthetic.py` | 10 |
+| `nb8_plots_synthetic.py` | `plots_synthetic.py` | 16 |
+| `nb8_helpers.py` | `plots_synthetic_helpers.py` | 4 |
+| `nb2`, `nb3`, `nb4`, `nb4a`, `nb5`, `nb6_ESMDA`, `plot_6_ESMDA_synthetic.py`, `nc_model.py` / `model_config.py`, `ert_*.py` | *to decide: names not proposed without reading what each one is used for* | 1 to 11 |
+
+**Why not yet**
+- A run is in progress: `run_twin.sh pair` calls `nb7` twice (DA, then `--no-da`) and bash reads the script while it runs; renaming `nb7` or editing `run_twin.sh` mid-run can break it. Do it when no run is active.
+- The run registry, `manifest.json` and logs of existing runs record the command with the OLD names (rebuilding a run needs the old commit anyway, see section 3).
+- None of the `nbX` scripts can be run without CATHY + pyGIMLi, so only `grep` + `pytest` (stubs) would check a rename of them.
+- `nb8_plots_synthetic.py` (541 lines), `nb5_DA_ERT_soil3D_nc_plots.py` (597) are scripts with module-level state (`args`, `truth`, `RUN`, `scores_of`...) that the figure functions read as globals: splitting them into a `plotting/` package means passing that state explicitly, which needs a real `plots` run to verify.
+
 - [ ] **Plotters in separate files** (a `plotting/` package or `*_plots.py` modules)
   - Split the figure functions out of `nb8_plots_synthetic.py` (`fig_states`, `fig_profiles`, `fig_metrics`, `fig_params`, `compare_*`), `nb5_DA_ERT_soil3D_nc_plots.py`, `nb4_DA_soil3D_nc_plots.py`, `plot_6_ESMDA_synthetic.py`, `nb5_plot_helpers.py` / `nb8_helpers.py`
   - The `nbX` scripts keep only the CLI (arguments, loop over runs, calling the plotters)
@@ -231,11 +253,11 @@ of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous tes
   - `nb1..nb8` → e.g. `forward_model_nc.py`, `synthetic_truth_ert.py`, `da_ert_synthetic.py`, `plots_synthetic.py`
   - `fig0_infiltr_compatt` / `fig1_infiltr_scheme` notebooks
   - `plot_6_ESMDA_synthetic.py`
-  - `ligher_run.py` (typo vs `lighten_run.py` in its docstring)
+  - ~~`ligher_run.py` (typo vs `lighten_run.py` in its docstring)~~ *done: `git mv` to `lighten_run.py`*
   - `nc_model.py` vs `model_config.py` (overlap)
   - `ert_data` / `ert_frame` / `ert_alignment` / `ert_schedule` (one `ert/` folder?)
 - [ ] **When renaming:** `git mv` (keep history) and update every reference (`run_twin.sh`, `run_matrix.py`, `data_path.toml` `[scenarios]`/`[code]`, README, `synthetic_twin_plan.md`, tests, imports); check with `grep` and `pytest`; add the old → new table to the README
-- [ ] **Hygiene while at it:** see section 2 (`__pycache__/`, `.ipynb_checkpoints/`, large tracked files)
+- [x] **Hygiene while at it:** `__pycache__/` and `.ipynb_checkpoints/` untracked and ignored (see section 2). Still open: tracked `notebook/cache/*.pkl`, `notebook/logs/*.log`, `duckdb.exe`
 
 ## 9. Branches (pycathy_wrapper)
 
