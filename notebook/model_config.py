@@ -85,6 +85,22 @@ def get_case(case, delta=None):
     return cfg
 
 
+def first_n_surveys(times_h, n):
+    """Quick test: the n earliest surveys of {survey index: hours since irrigation}. n None / 0 = all of them."""
+    if not n:
+        return dict(times_h)
+    assert int(n) >= 1, f"n must be >= 1, got {n}"
+    return dict(sorted(times_h.items(), key=lambda kv: kv[1])[:int(n)])
+
+
+def set_t_end(t_end):
+    """Shorten the model: build_times() extends the hourly vector only up to max(T_END, last survey), so T_END = 0 makes
+    the run stop at the last kept survey. T_END is global (nc_model) and get_case() asserts every case agrees: set both."""
+    _nc.T_END = float(t_end)
+    for _c in CASES.values():
+        _c['t_end'] = float(t_end)
+
+
 # -----------------------------------------------------------------------------
 # Pure helpers (no pyCATHY: unit-testable)
 # -----------------------------------------------------------------------------
