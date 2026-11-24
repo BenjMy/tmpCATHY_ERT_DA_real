@@ -176,6 +176,15 @@ python run_matrix.py --preset quick --dry-run        # presets: quick | main | e
 ```
 `run_matrix.py` skips runs whose `<run>_meta/run_meta.json` says `finished` (resume = same command; `--force` reruns).
 
+**Quick scenario study + diagnostics in one command** (`run_study.py`)
+```bash
+python run_study.py --dry-run          # 15 runs: 5 scenarios (ic, ic_Ks_upd, ic_VGP_upd, ic_VGP_Ks_upd, full_upd) x (EnKF, PF, open loop)
+python run_study.py                    # QUICK: first 10 survey times, N=32, then plots_synthetic.py on all these runs
+python run_study.py --full             # all surveys (same run names and folder as run_matrix.py)
+python run_study.py --stage diag       # diagnostics only
+```
+Quick runs (`--n-times N` of `da_ert_synthetic.py`: the first N surveys, the model stops at the last one) are tagged `n<N>` in the run name and go to `<simulations>_n<N>/`, so they stay apart from full runs and from their rows in `registry/runs_registry.csv`. Failures are listed at the end and in `<sim-dir>/study_report.json`.
+
 **Real data**
 ```bash
 ./run_twin.sh real-everything nc_ERT_ic nc_ERT_ic_VGP_upd   # PF, EnKF, ES-MDA per scenario, then figures

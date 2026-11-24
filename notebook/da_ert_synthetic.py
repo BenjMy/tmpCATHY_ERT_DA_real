@@ -87,6 +87,9 @@ ap.add_argument('--sim-dir', default=None, help='default: [outputs].simulations 
 ap.add_argument('--truth', default=None, help='truth_<case>.pkl (default data/3d/synthetic/<case>/)')
 ap.add_argument('--param-bounds', choices=['clip', 'reflect'], default='reflect')
 ap.add_argument('--tag', default='', help='suffix of the run name')
+ap.add_argument('--n-times', type=int, default=0,
+                help="quick test: assimilate only the first N survey times and stop the model there (0 = all surveys). "
+                     "The run name does not carry N: pass --tag (run_study.py does) so the registry keeps it apart")
 ap.add_argument('--store-full', choices=['all', 'analysis'], default='all',
                 help="states stored: every node at every cycle ('all') or every node only at the survey cycles, probes / profile / "
                      "sample elsewhere ('analysis'; for HC, needs the truth)")
@@ -151,6 +154,10 @@ else:
     assert os.path.isfile(ERT_SCHEDULE_FILE), f"schedule not found: {os.path.abspath(ERT_SCHEDULE_FILE)}"
     INFILTRATION_START = ES.load_infiltration_start(SITE_PARAMS, COMP_LEVEL)
     ERT_TIMES_H = ES.times_h_since_irrigation(ES.read_schedule_2023(ERT_SCHEDULE_FILE, COMP_LEVEL), INFILTRATION_START)
+if args.n_times:                                            # quick test: first N surveys, the model stops at the last one
+    ERT_TIMES_H = MC.first_n_surveys(ERT_TIMES_H, args.n_times)
+    MC.set_t_end(0.0)
+    print(f"QUICK TEST: first {len(ERT_TIMES_H)} survey times only (last at {max(ERT_TIMES_H.values()):.2f} h since irrigation)")
 _prob = ES.check_schedule(ERT_TIMES_H, IRR_START_HOUR)
 assert not _prob, "ERT schedule problems:\n  " + "\n  ".join(_prob)
 
@@ -221,7 +228,7 @@ DA_CONFIG = DAConfig(
 run_meta = dict(run=da_name, case=CASE, scenario=SCENARIO, da_type=DA_TYPE, nens=NENS, seed=SEED,
                 inflation=INFLATION, obs_err_pct=ERT_DATA_ERR, with_da=WITH_DA, log_obs=USE_LOG_OBS,
                 prior_bias=args.prior_bias, store_full=args.store_full, delta=cfg['delta'], irr_start_hour=IRR_START_HOUR,
-                list_parm2update=list_parm2update, param_bounds_mode=PARAM_BOUNDS_MODE,
+                n_times=args.n_times, list_parm2update=list_parm2update, param_bounds_mode=PARAM_BOUNDS_MODE,
                 truth=TRUTH_FILE if _truth is not None else None, argv=' '.join(sys.argv),
                 started=time.strftime('%Y-%m-%d %H:%M:%S'), status='started', checks={})
 if _truth is not None:
@@ -271,6 +278,8 @@ simuDA.run_processor(IPRT1=3)
 if _truth is not None:                                      # the DA and the truth must share the time vector
     _t_da = np.asarray(build_times(ert_times), dtype=float)
     _t_tr = np.asarray(_truth['atm_times'], dtype=float)
+    if args.n_times:                                        # quick test: the DA vector is a prefix of the truth vector
+        _t_tr = _t_tr[_t_tr <= _t_da[-1] + 1e-6]
     assert _t_da.size == _t_tr.size and np.allclose(_t_da, _t_tr), (
         "DA and truth atmbc times differ: run nb6 and nb7 with the same schedule / --delta")
     run_meta['checks']['atm_times_equal_truth'] = True
