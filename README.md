@@ -359,6 +359,23 @@ It copies what already exists (nb8 `summary.csv` / `parameters_summary.csv`, fig
 `overview.csv` (a row per run: status, duration, disk, key scores) and a `README.txt` that explains the columns.
 Nothing is recomputed; states, vtk and pickles are never copied.
 
+**Diagnosing a run (filter inbreeding, dead members, parameter collapse)**
+
+```bash
+python notebook/diag_pf_run.py SYN_NC_full_upd_pf_N32_s1_unbiased                         # run name, or a folder with the small files
+python notebook/diag_pf_run.py SYN_NC_full_upd_pf_N32_s1_unbiased --compare SYN_NC_full_upd_enkf_N32_s1_unbiased
+python notebook/diag_pf_run.py <run> --json diag.json --strict                            # exit code 1 if any check is BAD
+```
+
+It reads `<run>_run.json`, `<run>_issues.log`, `<run>_rejections.json`, `<run>_ERT_checks.json` and, when present,
+`<run>_states/` (genealogy through `pf_inbreeding.py`); no pyCATHY needed, a missing file only skips its checks.
+Each line is `ok` / `WARN` / `BAD` / `info`: interrupted run, degenerate weights, founders left, rejected members that stay NaN
+(never refilled), spread lost by each parameter and distance of the final mean from the nominal (judged only for `_unbiased`
+runs), negative values of strictly positive parameters before the reflection, ERT data-space spread / misfit, redundancy of the
+data (first mode), normalised innovation. `--compare` puts two runs side by side to tell a bias of the prior / identifiability
+(present in both) from one of the filter. It ends with the commands to run next (EnKF / ES-MDA at the same seed and N, the PF
+settings to change one at a time, N). The thresholds are rules of thumb. Tests: `tests/test_diag_pf_run.py`.
+
 **Renamed files**
 
 | Old name | New name |
