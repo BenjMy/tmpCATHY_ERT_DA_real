@@ -28,7 +28,19 @@ Repo: https://github.com/BenjMy/tmpCATHY_ERT_DA_real/tree/feature/data-paths-reg
 /home/ben/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/ERT/alignment.py:116: UserWarning: [ERT] pg forward mesh extends only 0.50 m beyond the electrodes (array span 1.10 m): boundary effects can bias the forward apparent resistivities of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous test, rhoa/rho must be 1)
   warnings.warn(f"[{label}] pg forward mesh extends only {margin:.2f} m beyond the 
 
+- [ ] Reorganise the files for better readability
+  - [ ] Plotters in separate files (a `plotting/` package or `*_plots.py` modules): split the figure functions out of
+        nb8_plots_synthetic.py (fig_states, fig_profiles, fig_metrics, fig_params, compare_*), nb5_DA_ERT_soil3D_nc_plots.py,
+        nb4_DA_soil3D_nc_plots.py, plot_6_ESMDA_synthetic.py, nb5_plot_helpers.py / nb8_helpers.py; the nbX scripts keep only
+        the CLI (arguments, loop over runs, calling the plotters)
+  - [ ] Rename files whose name does not say what they do. Candidates: nb1..nb8 (-> e.g. forward_model_nc.py,
+        synthetic_truth_ert.py, da_ert_synthetic.py, plots_synthetic.py), fig0_infiltr_compatt / fig1_infiltr_scheme notebooks,
+        plot_6_ESMDA_synthetic.py, ligher_run.py (typo vs lighten_run.py in its docstring), nc_model.py vs model_config.py
+        (overlap), ert_data / ert_frame / ert_alignment / ert_schedule (one `ert/` folder?)
+  - [ ] When renaming: `git mv` (keep history) and update every reference (run_twin.sh, run_matrix.py, data_path.toml
+        [scenarios]/[code], README, synthetic_twin_plan.md, tests, imports); check with grep and `pytest`; add a table
+        old name -> new name in the README
+  - [ ] Hygiene while at it: untrack `__pycache__/` and `.ipynb_checkpoints/` (add to .gitignore); decide where the large
+        tracked files go (notebook/logs, data/ duckdb.exe)
+
 use .patch file that you commit as me as author (BenjMy)
-
-
-
