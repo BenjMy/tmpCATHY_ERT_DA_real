@@ -19,7 +19,8 @@ mpl.rcParams.update({"axes.grid": True, "grid.color": "gray",
                      "grid.linestyle": '--'})
 
 # %% Settings (must match nb4)
-path2prj = "../simulations/"
+import project_paths as PP                  # data_path.toml: every folder of the project
+path2prj = PP.get().simulations_str          # [outputs].simulations
 sol_name = 'SimuID_no_comp_DAsolution'
 PARAM_NAMES = ['ic']
 SCENARIO = 'nc_' + '_'.join(PARAM_NAMES)

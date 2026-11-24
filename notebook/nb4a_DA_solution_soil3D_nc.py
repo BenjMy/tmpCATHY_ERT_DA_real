@@ -15,7 +15,8 @@ from nc_model import (setup_model, IC_TRUE, X, Y, ELEVATION,
                       SENSOR_DEPTHS, SENSOR_PHI, HOUR)
 
 # --- config ------------------------------------------------------------------
-path2prj = "../simulations/"
+import project_paths as PP                  # data_path.toml: every folder of the project
+path2prj = PP.get().simulations_str          # [outputs].simulations
 sol_name = 'SimuID_no_comp_DAsolution'
 SWC_NOISE_STD = 0.01            # [m3/m3] sensor noise added to synthetic data
 SEED = 42

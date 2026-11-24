@@ -26,7 +26,8 @@ from pyCATHY.petro import predict_unsat_soil_hydr_param
 granulo = [30, 55, 15] # soil composition:[%sand, %silt, %clay] = silty-loam soil (USDA)
 
 compLevel = 'no_comp'
-path2prj = "../simulations/" 
+import project_paths as PP                  # data_path.toml: every folder of the project
+path2prj = PP.get().simulations_str          # [outputs].simulations
 prj_name = 'SimuID_' + (f'{compLevel}')
 
 prj_path = os.path.join(path2prj, prj_name)

@@ -20,10 +20,11 @@ else:
     exp_label = 'NC'
     sensor_file = 'st5.csv'   
 
-path2prj = "../simulations/"
+import project_paths as PP                  # data_path.toml: every folder of the project
+path2prj = PP.get().simulations_str          # [outputs].simulations
 prj_name = 'SimuID_' + compLevel
 figpath = os.path.join(path2prj, prj_name, 'figures') + '/'
-datadir = '../data/sensors/'
+datadir = PP.get().sensors_dir + os.sep   # [inputs].sensors_dir
 
 BASELINE_LOOKBACK_HOURS = 6
 EVENT_WINDOW_HOURS = 24 * 3
@@ -44,7 +45,7 @@ psi_50 = model_output['psi_50']
 HOUR = model_output['HOUR']
 irr_start_hour = model_output['irr_start_hour']
 
-with open('../data/site_params.json') as f:
+with open(PP.get().site_params) as f:   # [inputs].site_params
     site_params = json.load(f)
 
 INFILTRATION_START = pd.Timestamp(site_params['INFILTRATION_START'][exp_label])

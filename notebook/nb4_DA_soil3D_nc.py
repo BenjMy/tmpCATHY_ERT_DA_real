@@ -54,7 +54,8 @@ EXTRA_TIMES = []
 OBS_EVERY_HOURS = 3             # assimilation frequency
 
 
-path2prj = "../simulations/"
+import project_paths as PP                  # data_path.toml: every folder of the project
+path2prj = PP.get().simulations_str          # [outputs].simulations
 NB1_PRJ = 'SimuID_no_comp'      # project folder written by nb1_cathy_soil3D_nc.py
 sol_name = 'SimuID_no_comp_DAsolution'
 da_name = ('NC_withDA_' if WITH_DA else 'NC_withoutDA_') + SCENARIO

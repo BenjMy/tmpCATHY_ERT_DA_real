@@ -23,7 +23,8 @@ from pathlib import Path
 # 0. Setup paths and experiment parameters
 # =============================================================================
 compLevel = 'heavy_comp'
-path2prj = "../simulations/"
+import project_paths as PP                  # data_path.toml: every folder of the project
+path2prj = PP.get().simulations_str          # [outputs].simulations
 prj_name = 'SimuID_' + compLevel
 
 prj_path = os.path.join(path2prj, prj_name)
