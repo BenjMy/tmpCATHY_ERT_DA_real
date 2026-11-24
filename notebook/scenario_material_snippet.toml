@@ -1,0 +1,5 @@
+# per-material VGP: 9 parameters instead of 45 (layers 0-5 = A, 6-8 = B, 9-14 = C, 0-based)
+material_layers = [[0,1,2,3,4,5], [6,7,8], [9,10,11,12,13,14]]
+# for SATCELL_VG, n_VG, thetar_VG: pert_control_name = "material", and per_nom / per_mean /
+# per_sigma / per_type / transf_type become lists of 3 entries (A, B, C)
+# listUpdateParm: "SATCELL_VG0","SATCELL_VG1","SATCELL_VG2","n_VG0",... "thetar_VG2"

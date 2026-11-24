@@ -1,0 +1,42 @@
+{
+  "granulo": [
+    30,
+    55,
+    15
+  ],
+  "VG_NATIVE": {
+    "alpha_inv_m": 0.4,
+    "n": 1.4,
+    "theta_r": 0.09,
+    "theta_s": 0.44
+  },
+  "VG_COMPACTED": {
+    "alpha_inv_m": 0.4,
+    "n": 1.4,
+    "theta_r": 0.09,
+    "theta_s": 0.4
+  },
+  "KS_EXPERIMENT_M_S": {
+    "HC (st1)": 5e-08,
+    "NC (st5)": 2e-06
+  },
+  "ic_layers_depth_range": [
+    [
+      0,
+      0.2
+    ],
+    [
+      0.21,
+      0.49
+    ],
+    [
+      0.5,
+      2
+    ]
+  ],
+  "INFILTRATION_START": {
+    "HC": "2023-10-09 14:00:00",
+    "NC": "2023-10-09 11:00:00"
+  },
+  "SAMPLING_INTERVAL_MIN": 30
+}

@@ -1,0 +1,35 @@
+/home/z0272571a@campus.csic.es/micromamba/envs/pg/lib/python3.11/site-packages/xarray/backends/scipy_.py:39: UserWarning: A NumPy version >=1.23.5 and <2.3.0 is required for this version of SciPy (detected version 2.4.6)
+  from scipy.io import netcdf_file as netcdf_file_base
+🏁 Initiate CATHY object
+😟 src files not found
+working directory is:/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/
+survey times read from the truth: ../data/3d/synthetic/NC/truth_NC.pkl
+RUN SYN_NC_ic_Ks_upd_enkf_N64_s1_noDA_unbiased | case NC | NC_ic_Ks_upd | enkf_Evensen2009 | NENS 64 | seed 1 | open loop | prior none
+could not fetch the CATHY source files (Cmd('git') failed due to: exit code(128)
+  cmdline: git checkout FETCH_HEAD
+  stderr: 'error: unable to write file Primer_CATHY.pdf
+error: unable to write file runs/weilletal/output/hgnansfdirdet
+error: unable to write file runs/weilletal/output/hgnansfneudet
+error: unable to write file runs/weilletal/output/hgraph
+error: unable to write file runs/weilletal/output/hgsfdet
+error: unable to write file runs/weilletal/output/iter
+error: unable to write file runs/weilletal/output/masszone
+error: unable to write file runs/weilletal/output/mbeconv
+error: unable to write file runs/weilletal/output/nansfdir
+error: unable to write file runs/weilletal/output/nansfneu
+error: unable to write file runs/weilletal/output/net.ris
+error: unable to write file runs/weilletal/output/pondhead
+error: unable to write file runs/weilletal/output/psi
+error: unable to write file runs/weilletal/output/psisurf
+error: unable to write file runs/weilletal/output/recharge
+error: unable to write file runs/weilletal/output/risul
+error: unable to write file runs/weilletal/output/satsurf
+error: unable to write file runs/weilletal/output/sfflag
+error: unable to write file runs/weilletal/output/sw
+error: unable to write file runs/weilletal/output/swsurf
+error: unable to write file runs/weilletal/output/transp
+error: unable to write file runs/weilletal/output/velelt
+error: unable to write file runs/weilletal/output/velnod
+error: unable to write file runs/weilletal/output/vp
+error: unable to write file runs/weilletal/output/wtdepth
+fatal: cannot create directory at 'runs/weilletal/output_O0': No space left on device')

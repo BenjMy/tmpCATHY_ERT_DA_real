@@ -1,0 +1,67 @@
+
+
+ >> R  2    R e s i s t i v i t y   I n v e r s i o n   v4.02 <<
+
+ >> D a t e : 09 - 01 - 2024
+ >> My beautiful survey                                                             
+ >> I n v e r s e   S o l u t i o n   S e l e c t e d <<
+ >> Reading start resistivity from res0.dat                      
+ >> R e g u l a r i s e d   T y p e <<
+ >>   L i n e a r    F i l t e r    <<
+ >> L o g - D a t a   I n v e r s i o n <<
+ >> N o r m a l   R e g u l a r i s a t i o n <<
+ >> D a t a   w e i g h t s   w i l l   b e  m o d i f i e d <<
+
+
+ Processing dataset   1
+
+
+ Measurements read:  2295     Measurements rejected:     0
+   Geometric mean of apparent resistivities:  0.26171E+02
+
+ >> Total Memory required is:          0.444 Gb
+
+   Iteration   1
+     Initial RMS Misfit:        16.68       Number of data ignored:    21
+     Alpha:         439.435   RMS Misfit:        1.31  Roughness:       15.203
+     Alpha:         203.968   RMS Misfit:        1.16  Roughness:       21.148
+     Alpha:          94.673   RMS Misfit:        1.14  Roughness:       27.858
+     Alpha:          43.944   RMS Misfit:        1.14  Roughness:       35.669
+     Alpha:          20.397   RMS Misfit:        1.14  Roughness:       45.515
+     Step length set to   1.00000
+     Final RMS Misfit:        1.14
+     Attempted to update data weights and caused overshoot
+     treating as converged
+
+ Solution converged - Outputing results to file
+
+ Calculating sensitivity map
+
+
+ Processing dataset   2
+
+
+ End of data:  Terminating
+
+
+                     Timing Summary
+                     ==============
+     Total time taken:                                19. s
+     Percent time taken forming element equations:    0.2 %
+     Percent time taken solving forward  equations:  26.4 %
+     Percent time taken forming Jacobian:             1.0 %
+     Percent time taken solving inverse equations:   57.6 %
+     Percent time taken calculating res. matrix:      0.0 %
+
+                     Timing Details
+                     ==============
+     Number of calls to form element equations:        90
+     Average time taken in call:                      0.0 s
+     Number of calls to solve forward equations:     6480
+     Average time taken in call:                      0.0 s
+     Number of calls to form Jacobian:                  1
+     Average time taken in call:                      0.2 s
+     Number of calls to solve inverse equations:        5
+     Average time taken in call:                      2.2 s
+     Number of calls to calculate res. matrix:          1
+     Average time taken in call:                      0.0 s

@@ -1,0 +1,131 @@
+
+
+ >> R  2    R e s i s t i v i t y   I n v e r s i o n   v4.02 <<
+
+ >> D a t e : 09 - 01 - 2024
+ >> My beautiful survey                                                             
+ >> I n v e r s e   S o l u t i o n   S e l e c t e d <<
+ >> Reading start resistivity from Start_res.dat                 
+ >> R e g u l a r i s e d   T y p e <<
+ >>   L i n e a r    F i l t e r    <<
+ >> T r u e - D a t a   I n v e r s i o n <<
+ >> D i f f e r e n c e    R e g u l a r i s a t i o n <<
+ >> D a t a   w e i g h t s   w i l l   b e  m o d i f i e d <<
+
+
+ Processing dataset   1
+
+
+ Measurements read:  4576     Measurements rejected:     0
+   Geometric mean of apparent resistivities:  0.27078E+02
+
+ >> Total Memory required is:          0.595 Gb
+
+   Iteration   1
+     Initial RMS Misfit:         3.28       Number of data ignored:     0
+     Alpha:        2840.163   RMS Misfit:        1.36  Roughness:        1.044
+     Alpha:        1318.287   RMS Misfit:        1.21  Roughness:        1.880
+     Alpha:         611.895   RMS Misfit:        1.06  Roughness:        3.402
+     Alpha:         284.016   RMS Misfit:        0.92  Roughness:        6.165
+     Step length set to   1.00000
+     Final RMS Misfit:        0.92
+     Step length set to   0.94891
+     Final RMS Misfit:        1.00
+
+ Solution converged - Outputing results to file
+
+ Calculating sensitivity map
+
+
+ Processing dataset   2
+
+
+ Measurements read:  4204     Measurements rejected:     0
+   Geometric mean of apparent resistivities:  0.27319E+02
+
+   Iteration   1
+     Initial RMS Misfit:         3.71       Number of data ignored:     0
+     Alpha:        2200.159   RMS Misfit:        1.31  Roughness:        1.484
+     Alpha:        1021.223   RMS Misfit:        1.16  Roughness:        2.430
+     Alpha:         474.010   RMS Misfit:        1.03  Roughness:        4.037
+     Alpha:         220.016   RMS Misfit:        0.92  Roughness:        6.855
+     Step length set to   1.00000
+     Final RMS Misfit:        0.92
+     Step length set to   0.95372
+     Final RMS Misfit:        1.00
+
+ Solution converged - Outputing results to file
+
+ Calculating sensitivity map
+
+
+ Processing dataset   3
+
+
+ Measurements read:  4056     Measurements rejected:     0
+   Geometric mean of apparent resistivities:  0.27098E+02
+
+   Iteration   1
+     Initial RMS Misfit:         3.04       Number of data ignored:     0
+     Alpha:        1740.510   RMS Misfit:        1.18  Roughness:        1.424
+     Alpha:         807.873   RMS Misfit:        1.04  Roughness:        2.397
+     Alpha:         374.981   RMS Misfit:        0.92  Roughness:        4.055
+     Step length set to   1.00000
+     Final RMS Misfit:        0.92
+     Step length set to   0.94070
+     Final RMS Misfit:        1.00
+
+ Solution converged - Outputing results to file
+
+ Calculating sensitivity map
+
+
+ Processing dataset   4
+
+
+ Measurements read:  4322     Measurements rejected:     0
+   Geometric mean of apparent resistivities:  0.27430E+02
+
+   Iteration   1
+     Initial RMS Misfit:         4.15       Number of data ignored:     0
+     Alpha:       11059.299   RMS Misfit:        1.45  Roughness:        0.374
+     Alpha:        5133.272   RMS Misfit:        1.27  Roughness:        0.643
+     Alpha:        2382.654   RMS Misfit:        1.10  Roughness:        1.132
+     Alpha:        1105.930   RMS Misfit:        0.95  Roughness:        1.943
+     Step length set to   1.00000
+     Final RMS Misfit:        0.95
+     Step length set to   0.94439
+     Final RMS Misfit:        1.01
+
+ Solution converged - Outputing results to file
+
+ Calculating sensitivity map
+
+
+ Processing dataset   5
+
+
+ End of data:  Terminating
+
+
+                     Timing Summary
+                     ==============
+     Total time taken:                                98. s
+     Percent time taken forming element equations:    0.2 %
+     Percent time taken solving forward  equations:  27.4 %
+     Percent time taken forming Jacobian:             1.3 %
+     Percent time taken solving inverse equations:   51.8 %
+     Percent time taken calculating res. matrix:      0.1 %
+
+                     Timing Details
+                     ==============
+     Number of calls to form element equations:       465
+     Average time taken in call:                      0.0 s
+     Number of calls to solve forward equations:    33480
+     Average time taken in call:                      0.0 s
+     Number of calls to form Jacobian:                  4
+     Average time taken in call:                      0.3 s
+     Number of calls to solve inverse equations:       15
+     Average time taken in call:                      3.4 s
+     Number of calls to calculate res. matrix:          4
+     Average time taken in call:                      0.0 s

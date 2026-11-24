@@ -1,0 +1,1141 @@
+/home/z0272571a@campus.csic.es/micromamba/envs/pg/lib/python3.11/site-packages/xarray/backends/scipy_.py:39: UserWarning: A NumPy version >=1.23.5 and <2.3.0 is required for this version of SciPy (detected version 2.4.6)
+  from scipy.io import netcdf_file as netcdf_file_base
+🏁 Initiate CATHY object
+😟 src files not found
+working directory is:/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/
+📥 Fetch cathy src files
+📥 Fetch cathy prepro src files
+📥 Fetch cathy input files
+🔄 Update hap.in file
+🔄 Update dem_parameters file 
+🔄 Update dtm_13 file
+🔄 update zone file 
+🔄 Update dem_parameters file 
+🔄 Update parm file 
+───────────────────────────────────────────────────────────────────────────── ⚠ warning messages above ⚠ ──────────────────────────────────────────────────────────────────────────────
+['Adjusting TMAX with respect to time of interests requested\n']
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+🔄 Update dem_parameters file 
+🍳 gfortran compilation
+👟 Run preprocessor
+🔄 Update parm file 
+🛠  Recompile src files [7s]
+🍳 gfortran compilation [18s]
+✅ Compilation successful!
+👟 Run processor
+🔄 Update soil
+survey times read from the truth: ../data/3d/synthetic/NC/truth_NC.pkl
+RUN SYN_NC_ic_VGP_pf_N64_s1_unbiased | case NC | NC_ic_VGP | pf | NENS 64 | seed 1 | DA | prior none
+ERT times [h]: [  2.57   4.28   6.12   8.3   10.3   24.53  26.43  28.78  30.92  32.78
+  48.7   52.55  56.48  72.85  80.    96.65  99.9  169.33 175.98 193.23
+ 199.62 219.07 339.5 ]
+homogeneous soil
+🔄 Update soil
+0 -1.5
+1 -1.5
+2 -1.5
+3 -1.5
+4 -1.5
+5 -1.5
+6 -1.5
+7 -1.5
+8 -1.5
+9 -1.5
+10 -1.5
+11 -1.5
+12 -1.5
+13 -1.5
+14 -1.5
+🔄 Update ic
+🔄 Update atmbc
+🔄 Update parm file 
+🔄 Update parm file 
+───────────────────────────────────────────────────────────────────────────── ⚠ warning messages above ⚠ ──────────────────────────────────────────────────────────────────────────────
+['Adjusting NPRT with respect to time of interests requested\n']
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+🍳 gfortran compilation
+👟 Run preprocessor
+🔄 Update parm file 
+🛠  Recompile src files [25s]
+🍳 gfortran compilation [51s]
+✅ Compilation successful!
+👟 Run processor
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/ERT/alignment.py:116: UserWarning: [ERT] pg forward mesh extends only 0.50 m beyond the electrodes (array span 1.10 m): boundary effects can bias the forward apparent resistivities of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous test, rhoa/rho must be 1)
+  warnings.warn(f"[{label}] pg forward mesh extends only {margin:.2f} m beyond the "
+ERT mesh    : ../data/3d/mesh_Luca_Agripolis3d/meshForward.vtk
+ERT sequence: ../data/3d/seq3d_from_st5t00tldat.shm (72 electrodes)
+ERT frame: truth (nb6); signs=(1, 1, 1), shift=[2.0, 2.0, 0.001]
+ERT file         acquired [h]   DA stamp (window start) [h]
+    st5t00.tldat      2.57          2.00
+    st5t01.tldat      4.28          4.00
+    st5t02.tldat      6.12          6.00
+    st5t03.tldat      8.30          8.00
+    st5t04.tldat     10.30         10.00
+    st5t05.tldat     24.53         24.00
+    st5t06.tldat     26.43         26.00
+    st5t07.tldat     28.78         28.00
+    st5t08.tldat     30.92         30.00
+    st5t09.tldat     32.78         32.00
+    st5t10.tldat     48.70         48.00
+    st5t11.tldat     52.55         52.00
+    st5t12.tldat     56.48         56.00
+    st5t13.tldat     72.85         72.00
+    st5t14.tldat     80.00         79.00
+    st5t15.tldat     96.65         96.00
+    st5t16.tldat     99.90         99.00
+    st5t17.tldat    169.33        169.00
+    st5t18.tldat    175.98        175.00
+    st5t19.tldat    193.23        193.00
+    st5t20.tldat    199.62        199.00
+    st5t21.tldat    219.07        219.00
+    st5t22.tldat    339.50        339.00
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/2837 outside +-10%
+  st5t00.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t00.tldat: 2837/2837 quadrupoles kept (2837 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/4655 outside +-10%
+  st5t01.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t01.tldat: 4655/4655 quadrupoles kept (4655 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/4690 outside +-10%
+  st5t02.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t02.tldat: 4690/4690 quadrupoles kept (4690 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/4663 outside +-10%
+  st5t03.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t03.tldat: 4663/4663 quadrupoles kept (4663 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/4502 outside +-10%
+  st5t04.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t04.tldat: 4502/4502 quadrupoles kept (4502 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/4130 outside +-10%
+  st5t05.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t05.tldat: 4130/4130 quadrupoles kept (4130 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/3467 outside +-10%
+  st5t06.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t06.tldat: 3467/3467 quadrupoles kept (3467 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/3816 outside +-10%
+  st5t07.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t07.tldat: 3816/3816 quadrupoles kept (3816 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/3723 outside +-10%
+  st5t08.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t08.tldat: 3723/3723 quadrupoles kept (3723 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/3559 outside +-10%
+  st5t09.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t09.tldat: 3559/3559 quadrupoles kept (3559 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/3496 outside +-10%
+  st5t10.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t10.tldat: 3496/3496 quadrupoles kept (3496 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/3363 outside +-10%
+  st5t11.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t11.tldat: 3363/3363 quadrupoles kept (3363 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/3251 outside +-10%
+  st5t12.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t12.tldat: 3251/3251 quadrupoles kept (3251 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [0.991, 1.035], 0/1181 outside +-10%
+  st5t13.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t13.tldat: 1181/1181 quadrupoles kept (1181 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [0.980, 1.036], 0/1045 outside +-10%
+  st5t14.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t14.tldat: 1045/1045 quadrupoles kept (1045 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/2887 outside +-10%
+  st5t15.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t15.tldat: 2887/2887 quadrupoles kept (2887 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/2820 outside +-10%
+  st5t16.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t16.tldat: 2820/2820 quadrupoles kept (2820 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/2940 outside +-10%
+  st5t17.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t17.tldat: 2940/2940 quadrupoles kept (2940 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/2689 outside +-10%
+  st5t18.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t18.tldat: 2689/2689 quadrupoles kept (2689 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/2759 outside +-10%
+  st5t19.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t19.tldat: 2759/2759 quadrupoles kept (2759 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/2556 outside +-10%
+  st5t20.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t20.tldat: 2556/2556 quadrupoles kept (2556 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/2639 outside +-10%
+  st5t21.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t21.tldat: 2639/2639 quadrupoles kept (2639 error-valid)
+[fwd test] mesh: meshForward.vtk, 48170 cells, dim=3
+[fwd test] boundary markers: [-2, -1, 0] (expect -1 surface, -2 outer/mixed)
+[fwd test] margin around electrodes [m]: min side [0.8, 0.8, 0.5], max side [0.8, 0.8, 0.0]
+[fwd test] rhoa/rho: median 1.000, 5-95% [1.000, 1.000], 0/3210 outside +-10%
+  st5t22.tldat: 0 quadrupoles dropped (forward error > 10%)
+  st5t22.tldat: 3210/3210 quadrupoles kept (3210 error-valid)
+                                data_format  ... sensor_name
+sensorNameidx assimilation time              ...            
+ERT           7200.0                pygimli  ...         ERT
+              14400.0               pygimli  ...         ERT
+              21600.0               pygimli  ...         ERT
+              28800.0               pygimli  ...         ERT
+              36000.0               pygimli  ...         ERT
+
+[5 rows x 21 columns]
+[DA-PARAM] perturbate: 9 layer/material entries sampled with the SEEDABLE random sampler (np.random.seed reproduces the prior; the Sobol sampler is no longer the default)
+🔄 Update parm file 
+🔄 Update parm file 
+🛠  Recompile src files [299s]
+🍳 gfortran compilation [322s]
+✅ Compilation successful!
+28/10/26 - 11:12:53 - pyCATHY.DA.cathy_DA - [0;33;49mWARNING[0m - VGN parameters not defined - Falling back to defaults
+28/10/26 - 11:12:53 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - Perturbed parameters:
+        key  control                                                                                             target   mean    sd   min   max  updated
+         ic   global                                                           initial / boundary condition (all nodes) -1.500 0.500 -5.00 -0.05    False
+SATCELL_VG0 material      soil rows (zone, layer): (1, 0), (1, 1), (1, 2), (1, 3), (1, 4), (1, 5)  [columns VGPSATCELL]  0.440 0.110  0.10  2.00    False
+SATCELL_VG1 material                              soil rows (zone, layer): (1, 6), (1, 7), (1, 8)  [columns VGPSATCELL]  0.380 0.095  0.10  2.00    False
+SATCELL_VG2 material soil rows (zone, layer): (1, 9), (1, 10), (1, 11), (1, 12), (1, 13), (1, 14)  [columns VGPSATCELL]  0.400 0.100  0.10  2.00    False
+ thetar_VG0 material       soil rows (zone, layer): (1, 0), (1, 1), (1, 2), (1, 3), (1, 4), (1, 5)  [columns VGRMCCELL]  0.040 0.020  0.00  0.15    False
+ thetar_VG1 material                               soil rows (zone, layer): (1, 6), (1, 7), (1, 8)  [columns VGRMCCELL]  0.065 0.020  0.00  0.15    False
+ thetar_VG2 material  soil rows (zone, layer): (1, 9), (1, 10), (1, 11), (1, 12), (1, 13), (1, 14)  [columns VGRMCCELL]  0.070 0.020  0.00  0.15    False
+      n_VG0 material         soil rows (zone, layer): (1, 0), (1, 1), (1, 2), (1, 3), (1, 4), (1, 5)  [columns VGNCELL]  1.400 0.070  1.05  2.50    False
+      n_VG1 material                                 soil rows (zone, layer): (1, 6), (1, 7), (1, 8)  [columns VGNCELL]  1.420 0.071  1.05  2.50    False
+      n_VG2 material    soil rows (zone, layer): (1, 9), (1, 10), (1, 11), (1, 12), (1, 13), (1, 14)  [columns VGNCELL]  1.400 0.070  1.05  2.50    False
+           key   parameter   control   mean     sd   min   max           transform  updated
+0           ic          ic    global -1.500  0.500 -5.00 -0.05                None    False
+1  SATCELL_VG0  SATCELL_VG  material  0.440  0.110  0.10  2.00  [None, None, None]    False
+2  SATCELL_VG1  SATCELL_VG  material  0.380  0.095  0.10  2.00  [None, None, None]    False
+3  SATCELL_VG2  SATCELL_VG  material  0.400  0.100  0.10  2.00  [None, None, None]    False
+4   thetar_VG0   thetar_VG  material  0.040  0.020  0.00  0.15  [None, None, None]    False
+5   thetar_VG1   thetar_VG  material  0.065  0.020  0.00  0.15  [None, None, None]    False
+6   thetar_VG2   thetar_VG  material  0.070  0.020  0.00  0.15  [None, None, None]    False
+7        n_VG0        n_VG  material  1.400  0.070  1.05  2.50  [None, None, None]    False
+8        n_VG1        n_VG  material  1.420  0.071  1.05  2.50  [None, None, None]    False
+9        n_VG2        n_VG  material  1.400  0.070  1.05  2.50  [None, None, None]    False
+prior ensemble loaded from /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/cache/prior_NC_ic_VGP_N64_s1_2b2aafc9.pkl
+shortest DA window: 60 s
+[DA-PARAM] case NC | 0 updated parameters | NENS = 64 | PARAM_BOUNDS_MODE = reflect
+╭─ [DA-PARAM] parameter update settings ───────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ out-of-bounds handling after analysis : REFLECT                                                                                          │
+│ parameters updated per cycle          : 0   (ensemble size 64)                                                                           │
+│ MATERIAL control : SATCELL_VG0 -> layers [0, 1, 2, 3, 4, 5]                                                                              │
+│ MATERIAL control : SATCELL_VG1 -> layers [6, 7, 8]                                                                                       │
+│ MATERIAL control : SATCELL_VG2 -> layers [9, 10, 11, 12, 13, 14]                                                                         │
+│ MATERIAL control : thetar_VG0 -> layers [0, 1, 2, 3, 4, 5]                                                                               │
+│ MATERIAL control : thetar_VG1 -> layers [6, 7, 8]                                                                                        │
+│ MATERIAL control : thetar_VG2 -> layers [9, 10, 11, 12, 13, 14]                                                                          │
+│ MATERIAL control : n_VG0 -> layers [0, 1, 2, 3, 4, 5]                                                                                    │
+│ MATERIAL control : n_VG1 -> layers [6, 7, 8]                                                                                             │
+│ MATERIAL control : n_VG2 -> layers [9, 10, 11, 12, 13, 14]                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+28/10/26 - 11:12:59 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - 
+Assuming that the dictionary of perturbed parameters is built using 'pert_control_name', i.e. per layer or per zone like ks0, ks1, etc...
+
+───────────────────────────────────────────────────────────────────────────── ⚠ warning messages above ⚠ ──────────────────────────────────────────────────────────────────────────────
+['Adjusting NPRT with respect to time of interests requested\n']
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+28/10/26 - 11:13:01 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - Run hydrological model (parallel)
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_1, PID = 1491111
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_5, PID = 1491122
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_4, PID = 1491119
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_3, PID = 1491116
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_2, PID = 1491113
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_6, PID = 1491125
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_7, PID = 1491128
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_8, PID = 1491130
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_9, PID = 1491133
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_10, PID = 1491337
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_11, PID = 1491348
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_12, PID = 1491349
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_13, PID = 1491350
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_14, PID = 1491351
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_15, PID = 1491352
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_16, PID = 1491353
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_17, PID = 1491354
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_19, PID = 1491400
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_18, PID = 1491366
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_20, PID = 1491130
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_21, PID = 1491337
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_22, PID = 1491350
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_23, PID = 1491354
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_24, PID = 1491125
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_25, PID = 1491353
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_26, PID = 1491352
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_27, PID = 1491111
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_28, PID = 1491400
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_29, PID = 1491351
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_30, PID = 1491113
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_31, PID = 1491116
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_32, PID = 1491128
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_33, PID = 1491349
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_34, PID = 1491366
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_35, PID = 1491133
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_36, PID = 1491130
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_37, PID = 1491337
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_38, PID = 1491348
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_39, PID = 1491119
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_40, PID = 1491122
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_41, PID = 1491353
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_42, PID = 1491350
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_43, PID = 1491354
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_44, PID = 1491125
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_45, PID = 1491352
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_46, PID = 1491349
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_47, PID = 1491128
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_48, PID = 1491400
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_49, PID = 1491337
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_50, PID = 1491111
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_51, PID = 1491351
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_52, PID = 1491348
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_53, PID = 1491133
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_54, PID = 1491130
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_55, PID = 1491122
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_56, PID = 1491354
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_57, PID = 1491350
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_58, PID = 1491113
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_59, PID = 1491116
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_60, PID = 1491349
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_61, PID = 1491128
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_62, PID = 1491353
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_63, PID = 1491119
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_64, PID = 1491125
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_1/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_2/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_3/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_4/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_5/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_6/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_7/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_8/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_9/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_10/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_11/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_12/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_13/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_14/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_15/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_16/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_17/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_18/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_19/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_20/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_21/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_22/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_23/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_24/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_25/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_26/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_27/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_28/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_29/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_30/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_31/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_32/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_33/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_34/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_35/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_36/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_37/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_38/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_39/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_40/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_41/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_42/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_43/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_44/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_45/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_46/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_47/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_48/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_49/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_50/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_51/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_52/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_53/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_54/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_55/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_56/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_57/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_58/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_59/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_60/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_61/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_62/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_63/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_64/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:03 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - No observation at this time: running the hydrological model only
+28/10/26 - 11:13:03 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - End of time step 0/1224000 s
+28/10/26 - 11:13:03 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - End of atmbc update 1/363
+28/10/26 - 11:13:03 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - Parameters to update are: ['St. var.']
+28/10/26 - 11:13:04 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - End of DA update 0/23
+28/10/26 - 11:13:04 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - Valid ensemble members: 64/64 (100%)
+28/10/26 - 11:13:04 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - Run hydrological model (parallel)
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_1, PID = 1494099
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_4, PID = 1494255
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_2, PID = 1494153
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_3, PID = 1494210
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_7, PID = 1494335
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_5, PID = 1494289
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_9, PID = 1494414
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_6, PID = 1494302
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_8, PID = 1494370
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_10, PID = 1494416
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_11, PID = 1494449
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_14, PID = 1494496
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_13, PID = 1494494
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_15, PID = 1494497
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_16, PID = 1494509
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_12, PID = 1494472
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_17, PID = 1494521
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_19, PID = 1494567
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_18, PID = 1494533
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_21, PID = 1494509
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_20, PID = 1494370
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_22, PID = 1494449
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_23, PID = 1494494
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_24, PID = 1494521
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_25, PID = 1494533
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_26, PID = 1494289
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_27, PID = 1494567
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_28, PID = 1494497
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_29, PID = 1494416
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_30, PID = 1494496
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_31, PID = 1494255
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_32, PID = 1494414
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_33, PID = 1494335
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_34, PID = 1494153
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_35, PID = 1494472
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_36, PID = 1494099
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_37, PID = 1494449
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_38, PID = 1494370
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_39, PID = 1494210
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_40, PID = 1494494
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_41, PID = 1494521
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_42, PID = 1494509
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_43, PID = 1494289
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_44, PID = 1494302
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_45, PID = 1494416
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_46, PID = 1494567
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_47, PID = 1494497
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_48, PID = 1494414
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_49, PID = 1494533
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_50, PID = 1494255
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_51, PID = 1494521
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_52, PID = 1494494
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_53, PID = 1494099
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_54, PID = 1494509
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_55, PID = 1494472
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_56, PID = 1494210
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_57, PID = 1494335
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_58, PID = 1494302
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_59, PID = 1494449
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_60, PID = 1494416
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_61, PID = 1494289
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_62, PID = 1494496
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_63, PID = 1494153
+x= /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_64, PID = 1494533
+28/10/26 - 11:13:06 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_1/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:06 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_2/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:07 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_3/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_4/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_5/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_6/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_7/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_8/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_9/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_10/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_11/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_12/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_13/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_14/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_15/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_16/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_17/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_18/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_19/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_20/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_21/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_22/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_23/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_24/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_25/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_26/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_27/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_28/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_29/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_30/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_31/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_32/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_33/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_34/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_35/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_36/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_37/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_38/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_39/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_40/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_41/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_42/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_43/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_44/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_45/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_46/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_47/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_48/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_49/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_50/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_51/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_52/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_53/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_54/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_55/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_56/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_57/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_58/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_59/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_60/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_61/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_62/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_63/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.importers.cathy_outputs - [0;33;49mWARNING[0m - /home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_64/output/mbeconv: 1 malformed row(s) skipped (run likely crashed mid-write / output truncated).
+28/10/26 - 11:13:08 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - Analysis 1: observation stamped t=7200.0 s; model window [3600.0, 7200.0] s
+28/10/26 - 11:13:08 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - Map states to observations
+28/10/26 - 11:13:09 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - Mapping states to ERT apparent resistivities (fwd noise level: 0%)
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_1/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 50.26, max 73.13, median 55.68
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_1/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_2/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 43.04, max 53.34, median 43.04
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_2/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_3/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 66.06, max 106.5, median 66.06
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_3/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_4/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 46.88, max 68.18, median 68.17
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_4/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_5/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 48.16, max 69.97, median 61.74
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_5/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_6/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 57.33, max 66.8, median 60.97
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_6/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_7/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 53.39, max 86.63, median 58.25
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_7/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_8/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 47.26, max 80.81, median 50.89
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_8/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_9/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 50.52, max 65.68, median 65.67
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_9/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_10/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 44.81, max 52.63, median 52.63
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_10/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_11/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 46.83, max 61.85, median 46.83
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_11/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_12/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 39.82, max 69.9, median 39.82
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_12/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_13/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 37.2, max 93.32, median 93.32
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_13/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_14/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 36.64, max 49.06, median 36.65
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_14/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_16/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 44.16, max 96.27, median 44.17
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_16/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_15/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 46.26, max 75.08, median 70.43
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_15/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_17/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 43.95, max 52.65, median 51.16
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_17/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_18/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 39.95, max 66.45, median 45.57
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_18/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:22 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 2 (DA cycle 0): res0 43.0-53.3 Ohm.m -> rhoa 31.1 to 75.1 Ohm.m | checks: OK
+28/10/26 - 11:13:23 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 1 (DA cycle 0): res0 50.3-73.1 Ohm.m -> rhoa 20 to 130 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_19/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 44.64, max 82.97, median 82.97
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_19/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:23 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [4.69, 682] Ohm.m although the model spans 46.9-68.2 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[680])
+28/10/26 - 11:13:24 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 4 (DA cycle 0): res0 46.9-68.2 Ohm.m -> rhoa 2.06 to 102 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:24 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 5 (DA cycle 0): res0 48.2-70.0 Ohm.m -> rhoa 15.7 to 104 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_20/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 52.51, max 76.64, median 76.64
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_20/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:25 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 3 (DA cycle 0): res0 66.1-106.5 Ohm.m -> rhoa 49.6 to 172 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_21/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 40, max 53.74, median 52.52
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_21/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_22/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 30.23, max 41.85, median 41.85
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_22/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_23/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 54.95, max 62.74, median 60.7
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_23/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:26 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 7 (DA cycle 0): res0 53.4-86.6 Ohm.m -> rhoa 6.93 to 176 Ohm.m | checks: OK
+28/10/26 - 11:13:26 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 6 (DA cycle 0): res0 57.3-66.8 Ohm.m -> rhoa 38.7 to 85 Ohm.m | checks: OK
+28/10/26 - 11:13:27 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 10 (DA cycle 0): res0 44.8-52.6 Ohm.m -> rhoa 11.7 to 64.4 Ohm.m | checks: OK
+28/10/26 - 11:13:27 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 9 (DA cycle 0): res0 50.5-65.7 Ohm.m -> rhoa 6.48 to 100 Ohm.m | checks: OK
+28/10/26 - 11:13:28 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [4.73, 808] Ohm.m although the model spans 47.3-80.8 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[1371])
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_25/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 37.35, max 68.03, median 38.77
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_25/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:29 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 8 (DA cycle 0): res0 47.3-80.8 Ohm.m -> rhoa 3.9 to 154 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:29 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [4.68, 619] Ohm.m although the model spans 46.8-61.9 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[245])
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_24/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 29.68, max 53.38, median 53.38
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_24/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:29 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 11 (DA cycle 0): res0 46.8-61.9 Ohm.m -> rhoa 1.52 to 111 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:29 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 12 (DA cycle 0): res0 39.8-69.9 Ohm.m -> rhoa 10.6 to 138 Ohm.m | checks: OK
+28/10/26 - 11:13:30 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [3.72, 933] Ohm.m although the model spans 37.2-93.3 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[1606])
+28/10/26 - 11:13:30 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 13 (DA cycle 0): res0 37.2-93.3 Ohm.m -> rhoa 0.838 to 196 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:30 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 14 (DA cycle 0): res0 36.6-49.1 Ohm.m -> rhoa 27.4 to 80.5 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_27/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 60, max 65.44, median 65.44
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_27/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_26/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 34.67, max 42.16, median 36.61
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_26/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_28/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 67.97, max 78.66, median 68.79
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_28/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:31 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [4.63, 751] Ohm.m although the model spans 46.3-75.1 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=3, first idx=[221, 1010, 1315])
+28/10/26 - 11:13:31 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 15 (DA cycle 0): res0 46.3-75.1 Ohm.m -> rhoa 1.75 to 124 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:32 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 16 (DA cycle 0): res0 44.2-96.3 Ohm.m -> rhoa 11.2 to 250 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_30/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 32.14, max 59.28, median 32.14
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_30/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_31/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 45.36, max 60.77, median 45.36
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_31/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_29/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 48.1, max 64.18, median 48.1
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_29/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:33 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 18 (DA cycle 0): res0 39.9-66.5 Ohm.m -> rhoa 5.94 to 129 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_32/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 44.26, max 65.55, median 44.26
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_32/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:35 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 17 (DA cycle 0): res0 43.9-52.6 Ohm.m -> rhoa 19.3 to 65.9 Ohm.m | checks: OK
+28/10/26 - 11:13:35 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [5.25, 766] Ohm.m although the model spans 52.5-76.6 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[2134])
+28/10/26 - 11:13:36 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 20 (DA cycle 0): res0 52.5-76.6 Ohm.m -> rhoa 2.37 to 109 Ohm.m | checks: 1 issue(s): rhoa_implausible
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_34/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 45.37, max 59.63, median 54.5
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_34/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:36 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [4.46, 830] Ohm.m although the model spans 44.6-83 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[2134])
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_33/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 31.76, max 35.39, median 35.24
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_33/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:36 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 19 (DA cycle 0): res0 44.6-83.0 Ohm.m -> rhoa 4.36 to 141 Ohm.m | checks: 1 issue(s): rhoa_implausible
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_35/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 39.1, max 67.89, median 39.1
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_35/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_36/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 45.09, max 68.97, median 45.09
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_36/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:37 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [4, 537] Ohm.m although the model spans 40-53.7 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[2134])
+28/10/26 - 11:13:38 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [3.02, 418] Ohm.m although the model spans 30.2-41.8 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=2, first idx=[680, 2134])
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_37/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 44.9, max 49.12, median 44.91
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_37/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:38 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 21 (DA cycle 0): res0 40.0-53.7 Ohm.m -> rhoa 2.89 to 99.8 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:38 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 22 (DA cycle 0): res0 30.2-41.8 Ohm.m -> rhoa 0.925 to 58.7 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:38 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 23 (DA cycle 0): res0 55.0-62.7 Ohm.m -> rhoa 31.6 to 74.9 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_38/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 40.24, max 45.61, median 40.24
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_38/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_39/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 48.14, max 56.6, median 56.6
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_39/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:38 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [2.97, 534] Ohm.m although the model spans 29.7-53.4 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=2, first idx=[245, 475])
+28/10/26 - 11:13:39 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 24 (DA cycle 0): res0 29.7-53.4 Ohm.m -> rhoa 0.513 to 70.1 Ohm.m | checks: 1 issue(s): rhoa_implausible
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_40/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 37.48, max 50.68, median 37.48
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_40/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_41/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 27.27, max 36.53, median 29.62
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_41/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_42/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 41.1, max 55.5, median 55.5
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_42/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:41 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 27 (DA cycle 0): res0 60.0-65.4 Ohm.m -> rhoa 48.1 to 70.4 Ohm.m | checks: OK
+28/10/26 - 11:13:41 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 25 (DA cycle 0): res0 37.3-68.0 Ohm.m -> rhoa 3.76 to 157 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_43/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 53.65, max 85.97, median 53.66
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_43/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:41 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 28 (DA cycle 0): res0 68.0-78.7 Ohm.m -> rhoa 37.3 to 105 Ohm.m | checks: OK
+28/10/26 - 11:13:42 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [3.21, 593] Ohm.m although the model spans 32.1-59.3 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[1790])
+28/10/26 - 11:13:42 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 30 (DA cycle 0): res0 32.1-59.3 Ohm.m -> rhoa 0.253 to 137 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:43 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 26 (DA cycle 0): res0 34.7-42.2 Ohm.m -> rhoa 10.4 to 60.6 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_44/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 34.92, max 43.22, median 43.22
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_44/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:43 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 29 (DA cycle 0): res0 48.1-64.2 Ohm.m -> rhoa 27.7 to 100 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_45/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 44.95, max 75.42, median 75.42
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_45/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_46/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 42.6, max 49.03, median 43.23
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_46/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:43 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 32 (DA cycle 0): res0 44.3-65.6 Ohm.m -> rhoa 31.9 to 110 Ohm.m | checks: OK
+28/10/26 - 11:13:44 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 31 (DA cycle 0): res0 45.4-60.8 Ohm.m -> rhoa 27.7 to 101 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_47/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 36.98, max 48.72, median 48.72
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_47/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:45 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [4.54, 596] Ohm.m although the model spans 45.4-59.6 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[245])
+28/10/26 - 11:13:46 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 34 (DA cycle 0): res0 45.4-59.6 Ohm.m -> rhoa 1.8 to 81.9 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:46 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [4.51, 690] Ohm.m although the model spans 45.1-69 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[245])
+28/10/26 - 11:13:46 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 33 (DA cycle 0): res0 31.8-35.4 Ohm.m -> rhoa 23.4 to 40.5 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_48/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 54.11, max 65.61, median 54.11
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_48/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:46 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 36 (DA cycle 0): res0 45.1-69.0 Ohm.m -> rhoa 4.05 to 140 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:47 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 37 (DA cycle 0): res0 44.9-49.1 Ohm.m -> rhoa 42.3 to 59.6 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_49/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 43.98, max 56.21, median 49.59
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_49/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_50/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 56.42, max 85.49, median 58.53
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_50/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:47 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 35 (DA cycle 0): res0 39.1-67.9 Ohm.m -> rhoa 17.5 to 128 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_51/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 52.2, max 126.2, median 52.2
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_51/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_52/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 40.35, max 69.64, median 42.76
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_52/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_53/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 40.8, max 81.34, median 68.72
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_53/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:49 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 38 (DA cycle 0): res0 40.2-45.6 Ohm.m -> rhoa 32.2 to 65.5 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_54/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 57.14, max 61.03, median 61.03
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_54/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:49 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 39 (DA cycle 0): res0 48.1-56.6 Ohm.m -> rhoa 28.8 to 68.5 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_55/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 49.8, max 61.81, median 54.05
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_55/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:50 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 40 (DA cycle 0): res0 37.5-50.7 Ohm.m -> rhoa 21.2 to 79.6 Ohm.m | checks: OK
+28/10/26 - 11:13:50 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [2.73, 365] Ohm.m although the model spans 27.3-36.5 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[245])
+28/10/26 - 11:13:50 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [4.11, 555] Ohm.m although the model spans 41.1-55.5 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[680])
+28/10/26 - 11:13:50 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 41 (DA cycle 0): res0 27.3-36.5 Ohm.m -> rhoa 1.26 to 57.6 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:50 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 42 (DA cycle 0): res0 41.1-55.5 Ohm.m -> rhoa 3.13 to 66.3 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:51 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 43 (DA cycle 0): res0 53.7-86.0 Ohm.m -> rhoa 20.2 to 146 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_56/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 46.34, max 100.7, median 48.84
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_56/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_57/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 46.57, max 64.66, median 47.18
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_57/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_58/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 44.61, max 82.08, median 58.2
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_58/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:53 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 46 (DA cycle 0): res0 42.6-49.0 Ohm.m -> rhoa 21.4 to 67.2 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_59/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 46.06, max 64.59, median 46.06
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_59/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_60/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 50.06, max 67.27, median 67.27
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_60/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:53 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 44 (DA cycle 0): res0 34.9-43.2 Ohm.m -> rhoa 9.43 to 50.9 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_61/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 47.97, max 57.99, median 54.54
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_61/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:53 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 45 (DA cycle 0): res0 45.0-75.4 Ohm.m -> rhoa 7.17 to 116 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_62/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 48.59, max 70.77, median 70.77
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_62/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_63/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 37.47, max 56.51, median 56.51
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_63/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:54 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [3.7, 487] Ohm.m although the model spans 37-48.7 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[2134])
+28/10/26 - 11:13:55 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 47 (DA cycle 0): res0 37.0-48.7 Ohm.m -> rhoa 0.108 to 79 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:55 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 49 (DA cycle 0): res0 44.0-56.2 Ohm.m -> rhoa 5.35 to 80.5 Ohm.m | checks: OK
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_64/vtk/ER_converted0.vtk
+mesh transformation before interpolation
+Tracing mesh
+0/8149 forward-mesh nodes outside the CATHY mesh (nearest node used); min 45.2, max 54.95, median 54.09
+add new attribute to pg mesh
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/SYN_NC_ic_VGP_pf_N64_s1_unbiased/DA_Ensemble/cathy_64/vtk/ER_converted0_nearIntrp2_pg_msh.vtk
+end of CATHY_2_pg
+28/10/26 - 11:13:56 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 48 (DA cycle 0): res0 54.1-65.6 Ohm.m -> rhoa 40.1 to 104 Ohm.m | checks: OK
+28/10/26 - 11:13:56 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 51 (DA cycle 0): res0 52.2-126.2 Ohm.m -> rhoa 21.6 to 251 Ohm.m | checks: OK
+28/10/26 - 11:13:56 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 50 (DA cycle 0): res0 56.4-85.5 Ohm.m -> rhoa 13.3 to 169 Ohm.m | checks: OK
+28/10/26 - 11:13:56 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [4.03, 696] Ohm.m although the model spans 40.3-69.6 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[1790])
+28/10/26 - 11:13:57 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 52 (DA cycle 0): res0 40.3-69.6 Ohm.m -> rhoa 2.36 to 149 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:58 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [4.08, 813] Ohm.m although the model spans 40.8-81.3 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=2, first idx=[475, 644])
+28/10/26 - 11:13:58 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 55 (DA cycle 0): res0 49.8-61.8 Ohm.m -> rhoa 12.6 to 87.2 Ohm.m | checks: OK
+28/10/26 - 11:13:58 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 54 (DA cycle 0): res0 57.1-61.0 Ohm.m -> rhoa 41.3 to 66.4 Ohm.m | checks: OK
+28/10/26 - 11:13:58 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 53 (DA cycle 0): res0 40.8-81.3 Ohm.m -> rhoa 1.46 to 151 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:13:59 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 56 (DA cycle 0): res0 46.3-100.7 Ohm.m -> rhoa 5.09 to 188 Ohm.m | checks: OK
+28/10/26 - 11:14:00 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 61 (DA cycle 0): res0 48.0-58.0 Ohm.m -> rhoa 21.7 to 72.9 Ohm.m | checks: OK
+28/10/26 - 11:14:00 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [5.01, 673] Ohm.m although the model spans 50.1-67.3 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=3, first idx=[126, 957, 1254])
+28/10/26 - 11:14:00 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [4.46, 821] Ohm.m although the model spans 44.6-82.1 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[1371])
+28/10/26 - 11:14:00 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 59 (DA cycle 0): res0 46.1-64.6 Ohm.m -> rhoa 24.6 to 119 Ohm.m | checks: OK
+28/10/26 - 11:14:00 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 57 (DA cycle 0): res0 46.6-64.7 Ohm.m -> rhoa 23 to 106 Ohm.m | checks: OK
+28/10/26 - 11:14:00 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 58 (DA cycle 0): res0 44.6-82.1 Ohm.m -> rhoa 3.91 to 162 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:14:00 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 60 (DA cycle 0): res0 50.1-67.3 Ohm.m -> rhoa 2.4 to 77.3 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:14:00 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 62 (DA cycle 0): res0 48.6-70.8 Ohm.m -> rhoa 9.37 to 83.4 Ohm.m | checks: OK
+28/10/26 - 11:14:01 - pyCATHY.ERT.ERT_checks - [0;33;49mWARNING[0m - [fwd ERT data] rhoa_implausible: |rhoa| outside [3.75, 565] Ohm.m although the model spans 37.5-56.5 Ohm.m (near-zero potentials / noise-dominated or singular quadrupoles) (n=1, first idx=[644])
+28/10/26 - 11:14:01 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 63 (DA cycle 0): res0 37.5-56.5 Ohm.m -> rhoa 3.29 to 81.9 Ohm.m | checks: 1 issue(s): rhoa_implausible
+28/10/26 - 11:14:02 - pyCATHY.ERT.petro_Archie - [0;32;49mINFO[0m - ERT forward, member 64 (DA cycle 0): res0 45.2-54.9 Ohm.m -> rhoa 17.9 to 70 Ohm.m | checks: OK
+28/10/26 - 11:14:03 - pyCATHY.DA.mapper - [0;32;49mINFO[0m - ERT forward ensemble, DA cycle 0: 64 members | checks: OK
+28/10/26 - 11:14:03 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - Analysis: DA type=pf, inflation=1.1
+28/10/26 - 11:14:04 - pyCATHY.DA.cathy_DA - [0;33;49mWARNING[0m - No assimilation time given: selecting the observations of the current DA cycle
+28/10/26 - 11:14:04 - pyCATHY.DA.cathy_DA - [0;32;49mINFO[0m - Assimilating all: 2837 data
+28/10/26 - 11:14:04 - pyCATHY.DA.pf - [0;32;49mINFO[0m - PF: exact-likelihood N_eff = 1.00 / 64 -> tempered with beta = 1.263e-04 (N_eff = 19.2)
+/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/DA/pf.py:264: RuntimeWarning: Mean of empty slice
+  diagnostics['param_std'] = param.std(axis=1).mean()
+/home/z0272571a@campus.csic.es/micromamba/envs/pg/lib/python3.11/site-packages/numpy/_core/_methods.py:142: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+Traceback (most recent call last):
+  File "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/nb7_DA_ERT_synthetic.py", line 539, in <module>
+    simuDA.run_DA_sequential(
+  File "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/DA/cathy_DA.py", line 875, in run_DA_sequential
+    return self._run_DA_sequential_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/DA/runtime.py", line 155, in wrapper
+    return method(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/DA/cathy_DA.py", line 861, in _run_DA_sequential_impl
+    self._run_window(t_atmbc, options)
+  File "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/DA/cathy_DA.py", line 902, in _run_window
+    state_bef_update, analysis_valid = self._analysis_cycle(
+                                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/DA/cathy_DA.py", line 973, in _analysis_cycle
+    ensemble_psi, ensemble_sw, data, analysis, analysis_param = self._analyse(
+                                                                ^^^^^^^^^^^^^^
+  File "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/DA/cathy_DA.py", line 1485, in _analyse
+    return self._analyse_global(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/DA/cathy_DA.py", line 1495, in _analyse_global
+    return self._DA_analysis(
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/DA/cathy_DA.py", line 1781, in _DA_analysis
+    result_analysis = run_analysis(
+                      ^^^^^^^^^^^^^
+  File "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/DA/analysis.py", line 524, in run_analysis
+    return ANALYSES[DA_type](data, data_cov, param, state, prediction, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/DA/analysis.py", line 377, in _particle_filter
+    analysis = pf.particle_filter_analysis(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/DA/pf.py", line 102, in particle_filter_analysis
+    diag = diagnose_particle_filter_issues(param, weights, observation, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/BenjMy/pycathy_wrapper/pyCATHY/DA/pf.py", line 265, in diagnose_particle_filter_issues
+    diagnostics['param_range'] = param.max() - param.min()
+                                 ^^^^^^^^^^^
+  File "/home/z0272571a@campus.csic.es/micromamba/envs/pg/lib/python3.11/site-packages/numpy/_core/_methods.py", line 41, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: zero-size array to reduction operation maximum which has no identity

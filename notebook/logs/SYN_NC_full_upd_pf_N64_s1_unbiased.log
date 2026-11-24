@@ -1,0 +1,11 @@
+/home/z0272571a@campus.csic.es/micromamba/envs/pg/lib/python3.11/site-packages/xarray/backends/scipy_.py:39: UserWarning: A NumPy version >=1.23.5 and <2.3.0 is required for this version of SciPy (detected version 2.4.6)
+  from scipy.io import netcdf_file as netcdf_file_base
+🏁 Initiate CATHY object
+😟 src files not found
+working directory is:/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/../simulations/
+survey times read from the truth: ../data/3d/synthetic/NC/truth_NC.pkl
+RUN SYN_NC_full_upd_pf_N64_s1_unbiased | case NC | NC_full_upd | pf | NENS 64 | seed 1 | DA | prior none
+could not fetch the CATHY source files (Cmd('git') failed due to: exit code(128)
+  cmdline: git fetch --depth 1 origin ef54607df776dbb6f7d974329e5f72a276403d5c
+  stderr: 'fatal: write error: No space left on device
+fatal: fetch-pack: invalid index-pack output')

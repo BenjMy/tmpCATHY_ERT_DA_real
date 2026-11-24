@@ -1,0 +1,144 @@
+
+
+ >> R  2    R e s i s t i v i t y   I n v e r s i o n   v4.02 <<
+
+ >> D a t e : 09 - 01 - 2024
+ >> My beautiful survey                                                             
+ >> I n v e r s e   S o l u t i o n   S e l e c t e d <<
+ >> Reading start resistivity from Start_res.dat                 
+ >> R e g u l a r i s e d   T y p e <<
+ >>   L i n e a r    F i l t e r    <<
+ >> T r u e - D a t a   I n v e r s i o n <<
+ >> D i f f e r e n c e    R e g u l a r i s a t i o n <<
+ >> D a t a   w e i g h t s   w i l l   b e  m o d i f i e d <<
+
+
+ Processing dataset   1
+
+
+ Measurements read:  4530     Measurements rejected:     0
+   Geometric mean of apparent resistivities:  0.26327E+02
+
+ >> Total Memory required is:          0.592 Gb
+
+   Iteration   1
+     Initial RMS Misfit:         4.20       Number of data ignored:     0
+     Alpha:        5637.448   RMS Misfit:        2.22  Roughness:        1.445
+     Alpha:        2616.672   RMS Misfit:        1.95  Roughness:        2.648
+     Alpha:        1214.551   RMS Misfit:        1.71  Roughness:        4.612
+     Alpha:         563.745   RMS Misfit:        1.51  Roughness:        7.715
+     Alpha:         261.667   RMS Misfit:        1.33  Roughness:       12.492
+     Alpha:         121.455   RMS Misfit:        1.18  Roughness:       19.907
+     Alpha:          56.374   RMS Misfit:        1.08  Roughness:       31.431
+     Alpha:          26.167   RMS Misfit:        1.10  Roughness:       48.307
+     Step length set to   1.00000
+     Final RMS Misfit:        1.08
+     Attempted to update data weights and caused overshoot
+     treating as converged
+
+ Solution converged - Outputing results to file
+
+ Calculating sensitivity map
+
+
+ Processing dataset   2
+
+
+ Measurements read:  4518     Measurements rejected:     0
+   Geometric mean of apparent resistivities:  0.26265E+02
+
+   Iteration   1
+     Initial RMS Misfit:         5.11       Number of data ignored:     0
+     Alpha:        3196.927   RMS Misfit:        2.23  Roughness:        2.629
+     Alpha:        1483.882   RMS Misfit:        1.99  Roughness:        4.583
+     Alpha:         688.757   RMS Misfit:        1.76  Roughness:        8.142
+     Alpha:         319.693   RMS Misfit:        1.54  Roughness:       14.209
+     Alpha:         148.388   RMS Misfit:        1.35  Roughness:       23.474
+     Alpha:          68.876   RMS Misfit:        1.20  Roughness:       36.656
+     Alpha:          31.969   RMS Misfit:        1.11  Roughness:       54.753
+     Alpha:          14.839   RMS Misfit:        1.10  Roughness:       78.904
+     Alpha:           6.888   RMS Misfit:        1.20  Roughness:      110.247
+     Step length set to   1.00000
+     Final RMS Misfit:        1.10
+     Attempted to update data weights and caused overshoot
+     treating as converged
+
+ Solution converged - Outputing results to file
+
+ Calculating sensitivity map
+
+
+ Processing dataset   3
+
+
+ Measurements read:  4432     Measurements rejected:     0
+   Geometric mean of apparent resistivities:  0.26160E+02
+
+   Iteration   1
+     Initial RMS Misfit:         8.10       Number of data ignored:     0
+     Alpha:        5455.767   RMS Misfit:        3.01  Roughness:        2.577
+     Alpha:        2532.343   RMS Misfit:        2.71  Roughness:        3.661
+     Alpha:        1175.409   RMS Misfit:        2.51  Roughness:        5.042
+     Alpha:         545.577   RMS Misfit:        2.37  Roughness:        6.857
+     Alpha:         253.234   RMS Misfit:        2.25  Roughness:        9.382
+     Alpha:         117.541   RMS Misfit:        2.13  Roughness:       13.314
+     Alpha:          54.558   RMS Misfit:        2.03  Roughness:       19.854
+     Alpha:          25.323   RMS Misfit:        2.01  Roughness:       30.108
+     Alpha:          11.754   RMS Misfit:        2.11  Roughness:       44.714
+     Step length set to   1.00000
+     Final RMS Misfit:        2.01
+     Attempted to update data weights and caused overshoot
+     treating as converged
+
+ Solution converged - Outputing results to file
+
+ Calculating sensitivity map
+
+
+ Processing dataset   4
+
+
+ Measurements read:  3988     Measurements rejected:     0
+   Geometric mean of apparent resistivities:  0.26797E+02
+
+   Iteration   1
+     Initial RMS Misfit:         2.63       Number of data ignored:     0
+     Alpha:         998.385   RMS Misfit:        1.06  Roughness:        2.593
+     Alpha:         463.409   RMS Misfit:        0.88  Roughness:        4.387
+     Step length set to   1.00000
+     Final RMS Misfit:        0.88
+     Step length set to   0.89813
+     Final RMS Misfit:        1.00
+
+ Solution converged - Outputing results to file
+
+ Calculating sensitivity map
+
+
+ Processing dataset   5
+
+
+ End of data:  Terminating
+
+
+                     Timing Summary
+                     ==============
+     Total time taken:                               165. s
+     Percent time taken forming element equations:    0.2 %
+     Percent time taken solving forward  equations:  19.0 %
+     Percent time taken forming Jacobian:             0.8 %
+     Percent time taken solving inverse equations:   68.2 %
+     Percent time taken calculating res. matrix:      0.0 %
+
+                     Timing Details
+                     ==============
+     Number of calls to form element equations:       570
+     Average time taken in call:                      0.0 s
+     Number of calls to solve forward equations:    41040
+     Average time taken in call:                      0.0 s
+     Number of calls to form Jacobian:                  4
+     Average time taken in call:                      0.3 s
+     Number of calls to solve inverse equations:       28
+     Average time taken in call:                      4.0 s
+     Number of calls to calculate res. matrix:          4
+     Average time taken in call:                      0.0 s

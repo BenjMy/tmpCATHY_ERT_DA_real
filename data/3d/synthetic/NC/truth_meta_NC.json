@@ -1,0 +1,23 @@
+{
+  "case": "NC",
+  "delta": 0.5,
+  "noise_pct": 5.0,
+  "seed_noise": 1234,
+  "archie_truth": {
+    "a": 0.3,
+    "m": 1.7,
+    "n": 1.7
+  },
+  "archie_prior": {
+    "a": 0.3,
+    "m": 1.7,
+    "n": 1.7
+  },
+  "porosity_mode": "nodal",
+  "fwd_mesh": "../data/3d/mesh_Luca_Agripolis3d/meshForward.vtk",
+  "da_mesh": "../data/3d/mesh_Luca_Agripolis3d/meshForward.vtk",
+  "same_mesh": true,
+  "n_surveys": 23,
+  "argv": "/home/z0272571a@campus.csic.es/Nextcloud/BenCSIC/Codes/cathy_agripolis/notebook/nb6_synth_truth_ERT.py --case NC --root ../ --noise-pct 5",
+  "data_dir": "../data/3d/synthetic/NC/procdata"
+}
