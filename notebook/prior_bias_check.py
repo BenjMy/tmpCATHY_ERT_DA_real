@@ -11,8 +11,10 @@
 #   * bounded normal priors are sampled as TRUNCATED normals (pyCATHY.DA.perturbate.sampling_dist_trunc):
 #     truncating a tail moves the mean (Ks: sigma = nominal, lower bound = nominal/100 -> mean x ~1.29);
 #   * lognormal priors are centred on the MEDIAN by default (mean = nominal * exp(sigma^2/2));
-#   * the initial condition `ic` is ONE scalar for the 3 layers (make_scenarios.entries: -1.5), whereas the
-#     truth is layered (model_config ic_true) -> not centred on the truth, whatever --prior-bias says.
+#   * the initial condition `ic` used to be ONE scalar (-1.5) for the 3 layers whereas the truth is layered
+#     (model_config ic_true): offset +1.8 sigma in layer 0. Fixed (todo.md 5.1 (a)): ic is now one value per
+#     depth range (library: ic with pert_control_name 'material' + ic_layers), prior mean = ic_true. The old
+#     prior is still checked with `--ic-scalar` (what nb7 --ic-prior-mean -1.5 runs).
 # This script samples each prior like the library does and reports, per parameter and group, the offset of the
 # ensemble mean from the truth in units of the prior sigma (on the scale the filter works on: log for Ks).
 # It does not run CATHY: it needs model_config / make_scenarios (so pyCATHY must be importable, as for nb7).
@@ -68,9 +70,10 @@ def _truth_archie(MS, case):
     return out
 
 
-def prior_table(case='NC', scenario='full_upd', biased=False, n=200_000, tol=0.2, seed=0):
+def prior_table(case='NC', scenario='full_upd', biased=False, n=200_000, tol=0.2, seed=0, ic_scalar=None):
     """DataFrame: one row per parameter x group (and per ic layer) with the offset of the sampled prior
-    mean from the truth. `bias_sigma` is on the filter's working scale; `flag` = |bias_sigma| > tol."""
+    mean from the truth. `bias_sigma` is on the filter's working scale; `flag` = |bias_sigma| > tol.
+    ic_scalar: check the old prior instead (ONE scalar for every ic layer, nb7 --ic-prior-mean)."""
     import make_scenarios as MS
     import model_config as mc
     sc = tomllib.loads(MS.build(biased=biased))['scenario'][f'{case}_{scenario}']
@@ -84,10 +87,13 @@ def prior_table(case='NC', scenario='full_upd', biased=False, n=200_000, tol=0.2
         bnd = sc['per_bounds'][i]
         lo, hi = (bnd.get('min'), bnd.get('max')) if isinstance(bnd, dict) else (None, None)
         if name == 'ic':
+            n_ic = len(cfg['ic_true'])
+            means = [ic_scalar] * n_ic if ic_scalar is not None else _as_list(sc['per_mean'][i], n_ic)
+            sigmas = _as_list(sc['per_sigma'][i], n_ic)
             for layer, tv in enumerate(cfg['ic_true']):
-                x = sample_prior(samp, sc['per_mean'][i], sc['per_sigma'][i], lo, hi, n, rng)
-                rows.append(_row(case, scenario, f'ic (layer {layer})', None, tv[0], sc['per_mean'][i],
-                                 sc['per_sigma'][i], x, 'None', tol, samp))
+                x = sample_prior(samp, means[layer], sigmas[layer], lo, hi, n, rng)
+                rows.append(_row(case, scenario, f'ic (layer {layer})', None, tv[0], means[layer],
+                                 sigmas[layer], x, 'None', tol, samp))
             continue
         means = _as_list(sc['per_mean'][i], ng if name in SOIL_NAMES else 1)
         sigmas = _as_list(sc['per_sigma'][i], len(means))
@@ -121,13 +127,15 @@ def main(argv=None):
     ap.add_argument('--case', default='NC', choices=['NC', 'HC'])
     ap.add_argument('--scenario', default=None, help="scenario tag (default: all of the case)")
     ap.add_argument('--biased', action='store_true', help="the biased prior (default: --prior-bias none)")
+    ap.add_argument('--ic-scalar', type=float, default=None, metavar='M',
+                    help="ic prior = ONE scalar M [m] for every layer (old behaviour: -1.5) instead of ic_true per layer")
     ap.add_argument('--tol', type=float, default=0.2, help="flag when |mean - truth| > tol x sigma (default 0.2)")
     ap.add_argument('--n', type=int, default=200_000)
     ap.add_argument('--csv', default=None)
     a = ap.parse_args(argv)
     import make_scenarios as MS
     tags = [a.scenario] if a.scenario else [t for t, *_ in MS.MATRIX]
-    df = pd.concat([prior_table(a.case, t, a.biased, a.n, a.tol) for t in tags], ignore_index=True)
+    df = pd.concat([prior_table(a.case, t, a.biased, a.n, a.tol, ic_scalar=a.ic_scalar) for t in tags], ignore_index=True)
     # the parameters are the same in every scenario that perturbs them: print each (param, group) once
     show = df.drop_duplicates(['param', 'group']) if not a.scenario else df
     pd.set_option('display.width', 200)

@@ -204,6 +204,7 @@ entry is itself a list when the control has several groups.
 | `per_name` | perturbed quantities: `ic` (initial pressure head, m), `SATCELL_VG`, `n_VG`, `thetar_VG` (van Genuchten), `Ks`, `a_Archie`, `m_Archie`, `n_Archie` |
 | `pert_control_name` | how a quantity maps onto the soil: `None` (one scalar), `layers` (one value per soil layer), `material` (NC: groups A = layers 0-5, B = 6-8, C = 9-14), `zone_material` (HC: `[zone, layers]` groups, zone 2 = compacted band) |
 | `material_layers` / `zone_material_layers` | the groups of the control above |
+| `ic_layers` | groups of the initial condition (`ic` uses `pert_control_name = "material"`, one value per depth range of the truth, prior mean = `ic_true`): `[0-5] [6-9] [10-14]`, not the soil materials (layer 9 differs); needs the pyCATHY `ic` + `material` support |
 | `per_type` | sampling type; `"None"` = absolute (prior = N(`per_mean`, `per_sigma`) truncated to `per_bounds`, physical units) |
 | `per_nom`, `per_mean` | nominal / prior mean (equal in the generated files) |
 | `per_sigma` | prior standard deviation (physical units; for a `log` transform of `Ks` see `KS_PRIOR` in `make_scenarios.py`) |
@@ -219,14 +220,15 @@ Example (generated `NC_ic_Ks_upd`: initial condition and Ks perturbed, states an
 ```toml
 [scenario.NC_ic_Ks_upd]
 per_name          = [ "ic", "Ks" ]
-pert_control_name = [ "None", "material" ]
-per_type          = [ "None", [ "None", "None", "None" ] ]
-per_mean          = [ -1.5, [ 1.05e-05, 1.15e-05, 7.5e-06 ] ]
-per_sigma         = [ 0.5,  [ 1.05e-05, 1.15e-05, 7.5e-06 ] ]
+pert_control_name = [ "material", "material" ]
+per_type          = [ [ "None", "None", "None" ], [ "None", "None", "None" ] ]
+per_mean          = [ [ -2.4, -1.3, -1.15 ], [ 1.05e-05, 1.15e-05, 7.5e-06 ] ]
+per_sigma         = [ [ 0.5, 0.5, 0.5 ],  [ 1.05e-05, 1.15e-05, 7.5e-06 ] ]
 per_bounds        = [ { min = -5.0, max = -0.05 }, { min = 7.5e-08, max = 0.00115 } ]
 sampling_type     = [ "normal", "normal" ]
-transf_type       = [ "None", [ "log", "log", "log" ] ]
+transf_type       = [ [ "None", "None", "None" ], [ "log", "log", "log" ] ]
 material_layers   = [ [0,1,2,3,4,5], [6,7,8], [9,10,11,12,13,14] ]
+ic_layers         = [ [0,1,2,3,4,5], [6,7,8,9], [10,11,12,13,14] ]
 listUpdateParm    = [ "St. var.", "Ks0", "Ks1", "Ks2" ]
 ```
 (nominals shown are those of the biased prior; `--prior-bias none` / `make_scenarios.py --no-bias` centres them on the truth.)

@@ -79,7 +79,8 @@ ap.add_argument('--log-obs', type=int, default=1, help='assimilate log10(rhoa) (
 ap.add_argument('--no-da', action='store_true', help='open loop (R huge)')
 ap.add_argument('--prior-bias', choices=['biased', 'none'], default='biased',
                 help="'biased': biased_overrides soil table + biased scenario nominals; 'none': prior = truth")
-ap.add_argument('--ic-prior-mean', type=float, default=None, help='override the scenario prior mean of ic [m]')
+ap.add_argument('--ic-prior-mean', type=float, default=None, help='override the scenario prior mean of ic [m] with ONE scalar for every layer group (default: ic_true per layer, '
+                     'make_scenarios.py; -1.5 reproduces the old scalar prior)')
 ap.add_argument('--delta', type=float, default=None, help='CATHY cell size [m]: SAME as nb6')
 ap.add_argument('--root', default=None, help='project root (default: data_path.toml)')
 ap.add_argument('--sim-dir', default=None, help='default: [outputs].simulations of data_path.toml')
@@ -163,10 +164,17 @@ else:
 assert _tag in _all, f"scenario {_tag} not found; available: {sorted(_all)}"
 SCENARIO = _tag
 scenario_selected = _all[SCENARIO]
-if args.ic_prior_mean is not None:
-    _i = scenario_selected['per_name'].index('ic')
-    scenario_selected['per_nom'][_i] = scenario_selected['per_mean'][_i] = args.ic_prior_mean
-IC_PRIOR_MEAN = scenario_selected['per_mean'][scenario_selected['per_name'].index('ic')]
+_i_ic = scenario_selected['per_name'].index('ic')
+_ic_mean = scenario_selected['per_mean'][_i_ic]
+_n_ic = len(_ic_mean) if isinstance(_ic_mean, list) else 3          # old scenario files: ONE scalar for the 3 layers
+if args.ic_prior_mean is not None:                                  # one scalar for every layer group (old behaviour: -1.5)
+    if isinstance(_ic_mean, list):
+        scenario_selected['per_nom'][_i_ic] = [args.ic_prior_mean] * _n_ic
+        scenario_selected['per_mean'][_i_ic] = [args.ic_prior_mean] * _n_ic
+    else:
+        scenario_selected['per_nom'][_i_ic] = scenario_selected['per_mean'][_i_ic] = args.ic_prior_mean
+_ic_mean = scenario_selected['per_mean'][_i_ic]
+IC_PRIOR_MEANS = list(_ic_mean) if isinstance(_ic_mean, list) else [_ic_mean] * _n_ic   # [m] per layer group (default: ic_true)
 
 _n_ent = len(scenario_selected['per_name'])
 _tr_list = scenario_selected.get('transf_type') or ['None'] * _n_ent
@@ -255,7 +263,7 @@ ert_times = sched['t_s'].tolist()
 print("ERT times [h]:", np.round(np.asarray(ert_times) / HOUR, 2))
 
 soil_overrides = MC.biased_overrides(CASE) if BIASED else None
-MC.setup_model(simuDA, CASE, ic_values=[[IC_PRIOR_MEAN]] * 3, extra_times=ert_times,
+MC.setup_model(simuDA, CASE, ic_values=[[v] for v in IC_PRIOR_MEANS], extra_times=ert_times,
                soil_overrides=soil_overrides, delta=args.delta)
 simuDA.run_preprocessor()
 simuDA.run_processor(IPRT1=3)

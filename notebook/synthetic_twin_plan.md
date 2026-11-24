@@ -85,7 +85,7 @@ Copy of nb5 with these changes only:
 6. **Prior bias** (explicit, logged), applied through `soil_overrides` and the toml means:
    - VGP: SATCELL_VG × 1.3, n_VG − 0.08, thetar_VG + 0.01 relative to truth (about 1.2σ of the current priors: cv 25 %, σ_n ≈ 0.07, σ_θr = 0.02). Keep the truth inside ±2σ.
    - Ks: factor 5 on a log scale (σ_log10 ≈ 0.5).
-   - IC: keep homogeneous prior -1.5 ± 0.5 (truth is layered: structural error).
+   - IC: ~~homogeneous prior -1.5 ± 0.5 (truth is layered: structural error)~~ → per-layer prior, mean = `ic_true`, ± 0.5 (todo.md 5.1 (a)); `--ic-prior-mean -1.5` gives the old homogeneous prior.
    - A zero-bias reference run per scenario (prior = truth) to separate DA error from prior bias.
 7. **Scenario toml** (`make_scenarios.py`): add
    - `Ks` (PERMX/Y/Z together, log-normal, per material; physical bounds): confirm the pyCATHY parameter name and write rule in `perturbate` (the commented plot call in nb5 uses `parm='Ks'`);
@@ -210,7 +210,7 @@ All new files are in `twin/`; library changes are in `pycathy_twin_fixes.patch` 
 - **Observation time**: obs stamped with the start of the model window and compared to the state at the window end (`obs_window_start`), unchanged from nb5.
 - **Noise**: only in the data (log-normal, 5 %, seeded, seed + 1000 x survey index); pyGIMLi noise is disabled (`noiseLevel = 0`, `noiseAbs = 0`). The DA uses `ERT_DATA_ERR = 5 %` on log(rhoa).
 - **Quadrupoles**: those of the real files (valid rows), so the synthetic data have the real geometry; rows with rhoa <= 0.01 after the forward are dropped.
-- **Prior bias** (to avoid a trivially perfect prior): Ks x5, SATCELL x1.3, n -0.08, thetar +0.01, IC -1.5 +/- 0.5 vs layered truth. A zero-bias reference run is kept.
+- **Prior bias** (to avoid a trivially perfect prior): Ks x5, SATCELL x1.3, n -0.08, thetar +0.01, IC: per layer, centred on the layered truth (was -1.5 +/- 0.5, todo.md 5.1 (a)). A zero-bias reference run is kept.
 - **Archie truth**: prior (a, m, n) = (0.3, 1.7, 1.7), or `--archie offset` = (0.4, 1.85, 1.55) so the DA has a petrophysical error to recover; rFluid = 1/(588e-4) ~ 17 ohm.m.
 - **Ks anisotropy**: option (c-lite) chosen, i.e. the truth stays equal to nb2 and the prior keeps the base kz/kx per row; a separate `Kz_ratio` parameter is an extension (section 13).
 

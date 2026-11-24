@@ -25,6 +25,8 @@
 import argparse
 import os
 
+import numpy as np
+
 import model_config as mc
 
 LAYERS = mc.MATERIAL_LAYERS_0                       # {'A': range, 'B': ..., 'C': ...}
@@ -36,7 +38,7 @@ PRIOR = {                                           # sigma (cv: relative, sd: a
 }
 ARCHIE = dict(a_Archie=(0.3, 0.1, (0.05, 2.5)), m_Archie=(1.7, 0.15, (1.3, 3.0)),
               n_Archie=(1.7, 0.15, (1.3, 3.0)))     # (nominal, sigma, bounds) = nb5
-IC_SIGMA, IC_BOUNDS = 0.5, (-5.0, -0.05)
+IC_SIGMA, IC_BOUNDS = 0.5, (-5.0, -0.05)            # ic: one value per depth range (ic_groups), prior mean = ic_true
 # Ks prior. 'lognormal' (KS_PRIOR=lognormal): Ks = nominal * exp(N(0, KS_SIGMA_LOG^2)), sigma in natural-log units (0.5 = x1.65 at 1 sigma,
 # x2.7 at 2 sigma, ~0.43 decade at 2 sigma): centred on the nominal in log space, always positive, no clipping.
 # 'normal100' (default, unchanged): physical Gaussian with sd = 100 % of the nominal, clipped at nominal/100: ~16 % of the draws
@@ -52,6 +54,23 @@ def groups(case):
     if case == "NC":
         return "material", "material_layers", mats
     return "zone_material", "zone_material_layers", [[1, g] for g in mats] + [[2, mats[0]]]
+
+
+def ic_groups():
+    """0-based layers of each depth range of the initial condition (mc.IC_RANGES), by the mid-depth rule of
+    meshtools.map_param_to_layers (first range containing the mid-depth). Not the soil materials: layer 9
+    (0.36-0.44 m) is material C but belongs to the second ic range."""
+    bot = np.cumsum(mc.ZR_THICK)
+    mid = (bot - np.asarray(mc.ZR_THICK) / 2.0)
+    out = [[] for _ in mc.IC_RANGES]
+    for i, m in enumerate(mid):
+        for g, (lo, hi) in enumerate(mc.IC_RANGES):
+            if lo <= m <= hi:
+                out[g].append(i)
+                break
+        else:
+            raise ValueError(f"layer {i} (mid-depth {m:.3f} m) is in no ic range {mc.IC_RANGES}")
+    return out
 
 
 def group_values(case, name, biased):
@@ -87,9 +106,13 @@ def entries(case, names, biased):
     out = []
     for n in names:
         if n == "ic":
-            nom = (-1.5,) * 1
-            out.append(dict(name=n, control="None", nom=-1.5, mean=-1.5, sigma=IC_SIGMA, type="None",
-                            bounds=dict(min=IC_BOUNDS[0], max=IC_BOUNDS[1]), transf="None"))
+            # one value per depth range of the truth (library: ic with pert_control_name 'material' + ic_layers),
+            # prior mean = ic_true of the case, whatever the soil bias (the soil bias does not touch the ic)
+            truth = [float(v[0]) for v in mc.get_case(case)["ic_true"]]
+            ni = len(truth)
+            out.append(dict(name=n, control="material", nom=list(truth), mean=list(truth), sigma=[IC_SIGMA] * ni,
+                            type=["None"] * ni, bounds=dict(min=IC_BOUNDS[0], max=IC_BOUNDS[1]),
+                            transf=["None"] * ni))
         elif n in ARCHIE:
             nom, sd, b = ARCHIE[n]
             out.append(dict(name=n, control="None", nom=nom, mean=nom, sigma=sd, type="None",
@@ -135,6 +158,8 @@ def block(case, tag, names, updated, comment, biased=True):
         lst(e["transf"]) if isinstance(e["transf"], list) else fmt(e["transf"]) for e in es) + "\n]")
     ckey = groups(case)[1]
     L.append(f"{ckey} = " + repr(groups(case)[2]).replace("range", ""))
+    if "ic" in names:
+        L.append("ic_layers = " + repr(ic_groups()))
     L.append(f"listUpdateParm = {lst(upd_keys(case, updated))}")
     return "\n".join(L) + "\n"
 

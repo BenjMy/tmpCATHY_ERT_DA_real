@@ -45,9 +45,17 @@ def test_unbiased_soil_and_archie_priors_are_centred_on_the_working_scale(nc_unb
     assert (ks.scale == 'log').all() and ks.mean_over_truth.between(1.2, 1.4).all()   # physical mean +29 %, log-mean ~0
 
 
-def test_unbiased_ic_prior_is_off_centre_known_issue(nc_unbiased):
-    """KNOWN ISSUE (todo.md s.5): ic is ONE scalar (-1.5) for 3 layers, the truth is [-2.4, -1.3, -1.15].
-    When the IC prior is fixed (per-layer ic, or a centred scalar) flip this test."""
+def test_ic_prior_is_centred_on_the_layered_truth(nc_unbiased):
+    """todo.md 5.1 (a): per-layer ic, prior mean = ic_true (was +1.8 sigma in layer 0 with one scalar)."""
     ic = nc_unbiased[nc_unbiased.param.str.startswith('ic')].set_index('param')
-    assert ic.flag.all()
-    assert abs(ic.loc['ic (layer 0)', 'bias_sigma'] - 1.8) < 0.05
+    assert len(ic) == 3 and not ic.flag.any()
+    assert np.allclose(ic.nominal_over_truth, 1.0)
+    assert ic.bias_sigma.abs().max() < 0.1          # truncation at [-5, -0.05] barely moves the mean
+
+
+def test_old_scalar_ic_prior_is_still_off_centre():
+    """What nb7 --ic-prior-mean -1.5 runs: the known +1.8 sigma offset in layer 0."""
+    pytest.importorskip('pyCATHY')
+    d = PB.prior_table('NC', 'full_upd', biased=False, n=100_000, ic_scalar=-1.5)
+    ic = d[d.param.str.startswith('ic')].set_index('param')
+    assert ic.flag.any() and abs(ic.loc['ic (layer 0)', 'bias_sigma'] - 1.8) < 0.05

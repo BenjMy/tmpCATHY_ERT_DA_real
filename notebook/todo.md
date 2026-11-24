@@ -27,7 +27,7 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [x] `truth_NC.pkl` was tracked although `*.pkl` is in `.gitignore` → untracked (`git rm --cached`, file kept on disk)
 - [x] Improve `.gitignore`: folders ending with `_meta` and `*.log` files (e.g. `SYN_NC_full_upd_pf_N32_s1_unbiased_issues.log`, see `tmp_treedir_typical.md`)
 - [ ] Run the lighter version: which command? (see section 7)
-- [ ] Run `pf_inbreeding.py` on the real PF run and decide the IC prior fix (see section 5)
+- [ ] Run `pf_inbreeding.py` on the real PF run (the IC prior fix is done, see 5.1 (a); rerun needed)
 
 ## 2. Repository hygiene
 
@@ -69,11 +69,14 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [x] **Found: the initial-condition prior is not centred on the truth, with or without `--prior-bias none`.** `make_scenarios.entries()` hardcodes `ic` = −1.5 (σ 0.5) and nb7 starts the DA model from `ic_values=[[−1.5]]*3`, but the truth is layered `[−2.4, −1.3, −1.15]`: offset **+1.8σ** (layer 0), −0.4σ, −0.7σ → the ensemble mean is wetter than the truth at the top and drier below, which shows up in the profile of (ensemble mean − truth), while the truth can still lie inside the ensemble (|offset| < 2σ). One scalar cannot match 3 layers.
 - [x] Checked and fine (|offset| < 0.06σ): VGP (SATCELL, n, thetar) and Archie (a, m, n) nominals = truth.
 - [x] Ks: sampled as a truncated normal (σ = nominal, lower bound nominal/100) → arithmetic mean ×1.29, median ×1.2 of the truth, but on the log scale the filter uses the offset is only −0.02σ. Not a filter bias; only matters when the arithmetic ensemble-mean Ks is plotted against the truth. (The comment in `make_scenarios.py` about draws piling up at the lower bound is outdated: the library now truncates.)
-- [ ] Decide how to fix the IC prior (changes the results, so not done):
-  - (a) per-layer `ic` parameter (library change), prior mean = `ic_true`
-  - (b) centred scalar for `none` mode: mean of `ic_true` = −1.62 (zero column-average offset, layers still ±)
-  - (c) keep it and document that the IC prior is biased in every case; then the "unbiased" label should be renamed (e.g. `nobias_params`)
-- [ ] Rerun the unbiased PF case after the decision and compare the `*_profiles.png` (mean − truth by depth)
+- [x] **(a) per-layer `ic` parameter (library change), prior mean = `ic_true`** — done (not yet run on a real DA run):
+  - *library (`pycathy_wrapper`, branch `feat/ic-per-layer-material`, patch `0001-pycathy-ic-per-group-material.patch`)*: `ic` accepts `pert_control_name = "material"`: one entry per group (`ic0, ic1, ic2`) with its own mean / sigma / bounds; groups from the new scenario key `ic_layers` (fallback `material_layers`). `DA._update_ic_member` expands the group values to every layer and writes `input/ic` at cycle 0 only (the analysed state is kept afterwards); ES-MDA reads `ini_perturbation`, so it works too (the guard for `layers` is unchanged). 11 tests (`tests/test_ic_material.py`), related suites unchanged (254 passed).
+  - *why `ic_layers` and not `material_layers`*: by depth (`IC_RANGES`, mid-depth rule of `map_param_to_layers`) the ic groups are `[0-5] [6-9] [10-14]`, the soil materials `[0-5] [6-8] [9-14]`: layer 9 (0.36-0.44 m) is material C but in the second ic range.
+  - *this repo*: `make_scenarios.py` writes `ic` as `material` with `per_mean = per_nom = ic_true` (NC `[-2.4, -1.3, -1.15]`, HC `[-1.4, -1.13, -1.13]`), sigma 0.5 per layer, bounds `[-5, -0.05]` and the `ic_layers` key, in every scenario and **with or without** `--prior-bias` (the soil bias never touched ic). nb7 starts the DA model from the group means; `--ic-prior-mean M` is still there and now means "one scalar M for every group" (`-1.5` = the old prior, to compare). `prior_bias_check.py` reports the per-layer offset (now ~0σ) and has `--ic-scalar M` for the old one. 5 new tests (`tests/test_ic_per_layer.py`), `test_prior_bias_check.py` flipped.
+  - *needs the library branch*: `code.pycathy` in `data_path.toml` (or the installed pyCATHY) must contain the patch, otherwise the validator refuses `ic` + `material`.
+  - *consequence*: results of earlier runs are **not comparable** (the `ic` prior changed); `ic0..ic2` replace the single `ic` key in `dict_parm_pert` / `df_DA` parameters. nb4-nb6 (real data) still use their own scalar `ic` scenario.
+- ~~(b) centred scalar for `none` mode (mean of `ic_true` = −1.62)~~ and ~~(c) keep it and rename the "unbiased" label~~: superseded by (a); (c) still applies to a run started with `--ic-prior-mean`.
+- [ ] Rerun the unbiased PF case with the per-layer ic (and once with `--ic-prior-mean -1.5` for the comparison) and compare the `*_profiles.png` (mean − truth by depth)
 - [ ] Other (non-bias) reasons the mean differs from the truth, to separate from the above: finite N (σ/√N), nonlinearity (mean of sw ≠ sw at the mean parameters), PF collapse (5.2)
 
 ### 5.2 Filter inbreeding (`SYN_NC_full_upd_pf_N32_s1_unbiased_issues`)
