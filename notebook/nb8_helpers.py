@@ -139,13 +139,27 @@ def nodes_in_box(points, lo, hi):
     return np.all((p >= np.asarray(lo)) & (p <= np.asarray(hi)), axis=1)
 
 
+def align_on_time(sc_ol, t_target, tol_h=0.01):
+    """Per-time scores of the open loop at the times of t_target (hours, nearest instant within tol_h, else NaN).
+
+    The open loop is a separate run with its own number of cycles (finished, crashed or still running), so it must be
+    matched by time, never by position."""
+    s = sc_ol.sort_index()
+    return s.reindex(pd.Index(np.asarray(t_target, float)), method='nearest', tolerance=tol_h)
+
+
 def summarize_run(sc_da, sc_ol=None, t_from_h=None, t_h=None):
-    """One row of the summary table from per-time scores (mean over cycles >= t_from_h)."""
+    """One row of the summary table from per-time scores (mean over cycles >= t_from_h).
+
+    sc_da / sc_ol are indexed by time [h]. The open loop is matched to the DA cycles by time (align_on_time):
+    DA cycles without an open-loop output at the same instant are left out of rmse_ol (NaN-mean)."""
     sel = np.ones(len(sc_da), bool) if t_from_h is None else np.asarray(t_h) >= t_from_h
     row = {k: float(sc_da[k][sel].mean()) for k in ('rmse', 'bias', 'spread_skill', 'coverage', 'crps')}
     row['rmse_final'] = float(sc_da['rmse'].iloc[-1])
     if sc_ol is not None:
-        row['rmse_ol'] = float(sc_ol['rmse'][sel].mean())
+        t_da = sc_da.index.values if t_h is None else np.asarray(t_h)
+        ol = align_on_time(sc_ol, t_da)['rmse'].to_numpy()[sel]
+        row['rmse_ol'] = float(np.nanmean(ol)) if np.isfinite(ol).any() else np.nan
         row['skill_vs_ol'] = 1.0 - row['rmse'] / row['rmse_ol'] if row['rmse_ol'] > 0 else np.nan
     return row
 
