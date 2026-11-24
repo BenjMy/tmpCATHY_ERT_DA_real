@@ -28,6 +28,7 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [x] Improve `.gitignore`: folders ending with `_meta` and `*.log` files (e.g. `SYN_NC_full_upd_pf_N32_s1_unbiased_issues.log`, see `tmp_treedir_typical.md`)
 - [x] Run the lighter version: `CASE=NC DA=pf BIAS=none NENS=32 EXTRA="--store-full analysis --store-stride 10 --cleanup-vtk all" ./run_twin.sh pair full_upd` (wrap in `lighter_protocol.py measure` to record time / RSS / disk, see 7.0). *Scenarios run on the workstation, results not yet interpreted: see 7.6*
 - [ ] Interpret the scenarios already run: send the files listed in 7.6
+- [ ] Send a colleague the results: `python export_results.py ~/share/twin_results --zip`
 - [ ] Run `pf_inbreeding.py` on the real PF run (the IC prior fix is done, see 5.1 (a); rerun needed)
 
 ## 2. Repository hygiene
@@ -189,6 +190,7 @@ of weak-signal quadrupoles (see nc_model.unreliable_quadrupoles: homogeneous tes
 
 **Comparison analysis: what exists / what is missing**
 - Exists: `lighter_protocol.py accept` (scores of lighter vs baseline seeds: within the baseline seed-to-seed std, needs >= 2 baseline seeds), `run_manifest.py compare <run_a> <run_b>` (what differs between two runs), nb8 `compare_*` figures and tables (`compare-da`, `compare-scenarios`, `compare-bias`, `compare-nens`), `ligher_run.py report`
+- [x] `export_results.py OUT_DIR [--runs GLOB] [--only-ok] [--figures none|compare|all] [--zip]`: packages the files above + `overview.csv` (registry + disk + key scores per run) + `README.txt` for a colleague; copies, recomputes nothing (README section "Sharing the results")
 - [ ] Table of 7.5 (option, disk / RAM / time saved, score change): a `lighter_protocol.py table` subcommand joining the measure json, the report and the summary.csv of baseline vs lighter. *Not implemented*
 - [ ] Run baseline and lighter on 3 seeds each (`SEED=1 2 3`), otherwise `accept` cannot decide
 - [ ] The PF run `SYN_NC_full_upd_pf_N32_s1_unbiased` had only 9 cycles when plotted (`INCLUDE_RUNNING=1`): rerun `plots` once finished, its scores are partial until then

@@ -346,6 +346,18 @@ python notebook/lighter_protocol.py accept base_s1.csv base_s2.csv base_s3.csv -
 `run_manifest.py compare <run_a> <run_b>` checks that only the intended option changed between the two runs.
 Nothing was measured on a real DA run yet: the sizes above are those of `notebook/synthetic_twin_plan.md` section 16.
 
+**Sharing the results with a colleague**
+
+```bash
+python notebook/export_results.py ~/share/twin_results --zip                  # all runs, compare_*.png figures
+python notebook/export_results.py ~/share/nc_pf --runs 'SYN_NC_*_pf_*' --only-ok --figures all
+```
+
+It copies what already exists (nb8 `summary.csv` / `parameters_summary.csv`, figures, the registry, per-run
+`manifest.json`, `run_meta.json`, issues log and, for failed runs, the end of the run log) and writes one
+`overview.csv` (a row per run: status, duration, disk, key scores) and a `README.txt` that explains the columns.
+Nothing is recomputed; states, vtk and pickles are never copied.
+
 ---
 
 ## Status and limits
