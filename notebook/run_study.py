@@ -174,12 +174,15 @@ def call_logged(cmd, log_path, env=None):
         return -1, f'{type(e).__name__}: {e}'
 
 
-def mark_failed_in_registry(registry, name, log):
-    """The child may die before it registers itself (import error, bad argument): same safety net as run_matrix.py."""
+def mark_failed_in_registry(registry, name, log, sim_dir=None):
+    """The child may die before it registers itself (import error, bad argument): same safety net as run_matrix.py.
+    The row is the one of the run in `sim_dir` (the same name in another folder is another row)."""
     try:
-        row = next((r for r in RR.read(registry) if r['run'] == name), None)
+        folder = os.path.join(sim_dir, name) if sim_dir else None
+        row = RR.find(name, folder, registry)
         if row is None or row['status'] in ('started', ''):
-            RR.upsert(name, registry, status='failed', finished=time.strftime('%Y-%m-%d %H:%M:%S'), log=log)
+            RR.upsert(name, registry, status='failed', finished=time.strftime('%Y-%m-%d %H:%M:%S'), log=log,
+                      folder=folder)
     except Exception as e:                                                   # the registry never stops a study
         print(f"    [registry] not updated: {type(e).__name__}: {e}")
 
@@ -209,7 +212,7 @@ def execute_runs(runs, a, sim_dir, log_dir):
             else:
                 res['result'] = 'FAILED'
                 res['reason'] = err or f"rc={rc}, status={st}: {log_tail(log)}"
-                mark_failed_in_registry(a.registry, r['name'], log)
+                mark_failed_in_registry(a.registry, r['name'], log, sim_dir)
             print(f"    {res['result']} in {res['minutes']:.1f} min -> {log}" + (f"\n    {res['reason']}" if res['reason'] else ''))
         results.append(res)
         if res['result'] == 'FAILED' and a.stop_on_fail:

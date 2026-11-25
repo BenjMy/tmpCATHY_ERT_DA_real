@@ -105,10 +105,11 @@ for k, (name, cmd) in enumerate(runs, 1):
         rc = subprocess.call(cmd, stdout=log, stderr=subprocess.STDOUT)
     res = 'ok' if rc == 0 and status(name) == 'finished' else f'FAILED (rc={rc}, status={status(name)})'
     if not res == 'ok':      # nb7 may have died before it could register itself (import error, bad argument ...)
-        _row = next((r for r in RR.read() if r['run'] == name), None)
+        _dir = os.path.join(sim_dir, name)
+        _row = RR.find(name, _dir)
         if _row is None or _row['status'] in ('started', ''):
             RR.upsert(name, status='failed', finished=time.strftime('%Y-%m-%d %H:%M:%S'),
-                      log=os.path.join(a.log_dir, name + '.log'))
+                      log=os.path.join(a.log_dir, name + '.log'), folder=_dir)
     print(f"    {res} in {(time.time() - t0) / 60:.1f} min -> {a.log_dir}/{name}.log")
     summary.append((name, res))
     if res != 'ok' and a.stop_on_fail:

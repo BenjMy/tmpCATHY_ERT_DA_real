@@ -73,7 +73,9 @@ def _num(x):
 
 def list_runs(P, globs=None, only_ok=False):
     """Registry rows (dict) of the selected runs, plus run folders on disk the registry does not know."""
-    rows = {r['run']: dict(r) for r in RR.read(P.run_registry)}
+    _sims = os.path.abspath(P.simulations)       # the registry is shared by all folders: keep this folder's rows
+    rows = {r['run']: dict(r) for r in RR.read(P.run_registry)
+            if not r.get('folder') or os.path.dirname(os.path.abspath(r['folder'])) == _sims}
     if os.path.isdir(P.simulations):
         for d in sorted(os.listdir(P.simulations)):
             full = os.path.join(P.simulations, d)

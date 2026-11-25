@@ -335,9 +335,11 @@ Good signs: coverage towards 0.9, spread_skill towards 1, `mean_contraction` bel
 All commands are run from `notebook/`. Add `--dry-run` to any `run_study.py` call to see what it would do.
 
 **Where are my runs?** Quick studies write to `<simulations>_n<N>/`, every variant to the `--sim-dir` you gave.
-The registry (`registry/runs_registry.csv`) has **one row per run name, shared by all folders**: the same name run
-in two folders (baseline and `--sim-dir ../simulations_lognormal`, say) gives one row, the last run wins. The
-per-folder truth is `<sim-dir>/<run>_meta/run_meta.json` (this is what `run_study.py` reads to skip a run).
+The registry (`registry/runs_registry.csv`) has **one row per run name and run folder**: the same name run
+in two folders (baseline and `--sim-dir ../simulations_lognormal`, say) gives two rows, and the `sim_dir` column of
+`run_registry.py list` tells them apart (`--sim-dir DIR` keeps one folder). Rows written before this change have no
+folder and are completed by the next run of that name. The per-folder truth is still
+`<sim-dir>/<run>_meta/run_meta.json` (this is what `run_study.py` reads to skip a run).
 
 ```bash
 ls -d ../simulations*                                    # candidate folders
@@ -380,15 +382,15 @@ python plots_synthetic.py --case NC --sim-dir ../simulations_n10 \
     --runs SYN_NC_ic_Ks_upd_enkf_N16_s42_n10 SYN_NC_ic_Ks_upd_enkf_N16_s42_noDA_n10   # one DA run + its open loop
 
 # every finished EnKF run of N=16 (the open loops are named ..._enkf_..._noDA, so they are included)
-RUNS=$(python run_registry.py list | awk '$2=="finished" && $1 ~ /^SYN_NC_/ && $1 ~ /_enkf_/ && $1 ~ /_N16_/ {print $1}')
+RUNS=$(python run_registry.py list --sim-dir ../simulations_n10 | awk '$2=="finished" && $1 ~ /^SYN_NC_/ && $1 ~ /_enkf_/ && $1 ~ /_N16_/ {print $1}')
 python plots_synthetic.py --case NC --sim-dir ../simulations_n10 --runs $RUNS
 
 # every finished PF run of N=16, plus the open loops they are compared with
-RUNS=$(python run_registry.py list | awk '$2=="finished" && $1 ~ /^SYN_NC_/ && $1 ~ /_N16_/ && ($1 ~ /_pf_/ || $1 ~ /_noDA/) {print $1}')
+RUNS=$(python run_registry.py list --sim-dir ../simulations_n10 | awk '$2=="finished" && $1 ~ /^SYN_NC_/ && $1 ~ /_N16_/ && ($1 ~ /_pf_/ || $1 ~ /_noDA/) {print $1}')
 python plots_synthetic.py --case NC --sim-dir ../simulations_n10 --runs $RUNS --out ../figures_pf_only
 ```
 
-The registry lists names of all folders: a name that is not in the `--sim-dir` you give is reported as missing.
+The registry lists the runs of all folders: add `--sim-dir ../simulations_n10` to `run_registry.py list` to keep the ones of the folder you plot.
 Look at the table of a study:
 
 ```bash
@@ -554,7 +556,7 @@ the EnKF/PF forecasts (`states_kind` in `summary.csv`).
 ## 8. Run registry
 
 Every run is recorded in the CSV `[outputs].run_registry` (default `registry/runs_registry.csv`) so you can
-see what has been done and what has not. One row per run name, updated in place
+see what has been done and what has not. One row per run name and run folder, updated in place
 (`started` -> `finished` | `failed`; a run that dies without reporting is closed as `failed` when the process
 exits):
 

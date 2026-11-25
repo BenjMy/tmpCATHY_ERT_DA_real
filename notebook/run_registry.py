@@ -1,7 +1,8 @@
 """CSV registry of the runs: what has been done and what has not.
 
-One row per run name in [outputs].run_registry of data_path.toml (default registry/runs_registry.csv),
-updated in place. Each tracked run also gets <simulations>/<run>_meta/manifest.json (code versions + branches of
+One row per (run name, run folder) in [outputs].run_registry of data_path.toml (default registry/runs_registry.csv),
+updated in place: the same run name in two --sim-dir folders gives two rows (the row of a run without folder is
+the legacy one and is adopted by the first run that gives its folder). Each tracked run also gets <simulations>/<run>_meta/manifest.json (code versions + branches of
 CATHY DA ERT / pyCATHY / CATHY, inputs hashes, environment: see run_manifest.py); `track(..., manifest=False)` skips it. Safe with parallel runs (file lock + atomic rewrite). A registry problem never stops a run:
 it is reported in one line.
 
@@ -13,7 +14,7 @@ In a driver script:
     REG.finish('finished')            # or 'failed'; if the process ends without it, the row becomes 'failed'
 
 Command line:
-    python run_registry.py list [--status failed] [--case NC] [--kind real]
+    python run_registry.py list [--status failed] [--case NC] [--kind real] [--sim-dir DIR]
     python run_registry.py summary
     python run_registry.py backfill [--sim-dir DIR]              # register runs already on disk
 """
@@ -84,13 +85,38 @@ def _write(rows, p):
     os.replace(tmp, p)
 
 
+def _norm(folder):
+    return os.path.abspath(os.path.expanduser(str(folder))) if folder else ''
+
+
+def _find(rows, run, folder=''):
+    """Row of `run` in `folder`. A row without folder (legacy / written before the folder was known) matches any
+    folder. Without `folder` the last row of that name is returned (the safety nets that do not know it)."""
+    same = [r for r in rows if r['run'] == run]
+    if not folder:
+        return same[-1] if same else None
+    for r in same:
+        if _norm(r.get('folder')) == folder:
+            return r
+    return next((r for r in same if not r.get('folder')), None)
+
+
+def find(run, folder=None, path=None):
+    """Registry row (dict) of `run` in `folder`, or None."""
+    return _find(read(path), run, _norm(folder))
+
+
 def upsert(run, path=None, **fields):
-    """Create or update the row of `run` (unknown fields are ignored, None values keep the old value)."""
+    """Create or update the row of (`run`, `folder`) (unknown fields are ignored, None values keep the old value).
+    `folder` is the run folder: the same name in another folder is another row."""
     p = registry_path(path)
+    folder = _norm(fields.get('folder'))
+    if folder:
+        fields['folder'] = folder
     try:
         with _Lock(p):
             rows = read(p)
-            row = next((r for r in rows if r['run'] == run), None)
+            row = _find(rows, run, folder)
             if row is None:
                 row = {c: '' for c in COLUMNS}
                 row['run'] = run
@@ -119,6 +145,7 @@ def manifest_dir(run, path=None):
 class Tracker:
     def __init__(self, run, path=None, manifest=True, **fields):
         self.run, self.path, self.done = run, path, False
+        self.folder = fields.get('folder')
         self.t0 = time.time()
         self.meta_dir = None
         fields.setdefault('status', 'started')
@@ -151,7 +178,8 @@ class Tracker:
         if self.meta_dir:
             import run_manifest as RM
             RM.update(self.meta_dir, status=status, finished=finished, duration_min=dur)
-        upsert(self.run, self.path, status=status, finished=finished, duration_min=dur, **extra)
+        upsert(self.run, self.path, status=status, finished=finished, duration_min=dur,
+               folder=self.folder, **extra)
 
     def _at_exit(self):
         if not self.done:                        # crashed / killed by an exception without finish()
@@ -179,7 +207,7 @@ def backfill(sim_dir=None, path=None, logs_dir=None):
     if not os.path.isdir(sim_dir):
         print(f"[run_registry] no simulations folder: {sim_dir}")
         return 0
-    have = {r['run']: r for r in read(path)}
+    have = read(path)
     n = 0
     for d in sorted(os.listdir(sim_dir)):
         full = os.path.join(sim_dir, d)
@@ -190,7 +218,8 @@ def backfill(sim_dir=None, path=None, logs_dir=None):
             except (OSError, ValueError):
                 continue
             run = m.get('run') or d[:-5]
-            if run in have and have[run]['status'] in ('finished', 'failed'):
+            _r = _find(have, run, _norm(os.path.join(sim_dir, run)))
+            if _r and _r['status'] in ('finished', 'failed'):
                 continue
             log = os.path.join(logs_dir, run + '.log')
             upsert(run, path, kind='synthetic', case=m.get('case'), scenario=m.get('scenario'),
@@ -204,7 +233,8 @@ def backfill(sim_dir=None, path=None, logs_dir=None):
             da = {'PF_': 'pf', 'ESMDA_': 'esmda', None: 'enkf'}[g['m']]
             ok = os.path.isfile(os.path.join(full, d + '_finished.txt')) or os.path.isfile(
                 os.path.join(full, d + '_esmda_result.pkl'))
-            if d in have and have[d]['status'] in ('finished', 'failed'):
+            _r = _find(have, d, _norm(full))
+            if _r and _r['status'] in ('finished', 'failed'):
                 continue
             upsert(d, path, kind='real', case='NC', scenario=g['sc'], da_type=da, with_da=g['w'] == 'withDA',
                    status='finished' if ok else 'incomplete', folder=full)
@@ -228,19 +258,25 @@ def main(argv=None):
     ap.add_argument('--status', default=None)
     ap.add_argument('--case', default=None)
     ap.add_argument('--kind', default=None, choices=['synthetic', 'real'])
-    ap.add_argument('--sim-dir', default=None)
+    ap.add_argument('--sim-dir', default=None,
+                    help='backfill: folder to scan; list/summary: only the runs of that simulations folder')
     a = ap.parse_args(argv)
     if a.cmd == 'backfill':
         n = backfill(a.sim_dir, a.registry)
         print(f"{n} run(s) registered in {registry_path(a.registry)}")
         return 0
     rows = read(a.registry)
+    if a.sim_dir:                                # rows of one folder (a row without folder is kept: unknown)
+        want = _norm(a.sim_dir)
+        rows = [r for r in rows if not r.get('folder') or os.path.dirname(_norm(r['folder'])) == want]
+    for r in rows:
+        r['sim_dir'] = os.path.basename(os.path.dirname(r['folder'].rstrip('/'))) if r.get('folder') else '?'
     for k in ('status', 'case', 'kind'):
         v = getattr(a, k)
         if v:
             rows = [r for r in rows if r[k] == v]
     if a.cmd == 'list':
-        _table(rows, ['run', 'status', 'started', 'duration_min', 'git_commit'])
+        _table(rows, ['run', 'status', 'started', 'duration_min', 'git_commit', 'sim_dir'])
         print(f"{len(rows)} run(s) in {registry_path(a.registry)}")
     else:
         from collections import Counter

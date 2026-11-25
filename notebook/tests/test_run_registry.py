@@ -75,3 +75,42 @@ def test_cli_list_and_summary(tmp_path, capsys):
     assert 'B' in out and '1 run(s)' in out
     assert RR.main(['summary', '--registry', p]) == 0
     assert "'failed': 1" in capsys.readouterr().out
+
+
+def test_same_name_in_two_folders_gives_two_rows(tmp_path):
+    p = str(tmp_path / 'r.csv')
+    base, logn = str(tmp_path / 'simulations_n10'), str(tmp_path / 'simulations_lognormal')
+    RR.upsert('R', p, status='finished', git_commit='18430b5', folder=os.path.join(base, 'R'))
+    RR.upsert('R', p, status='started', git_commit='ebe5786', folder=os.path.join(logn, 'R'))
+    RR.upsert('R', p, status='finished', folder=os.path.join(logn, 'R'))
+    rows = RR.read(p)
+    assert len(rows) == 2
+    assert RR.find('R', os.path.join(base, 'R'), p)['git_commit'] == '18430b5'      # not overwritten
+    assert RR.find('R', os.path.join(logn, 'R'), p)['git_commit'] == 'ebe5786'
+    assert RR.find('R', os.path.join(tmp_path, 'other', 'R'), p) is None
+
+
+def test_legacy_row_without_folder_is_adopted(tmp_path):
+    p = str(tmp_path / 'r.csv')
+    RR.upsert('R', p, status='finished')
+    RR.upsert('R', p, status='started', folder=str(tmp_path / 'sims' / 'R'))
+    rows = RR.read(p)
+    assert len(rows) == 1 and rows[0]['folder'] == str(tmp_path / 'sims' / 'R')
+
+
+def test_tracker_finish_updates_its_own_folder_row(tmp_path):
+    p = str(tmp_path / 'r.csv')
+    RR.upsert('R', p, status='finished', folder=str(tmp_path / 'a' / 'R'))
+    t = RR.track('R', p, manifest=False, folder=str(tmp_path / 'b' / 'R'))
+    t.finish('failed')
+    by = {os.path.basename(os.path.dirname(r['folder'])): r['status'] for r in RR.read(p)}
+    assert by == {'a': 'finished', 'b': 'failed'}
+
+
+def test_cli_list_sim_dir_filter(tmp_path, capsys):
+    p = str(tmp_path / 'r.csv')
+    RR.upsert('A', p, status='finished', folder=str(tmp_path / 's1' / 'A'))
+    RR.upsert('B', p, status='finished', folder=str(tmp_path / 's2' / 'B'))
+    assert RR.main(['list', '--registry', p, '--sim-dir', str(tmp_path / 's1')]) == 0
+    out = capsys.readouterr().out
+    assert 'A ' in out and 'B ' not in out and '1 run(s)' in out
