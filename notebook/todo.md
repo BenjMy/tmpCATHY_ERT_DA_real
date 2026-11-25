@@ -30,6 +30,7 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [ ] Interpret the scenarios already run: send the files listed in 7.6
 - [ ] Send a colleague the results: `python export_results.py ~/share/twin_results --zip`
 - [ ] Run `pf_inbreeding.py` on the real PF run (the IC prior fix is done, see 5.1 (a); rerun needed)
+- [ ] Write the series of tests that the twin (DA model) is set up like the truth: mesh and layers, materials, `ic`, `atmbc`, times, observations (see 5.3)
 
 ## 2. Repository hygiene
 
@@ -101,6 +102,37 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [ ] Run the 5 tests of README "If the ensembles collapse" (N 32/64, inflation, log-normal Ks, PF jitter + resample threshold, unbiased prior) and compare `summary.csv` / `parameters_summary.csv`. *Seen at N=16 (4 scenarios, seed 42): state coverage <= 0.03 (PF `ic_VGP_Ks_upd` 0.31), parameter contraction 0.94-0.9998, `frac_truth_in_90` ~ 0, z final 89-14668; Ks relative error 5.2 -> 15.5 (EnKF) / 5.4 (PF) in `ic_Ks_upd`*
 - [ ] Candidate remedies, each to TEST (nothing changed): `pf_jitter_std_state` > 0 (now `--pf-jitter-std-state`); larger N; resample only when N_eff < N/2 (check first that the weights are carried between cycles when not resampling: not verified); use the PF only for parameters
 - [ ] pyCATHY side: store the resampling indices per cycle (tiny change in `pf.py` / `AnalysisResult.extra`) so the genealogy is exact instead of reconstructed
+
+### 5.3 Twin set-up must match the truth run (series of tests)
+
+*Why: the truth (`synthetic_truth_ert.py`, nb6) and the DA model (`da_ert_synthetic.py` -> `model_config.setup_model`) are built by two different scripts. Anything that differs besides the declared prior (soil bias, `ic` prior, Ks prior) is an unintended bias and would be read as a filter problem. Already checked in the code: `delta` (assert in `da_ert_synthetic.py`) and the noise % (warning). Everything else below is NOT checked yet.*
+
+*Reference = the `truth_<CASE>.pkl` (keys `delta, atm_times, nodes, soil_table, ic_nodes, params, archie_truth, fwd_mesh, da_mesh, ert_frame, surveys, tdr_nodes, ...`). Target = the DA project built by `setup_model` (CATHY input files in `<run>/input/`) with `--prior-bias none` and the truth parameters. Idea: build the DA model WITHOUT running CATHY (`dry-run` / preprocessor only) and compare it with the truth, for NC and HC. Put them in `tests/test_twin_vs_truth.py`; the ones that need CATHY/pyCATHY are skipped when it is not installed (like `test_nb5_dryrun.py`).*
+
+- [ ] **Mesh / geometry**
+  - [ ] same 3D mesh: number of nodes and elements, node coordinates (`truth['nodes']` vs DA mesh points), same DEM / surface and bottom elevations
+  - [ ] number of layers (z-layers of the CATHY mesh) equal in truth and DA; layer thickness / depth of each layer identical
+  - [ ] ERT forward mesh (`fwd_mesh`) and DA mesh (`da_mesh`) are the files the truth records, and the ERT frame (`signs`, `shift`, `origin`) is the same
+  - [ ] TDR / sensor nodes (`tdr_nodes`, `tdr_depths`) are the same nodes in the DA observation operator
+- [ ] **Materials / soil**
+  - [ ] number of soil zones and materials (`soil_table`) equal; mapping layer -> material (NC `[0-5] [6-8] [9-14]`, see 5.1 (a)) identical
+  - [ ] with `--prior-bias none`: every (zone, material) of the DA soil table = truth value (Ks, SATCELL / porosity, n, VGP, thetar, ...); with `--biased`: differs exactly by `biased_overrides()` and nothing else (check the factors)
+  - [ ] porosity per node (`porosity_nodes`) and the porosity used by Archie in the ERT forward model (`porosity_mode`) are the same
+  - [ ] Archie truth vs prior (`archie_truth`, `archie_prior`, `rFluid`): the DA nominals = truth when unbiased
+- [ ] **Initial condition**
+  - [ ] DA `input/ic` at cycle 0 = `truth['ic_nodes']` mapped by layer (per-layer `ic_true`, NC `[-2.4, -1.3, -1.15]`, HC `[-1.4, -1.13, -1.13]`), with the old scalar `--ic-prior-mean` flagged as a known difference
+  - [ ] same unit / convention (pressure head vs saturation) and same spin-up / `stabilize_period`
+- [ ] **Atmospheric boundary conditions and time**
+  - [ ] `atmbc` of the DA run = truth `atm_times` and values (rain / irrigation, ETp): same number of rows, same times, same units
+  - [ ] time vector: `build_times(ert_times)` == `atm_times` (already used for an assert in `da_ert_synthetic.py` line ~285: extend to the values), same `sw_time`, same ERT survey times (`surveys[*]['t_h_irr']`)
+  - [ ] with `--n-times N`: the first N surveys only, and the truth is cut at the same last survey
+- [ ] **Other CATHY inputs**: boundary conditions (nodal / surface), root map / ET parameters, `parm` file (solver tolerances, time stepping, `DELTAT`, `TMAX`), `soil` file ordering, output times (`IPRT`), `delta` -> all identical between truth and DA input folders
+- [ ] **Observations**
+  - [ ] ERT data of the twin = the truth data (same electrode sequence, geometry, noise type / % / seed: `truth['noise']` vs `ERT_DATA_ERR`); error model used in the filter = the noise added to the truth
+  - [ ] TDR sigma (`tdr_sigma`) in the filter = the one used to perturb the virtual TDR
+- [ ] **Open-loop sanity test (cheap)**: run the DA model with `noDA`, unbiased prior, no perturbation (N=1 / all members at the nominal) and compare its states with the truth `sw` / `psi`: they must agree to solver precision. If not, the set-up differs somewhere in the list above, before any filter is involved
+- [ ] Report the diff as a table (item, truth, DA, OK / DIFF) written to `<run>_meta/twin_vs_truth.json`, and register it in the manifest so a run with a DIFF is visible in the registry
+- [ ] Same checks for the HC case (the HC runs failed at 13:02 before the pycathy patch: first `CASE=HC ./run_twin.sh truth` must pass)
 
 ## 6. Warnings to check
 
