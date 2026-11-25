@@ -203,14 +203,37 @@ def parm_evolution(entry):
     return np.vstack([np.pad(r, (0, n - len(r)), constant_values=np.nan) for r in rows])
 
 
-def parameter_table(dpp, names, scenario, soil_table, archie_truth):
+def nearest_index(t_array, t):
+    """Position of the element of t_array closest to t (same instant, not same position); None if t_array is empty."""
+    a = np.asarray(t_array, float).ravel()
+    return int(np.argmin(np.abs(a - t))) if a.size else None
+
+
+def parameter_evolution(name, dpp, params_ds=None):
+    """[n_step + 1, n_member] ensemble of one parameter: from dict_parm_pert (prior, then each analysed ensemble);
+    when it has no entry, from params_ds (ES-MDA, one variable per parameter, dims (iteration, member) or
+    (member, iteration)). Raises KeyError when neither holds the parameter."""
+    if isinstance(dpp, dict) and isinstance(dpp.get(name), dict) and 'ini_perturbation' in dpp[name]:
+        return parm_evolution(dpp[name])
+    if params_ds is not None and name in params_ds:
+        v = params_ds[name]
+        arr = np.asarray(v, float)
+        dims = [str(d).lower() for d in getattr(v, 'dims', ())]
+        if arr.ndim == 2 and len(dims) == 2 and any(k in dims[0] for k in ('member', 'ens')):
+            arr = arr.T                                       # -> (iteration, member)
+        return arr
+    raise KeyError(f"no ensemble stored for parameter '{name}'")
+
+
+def parameter_table(dpp, names, scenario, soil_table, archie_truth, params_ds=None):
     """Per parameter: truth, prior / final mean and sd, bias in sd (z), contraction 1 - sd_post/sd_prior,
     and 'truth_in_90' (truth inside the final 5-95 % range). Only parameters with a stored ensemble."""
     rows = []
     for p in names:
-        if p not in dpp or not isinstance(dpp[p], dict) or 'ini_perturbation' not in dpp[p]:
+        try:
+            ev = parameter_evolution(p, dpp, params_ds)
+        except KeyError:
             continue
-        ev = parm_evolution(dpp[p])
         t = truth_of_parameter(p, scenario, soil_table, archie_truth)
         m0, s0 = np.nanmean(ev[0]), np.nanstd(ev[0], ddof=1)
         m1, s1 = np.nanmean(ev[-1]), np.nanstd(ev[-1], ddof=1)
