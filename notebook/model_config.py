@@ -60,7 +60,7 @@ CASES = {
               2: {'A': _soil(3e-7, 3e-7, 0.5e-8, 0.35, 0.55, 1.28, 0.045)}},
         # nb2 never sets zone 2 below layer 6: those rows keep the init_soil_SPP_map_df defaults.
         # False = faithful to nb2 (and warns); True = copy zone 1 (materials B, C) into zone 2.
-        zone2_fill_below=False,
+        zone2_fill_below=True,
         # Checked against st1t00.tldat (HC campaign): the 72 electrodes are IDENTICAL to NC, so the NC .shm is
         # valid as an electrode file (and for meshForward). The QUADRUPOLES differ (HC 4911 vs NC 4790, 4771
         # in common, 2203 good rows vs 2837): they always come from the HC data files themselves (templates).
@@ -284,6 +284,9 @@ def setup_model(simu, case='NC', ic_values=None, extra_times=None, soil_override
         nzones = int(zones.max())
     df = simu.init_soil_SPP_map_df(nzones=nzones, nstr=NSTR)
     fill_soil_df(df, cfg, soil_overrides)
+    _bad = df[SOIL_COLS].isna().any(axis=1)
+    if _bad.any():
+        warnings.warn(f"{int(_bad.sum())} soil rows have NaN values (zone, layer): {list(df.index[_bad])[:6]}...")
     simu.update_soil(SPP_map=df, FP_map=FP, PMIN=-1e12)
 
     ltop, lbot = mt.get_layer_depths(simu.dem_parameters)

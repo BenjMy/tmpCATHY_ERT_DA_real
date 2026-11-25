@@ -329,6 +329,133 @@ print(pd.concat({d: pd.read_csv(f'../{d}/figures_nb8/NC/summary.csv').set_index(
 ```
 Good signs: coverage towards 0.9, spread_skill towards 1, `mean_contraction` below 1 with `frac_truth_in_90` above 0.
 
+<details>
+<summary>Cookbook: diagnostics, plots, redoing runs, HC, which code ran</summary>
+
+All commands are run from `notebook/`. Add `--dry-run` to any `run_study.py` call to see what it would do.
+
+**Where are my runs?** Quick studies write to `<simulations>_n<N>/`, every variant to the `--sim-dir` you gave.
+The registry (`registry/runs_registry.csv`) has **one row per run name, shared by all folders**: the same name run
+in two folders (baseline and `--sim-dir ../simulations_lognormal`, say) gives one row, the last run wins. The
+per-folder truth is `<sim-dir>/<run>_meta/run_meta.json` (this is what `run_study.py` reads to skip a run).
+
+```bash
+ls -d ../simulations*                                    # candidate folders
+python run_registry.py list --status finished --case NC  # what the registry says
+python run_registry.py list --status failed              # what to fix
+python run_registry.py summary                           # counts per status / case / DA type
+ls ../simulations_n10 | grep _meta | head                # runs present in one folder
+```
+
+**Diagnostics and plots through `run_study.py --stage diag`** (no simulation is started). Give the same
+selectors as for the simulations (`--nens`, `--scenarios`, `--cases`, ...) and the `--sim-dir` of the folder:
+
+```bash
+# every NC run of the study in the default quick folder
+python run_study.py --stage diag --nens 16 --scenarios ic ic_Ks_upd ic_VGP_Ks_upd full_upd
+
+# one DA type at a time (the open loop is always included: it is shared by the DA types)
+python run_study.py --stage diag --da enkf --nens 16 --scenarios ic ic_Ks_upd ic_VGP_Ks_upd full_upd
+python run_study.py --stage diag --da pf   --nens 16 --scenarios ic ic_Ks_upd ic_VGP_Ks_upd full_upd
+
+# one scenario, one folder (variant runs: set the same environment variable as for the simulations)
+KS_PRIOR=lognormal KS_SIGMA_LOG=0.5 python run_study.py --stage diag --scenarios ic_Ks_upd --nens 16 \
+    --sim-dir ../simulations_lognormal
+
+# options of plots_synthetic.py through --diag-extra
+python run_study.py --stage diag --scenarios ic_Ks_upd --nens 16 --diag-extra "--detail-seed 42 --t-from-h 24"
+python run_study.py --stage diag --scenarios ic_Ks_upd --nens 16 --diag-extra "--no-detail"   # tables + comparison figures only
+python run_study.py --stage diag --scenarios ic_Ks_upd --nens 16 --diag-extra "--debug"       # tracebacks instead of one line
+```
+
+Scenarios you have not run are reported by the diagnostics, not silently skipped: list only the ones that exist.
+Results: `<sim-dir>/figures_nb8/<CASE>/` (`summary.csv`, `parameters_summary.csv`, `compare_*.png`, per-run figures).
+
+**Diagnostics and plots with `plots_synthetic.py` directly** (any selection of runs, partial runs included):
+
+```bash
+python plots_synthetic.py --case NC --sim-dir ../simulations_n10               # every finished DA run of the case
+python plots_synthetic.py --case NC --sim-dir ../simulations_n10 --include-running   # also runs not finished (partial cycles)
+python plots_synthetic.py --case NC --sim-dir ../simulations_n10 \
+    --runs SYN_NC_ic_Ks_upd_enkf_N16_s42_n10 SYN_NC_ic_Ks_upd_enkf_N16_s42_noDA_n10   # one DA run + its open loop
+
+# every finished EnKF run of N=16 (the open loops are named ..._enkf_..._noDA, so they are included)
+RUNS=$(python run_registry.py list | awk '$2=="finished" && $1 ~ /^SYN_NC_/ && $1 ~ /_enkf_/ && $1 ~ /_N16_/ {print $1}')
+python plots_synthetic.py --case NC --sim-dir ../simulations_n10 --runs $RUNS
+
+# every finished PF run of N=16, plus the open loops they are compared with
+RUNS=$(python run_registry.py list | awk '$2=="finished" && $1 ~ /^SYN_NC_/ && $1 ~ /_N16_/ && ($1 ~ /_pf_/ || $1 ~ /_noDA/) {print $1}')
+python plots_synthetic.py --case NC --sim-dir ../simulations_n10 --runs $RUNS --out ../figures_pf_only
+```
+
+The registry lists names of all folders: a name that is not in the `--sim-dir` you give is reported as missing.
+Look at the table of a study:
+
+```bash
+column -s, -t < ../simulations_n10/figures_nb8/NC/summary.csv | less -S
+tail -n 40 logs/diagnostics_NC.log          # the "status per run" block explains an rc=1
+```
+
+**Redoing runs.** A run whose status is `failed` or `started` is rerun by the same command, no `--force` needed;
+`--force` is only for runs that are `finished`. The selectors cannot pick one run, but they can isolate it:
+
+```bash
+python run_study.py --scenarios ic_Ks_upd --nens 16 --force --dry-run               # preview: what a forced rerun would do
+python run_study.py --scenarios ic_Ks_upd --nens 16 --force                         # EnKF + PF + open loop again
+python run_study.py --scenarios full_upd --nens 16 --da pf --no-open-loop --force   # the PF run only
+python run_study.py --scenarios full_upd --nens 16 --da enkf --no-open-loop --force # the EnKF run only
+cp -r ../simulations_lognormal ../simulations_lognormal_backup                      # before a forced rerun you may want to compare with
+```
+
+To find out why a run failed:
+
+```bash
+python run_registry.py list --status failed
+tail -n 30 logs/SYN_NC_full_upd_pf_N16_s42_n10.log
+python run_manifest.py show SYN_NC_full_upd_pf_N16_s42_n10      # code versions, inputs, command, traceback
+python diag_pf_run.py SYN_NC_full_upd_pf_N16_s42_n10            # inbreeding, dead members, parameter collapse
+```
+
+**HC case.** HC has 2 soil zones (compacted band): the soil table has `nzone x nstr` rows (zone first, then
+layer) and the 3D property mapping of pyCATHY must give one marker per (zone, layer). With a pyCATHY that only knows
+layer markers, `./run_twin.sh truth` stops with `Mismatch between property map (len=30) and unique mesh cell markers
+(len=15)`. In `model_config.py` zone 2 defines only material A (layers 1-6); the rows of B and C are NaN unless
+`CASES['HC']['zone2_fill_below'] = True` copies zone 1 into them (NaN porosity gives `nodal range [nan, nan]` in the
+truth log and `sw and porosity must be > 0 for Archie`). Always do the truth first and check it:
+
+```bash
+python project_paths.py                              # folders and [code].pycathy
+CASE=HC ./run_twin.sh truth                          # look for: porosity: nodal range [finite, finite]
+ls ../data/3d/synthetic/HC/                          # truth_HC.pkl, procdata/, tdr_synth_HC.csv
+python run_study.py --cases HC --scenarios ic --nens 8 --dry-run
+python run_study.py --cases HC --scenarios ic --nens 8                 # small HC test (41.6k nodes)
+python run_study.py --cases HC --scenarios ic ic_Ks_upd --nens 16 --force   # redo HC runs that failed earlier
+python run_study.py --stage diag --cases HC --scenarios ic ic_Ks_upd --nens 16
+```
+
+HC runs that fail within seconds (registry `duration_min` near 0) did not get to simulate: read
+`logs/<run>.log`, and rule out a missing `truth_HC.pkl` first. A truth made with another `zone2_fill_below` than the
+DA is not comparable: change the flag, rerun the truth, then the DA.
+
+**Which code ran?** The pyCATHY that is imported is the clone in `[code].pycathy` of `data_path.toml` (the branch
+is whatever is checked out there; `data_path.toml` cannot select a branch).
+
+```bash
+git -C ~/path/to/pycathy_wrapper branch --show-current
+git -C ~/path/to/pycathy_wrapper log --oneline -1
+git -C ~/path/to/pycathy_wrapper status --short                       # local uncommitted changes
+python -c "import project_paths as P; P.get().setup_sys_path(); import pyCATHY; print(pyCATHY.__file__)"
+git branch --show-current && git log --oneline -1                      # this repo
+python run_manifest.py show    SYN_NC_ic_Ks_upd_enkf_N16_s42_n10       # branch + commit of both repos for one run
+python run_manifest.py compare SYN_NC_ic_enkf_N16_s42_n10 SYN_NC_ic_Ks_upd_enkf_N16_s42_n10   # what differs between two runs
+```
+
+Merging a pyCATHy feature branch: `git fetch origin && git log --oneline --left-right origin/<a>...origin/<b>` shows what is
+on each side (no `<` lines: `<b>` is ahead, so `git merge --ff-only origin/<b>` on `<a>` is a plain fast-forward).
+Check `run_manifest.py show <run>` afterwards: runs made before the merge keep their old commit.
+
+</details>
+
 **Real data**
 ```bash
 ./run_twin.sh real-everything nc_ERT_ic nc_ERT_ic_VGP_upd   # PF, EnKF, ES-MDA per scenario, then figures
