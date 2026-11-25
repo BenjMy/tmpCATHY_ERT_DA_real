@@ -96,8 +96,10 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [ ] `export_results.py` does not copy `<run>_run.json`, `<run>_rejections.json`, `<run>_ERT_checks.json`: add them so `diag_pf_run.py` works on a shared folder
 - [ ] Log of the reflections prints identical before / after values (SATCELL_*, a_Archie) and the values pile up just below 0.5 while the printed bound is [0.1, 2.0]: check which bound acts
 - [ ] Perturb Ks (and other strictly positive parameters) in log space: negative analysed values (Ks2 -4.3e-07 at cycle 1) are reflected
+  - *Found 2026-11-25: the default Ks prior `normal100` (Gaussian, sd = 100 % of nominal, `make_scenarios.py`) gives ~16 % negative draws piled at the lower bound. `KS_PRIOR=lognormal KS_SIGMA_LOG=0.5` (log-normal, always positive) already exists but is untested: run it, README "If the ensembles collapse", test 3*
 - [ ] Compare with EnKF at the same seed / N / scenario (`--da-type enkf`): same bias profile? then the cause is the prior (5.1), not the PF
-- [ ] Candidate remedies, each to TEST (nothing changed): `pf_jitter_std_state` > 0; larger N; resample only when N_eff < N/2 (check first that the weights are carried between cycles when not resampling: not verified); use the PF only for parameters
+- [ ] Run the 5 tests of README "If the ensembles collapse" (N 32/64, inflation, log-normal Ks, PF jitter + resample threshold, unbiased prior) and compare `summary.csv` / `parameters_summary.csv`. *Seen at N=16 (4 scenarios, seed 42): state coverage <= 0.03 (PF `ic_VGP_Ks_upd` 0.31), parameter contraction 0.94-0.9998, `frac_truth_in_90` ~ 0, z final 89-14668; Ks relative error 5.2 -> 15.5 (EnKF) / 5.4 (PF) in `ic_Ks_upd`*
+- [ ] Candidate remedies, each to TEST (nothing changed): `pf_jitter_std_state` > 0 (now `--pf-jitter-std-state`); larger N; resample only when N_eff < N/2 (check first that the weights are carried between cycles when not resampling: not verified); use the PF only for parameters
 - [ ] pyCATHY side: store the resampling indices per cycle (tiny change in `pf.py` / `AnalysisResult.extra`) so the genealogy is exact instead of reconstructed
 
 ## 6. Warnings to check

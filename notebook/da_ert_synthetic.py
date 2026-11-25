@@ -74,6 +74,10 @@ ap.add_argument('--dry-run', action='store_true', help='ES-MDA only: build every
 ap.add_argument('--nens', type=int, default=100)
 ap.add_argument('--seed', type=int, default=42)
 ap.add_argument('--inflation', type=float, default=1.1)
+ap.add_argument('--pf-jitter-std-state', type=float, default=0.0,
+                help='PF only: std of the jitter added to the resampled states (default 0 = identical copies, as before)')
+ap.add_argument('--pf-resample-threshold', type=float, default=1.0,
+                help='PF only: resample when N_eff < threshold * N (default 1.0 = every analysis, as before)')
 ap.add_argument('--obs-err', type=float, default=5.0, help='ERT error [%%]; must match the noise of nb6 (5)')
 ap.add_argument('--log-obs', type=int, default=1, help='assimilate log10(rhoa) (1) or rhoa (0)')
 ap.add_argument('--no-da', action='store_true', help='open loop (R huge)')
@@ -215,7 +219,8 @@ DA_CONFIG = DAConfig(
     psi_bounds=PSI_BOUNDS,
     inflation=INFLATION,
     analysis=AnalysisConfig(sakov=False, perturb_obs=True, inflation_states=INFLATION,
-                            pf_resample_threshold=1.0, pf_jitter_std_state=0.0,
+                            pf_resample_threshold=args.pf_resample_threshold,
+                            pf_jitter_std_state=args.pf_jitter_std_state,
                             pf_temper_neff_frac=0.3, pf_liu_west_a=0.98),
     seed=SEED,
     save_results=True,

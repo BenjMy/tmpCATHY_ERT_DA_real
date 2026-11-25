@@ -301,6 +301,34 @@ Resuming and error handling:
 - **Diagnostics `rc=1` does not always mean no figures:** `plots_synthetic.py` exits with `1` when any run was skipped or not finished (for example a failed run), or when a figure or table was skipped, even though it wrote the others. Read the `status per run` block at the end of `notebook/logs/diagnostics_<case>.log`.
 - **Failed runs:** the reason is in `study_report.json` and in `<run>_rejections.json` (rejected ensemble members) next to the run. Fix the cause, then rerun the same command: only the failed runs are redone.
 
+**If the ensembles collapse** (state coverage near 0, parameter `mean_contraction` near 1 and `frac_truth_in_90` near 0 in `parameters_summary.csv`), test one change at a time against the baseline study, N=16 here to stay cheap:
+```bash
+# 1. Larger ensemble (cost grows about linearly with N)
+python run_study.py --scenarios ic_Ks_upd ic_VGP_Ks_upd --nens 32 64
+
+# 2. Stronger state inflation (default 1.1; whether the parameters are inflated too is not checked here)
+python run_study.py --scenarios ic_Ks_upd ic_VGP_Ks_upd --nens 16 --da enkf --extra "--inflation 1.3" --sim-dir ../simulations_infl13
+
+# 3. Log-normal Ks prior instead of the default 'normal100' (Gaussian, sd = 100 % of the nominal: ~16 % negative draws
+#    piled at the lower bound). Positive by construction; KS_SIGMA_LOG is in natural-log units (0.5 = x1.65 at 1 sigma). Untested option.
+KS_PRIOR=lognormal KS_SIGMA_LOG=0.5 python run_study.py --scenarios ic_Ks_upd ic_VGP_Ks_upd --nens 16 --sim-dir ../simulations_lognormal
+
+# 4. PF: jitter on the resampled states and resampling only when N_eff < N/2 (defaults 0 and 1.0 = as before).
+#    With a threshold < 1 the weights must be carried between cycles: not verified, see todo.md 5.2.
+python run_study.py --da pf --scenarios ic_VGP_Ks_upd --nens 16 --extra "--pf-jitter-std-state 0.01 --pf-resample-threshold 0.5" --sim-dir ../simulations_pfjitter
+
+# 5. Separate the effect of the biased prior (Ks x5, SATCELL x1.3, ...) from the filter
+python run_study.py --prior-bias none --scenarios ic_Ks_upd ic_VGP_Ks_upd --nens 16 --sim-dir ../simulations_unbiased
+```
+Run names do not encode `--extra` or `KS_PRIOR`, so give every variant its own `--sim-dir` (otherwise its runs are skipped as already finished); the environment variable also has to be set for `--stage diag`. Each variant reruns its open loop. Compare the variants side by side:
+```python
+import pandas as pd
+dirs = ['simulations_n10', 'simulations_lognormal']          # sibling folders of notebook/
+cols = ['sw_all_rmse', 'sw_all_coverage', 'sw_all_spread_skill', 'sw_all_crps']
+print(pd.concat({d: pd.read_csv(f'../{d}/figures_nb8/NC/summary.csv').set_index('run')[cols] for d in dirs}, axis=1).round(3))
+```
+Good signs: coverage towards 0.9, spread_skill towards 1, `mean_contraction` below 1 with `frac_truth_in_90` above 0.
+
 **Real data**
 ```bash
 ./run_twin.sh real-everything nc_ERT_ic nc_ERT_ic_VGP_upd   # PF, EnKF, ES-MDA per scenario, then figures
