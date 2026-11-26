@@ -81,6 +81,9 @@ ap.add_argument('--pf-resample-threshold', type=float, default=1.0,
 ap.add_argument('--obs-err', type=float, default=5.0, help='ERT error [%%]; must match the noise of nb6 (5)')
 ap.add_argument('--log-obs', type=int, default=1, help='assimilate log10(rhoa) (1) or rhoa (0)')
 ap.add_argument('--no-da', action='store_true', help='open loop (R huge)')
+ap.add_argument('--no-perturb', action='store_true',
+                help="SET-UP SANITY CHECK: every prior sigma ~ 0 (make_scenarios.freeze_scenario), all members at the nominals. "
+                     "Use with --no-da --prior-bias none --nens 2 --tag nopert: the states must then equal the truth's (todo.md 5.3)")
 ap.add_argument('--prior-bias', choices=['biased', 'none'], default='biased',
                 help="'biased': biased_overrides soil table + biased scenario nominals; 'none': prior = truth")
 ap.add_argument('--ic-prior-mean', type=float, default=None, help='override the scenario prior mean of ic [m] with ONE scalar for every layer group (default: ic_true per layer, '
@@ -175,6 +178,11 @@ else:
 assert _tag in _all, f"scenario {_tag} not found; available: {sorted(_all)}"
 SCENARIO = _tag
 scenario_selected = _all[SCENARIO]
+if args.no_perturb:
+    assert args.no_da and args.prior_bias == 'none', "--no-perturb is the set-up check: it needs --no-da --prior-bias none"
+    if args.nens < 2:
+        warnings.warn('--no-perturb with --nens 1: the ensemble covariance divides by N-1 = 0; use --nens 2 (identical members)')
+    scenario_selected = MS.freeze_scenario(scenario_selected)
 _i_ic = scenario_selected['per_name'].index('ic')
 _ic_mean = scenario_selected['per_mean'][_i_ic]
 _n_ic = len(_ic_mean) if isinstance(_ic_mean, list) else 3          # old scenario files: ONE scalar for the 3 layers

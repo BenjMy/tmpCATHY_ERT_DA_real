@@ -246,6 +246,20 @@ def test_solver_settings_have_one_definition(MC, mt_fake):
             assert not re.search(r'(DTMAX|DELTAT|DTMIN)\s*=\s*[0-9]', call), (script, call)
 
 
+def test_freeze_scenario_puts_every_member_at_the_nominal(MC, MS):
+    """da_ert_synthetic.py --no-perturb: sigma -> ~0, nothing else changes."""
+    import tomllib
+    for case, tag in (('NC', 'full_upd'), ('HC', 'ic_VGP_Ks_upd')):
+        sc = tomllib.loads(MS.build(biased=False))['scenario'][f'{case}_{tag}']
+        fz = MS.freeze_scenario(sc)
+        assert {k: v for k, v in fz.items() if k != 'per_sigma'} == {k: v for k, v in sc.items() if k != 'per_sigma'}
+        for m, s0, s1, samp in zip(sc['per_mean'], sc['per_sigma'], fz['per_sigma'], sc['sampling_type']):
+            assert isinstance(s1, list) == isinstance(s0, list)
+            for mm, ss in zip(m if isinstance(m, list) else [m], s1 if isinstance(s1, list) else [s1]):
+                assert 0 < ss <= 1e-9 * max(abs(mm), 1.0), (m, ss)
+        assert sc['per_sigma'] != fz['per_sigma']                  # the input is not modified in place
+
+
 def test_first_n_surveys_cuts_truth_and_da_at_the_same_survey(MC):
     times_h = {1: 0.5, 2: 2.0, 3: 26.0, 4: 8.0}
     assert MC.first_n_surveys(times_h, 2) == {1: 0.5, 2: 2.0}
