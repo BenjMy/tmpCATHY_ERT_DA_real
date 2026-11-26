@@ -82,7 +82,15 @@ def ensemble_array_ds(ds, field, nodes=None):
     """xarray Dataset of the states (StateStore.to_xarray / <project>_states.nc) -> (cycles, members, node_ids, array)
     in the layout of ``ensemble_array``. ``field``: 'sw' | 'psi' | 'analysis' (psi/sw are the values BEFORE the update).
     Rejected members are already NaN."""
-    ds = ds if nodes is None else ds.sel(node=np.asarray(sorted(set(map(int, nodes)))))
+    if nodes is not None:
+        want = np.asarray(sorted(set(map(int, nodes))))
+        have = np.isin(want, ds['node'].values)
+        if not have.all():                               # node-subset states (store_full='analysis'): NaN where not stored
+            print(f"  [ensemble_array_ds] {int((~have).sum())}/{want.size} requested nodes not stored: filled with NaN "
+                  f"(scores use the {int(have.sum())} stored nodes)", flush=True)
+            if not have.any():
+                raise KeyError("none of the requested nodes is in the states 'node' index")
+        ds = ds.reindex(node=want)
     a = ds[field].transpose('cycle', 'member', 'node').values.astype(float)
     return ds['cycle'].values, ds['member'].values, ds['node'].values, a
 
