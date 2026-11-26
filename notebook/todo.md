@@ -80,7 +80,11 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
   - *consequence*: results of earlier runs are **not comparable** (the `ic` prior changed); `ic0..ic2` replace the single `ic` key in `dict_parm_pert` / `df_DA` parameters. nb4-nb6 (real data) still use their own scalar `ic` scenario.
 - ~~(b) centred scalar for `none` mode (mean of `ic_true` = −1.62)~~ and ~~(c) keep it and rename the "unbiased" label~~: superseded by (a); (c) still applies to a run started with `--ic-prior-mean`.
 - [ ] Rerun the unbiased PF case with the per-layer ic (and once with `--ic-prior-mean -1.5` for the comparison) and compare the `*_profiles.png` (mean − truth by depth)
-- [ ] Other (non-bias) reasons the mean differs from the truth, to separate from the above: finite N (σ/√N), nonlinearity (mean of sw ≠ sw at the mean parameters), PF collapse (5.2)
+- [x] Other (non-bias) reasons the mean differs from the truth, to separate from the above: finite N (σ/√N), nonlinearity (mean of sw ≠ sw at the mean parameters), PF collapse (5.2). Tool: `python notebook/mean_offset_budget.py [--case NC] [--n 16 32 64] [--n-eff 12 2]` (no CATHY run; `tests/test_mean_offset_budget.py`, 6 tests). *Results (NC, per-layer `ic` prior centred on `ic_true`):*
+  - *finite N: expected |offset| of the ensemble mean = 0.20σ (N=16), 0.14σ (32), 0.10σ (64); 95 % of the runs within 0.49 / 0.35 / 0.24σ. With the PF collapse of 5.2 the relevant number is the founders / N_eff: 12 → 0.23σ (95 %: 0.57σ), **2 founders → 0.56σ (95 %: 1.39σ)**. So `prior_bias_check.py --tol 0.2` is below the noise of a single run (N < 96): only the sampled prior (200 000 draws) can show a 0.2σ bias, a run cannot.*
+  - *nonlinearity of the initial state: with an exactly centred `ic` prior the mean of sw over the prior is 0.002 (layers 0-5) to 0.006 (layers 6-14) above sw at `ic_true`, i.e. ≤ 0.19 sd of sw: small. A mean − truth profile of the initial ensemble larger than that is NOT nonlinearity.*
+  - *reading rule for the `*_profiles.png`: (mean − truth) within ~σ_sw/√N_eff of 0 (+ the small offset above) is sampling noise; a persistent offset beyond that points to the prior (5.1) or to the filter (5.2). Assumption: `VGPSATCELL` = air-entry head ψ_s of the van Genuchten curve (not checked against CATHY).*
+  - *not covered (needs a run): the PF collapse itself (5.2) and the nonlinearity of the ERT forward model.*
 
 ### 5.2 Filter inbreeding (`SYN_NC_full_upd_pf_N32_s1_unbiased_issues`)
 
