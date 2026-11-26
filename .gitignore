@@ -9,3 +9,7 @@ simulations*
 
 # --- pickles (heavy, binary): also covers data/3d/synthetic/NC/truth_NC.pkl ---
 *.pkl
+
+# Python bytecode
+__pycache__/
+*.py[cod]
