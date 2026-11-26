@@ -29,6 +29,9 @@ from nc_model import (HOUR, DAY, T_END, X, Y, MAXDEPTH, ELEVATION, ZR_THICK, NST
 MATERIAL_LAYERS_0 = {'A': list(range(0, 6)), 'B': list(range(6, 9)), 'C': list(range(9, NSTR))}
 SOIL_COLS = ['PERMX', 'PERMY', 'PERMZ', 'ELSTOR', 'POROS', 'VGPSATCELL', 'VGNCELL', 'VGRMCCELL']
 COMP_LEVEL = {'NC': 'no_comp', 'HC': 'heavy_comp'}
+# CATHY time stepping: ONE definition for the truth run, setup_model and the DA run (todo.md 5.3: they used to differ,
+# truth DELTAT = 0.1 s vs DA min(100 s, half the shortest window)). DELTAT = first time step of every (re)start.
+SOLVER = dict(DTMAX=1e3, DELTAT=1e-1, DTMIN=1e-3)
 
 
 def _soil(kx, ky, kz, phi, sat, n, thr):
@@ -303,7 +306,7 @@ def setup_model(simu, case='NC', ic_values=None, extra_times=None, soil_override
 
     times = build_times(extra_times).tolist()
     simu.update_atmbc(HSPATM=0, IETO=1, time=times, netValue=atm_steps(cfg, times))
-    simu.update_parm(TIMPRTi=times, TRAFLAG=0, VTKF=2, IPRT1=4, DTMAX=1e3, DELTAT=1e-1, DTMIN=1e-3)
+    simu.update_parm(TIMPRTi=times, TRAFLAG=0, VTKF=2, IPRT1=4, **SOLVER)
 
     simu.update_nansfneubc(no_flow=True)
     simu.update_nansfdirbc(no_flow=True)

@@ -30,7 +30,7 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [ ] Interpret the scenarios already run: send the files listed in 7.6
 - [ ] Send a colleague the results: `python export_results.py ~/share/twin_results --zip`
 - [ ] Run `pf_inbreeding.py` on the real PF run (the IC prior fix is done, see 5.1 (a); rerun needed)
-- [ ] Write the series of tests that the twin (DA model) is set up like the truth: mesh and layers, materials, `ic`, `atmbc`, times, observations (see 5.3). *Config-level part done (22 tests, no CATHY); open: the items that need the truth pkl / a run, and two findings (HC zone 2 bias: documented, HC parked; solver `parm` differs: open)*
+- [ ] Write the series of tests that the twin (DA model) is set up like the truth: mesh and layers, materials, `ic`, `atmbc`, times, observations (see 5.3). *Config-level part done (22 tests, no CATHY); open: the items that need the truth pkl / a run, and two findings (HC zone 2 bias: documented, HC parked; solver `parm` differs: fixed)*
 
 ## 2. Repository hygiene
 
@@ -134,14 +134,14 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
   - [ ] time vector: `build_times(ert_times)` == `atm_times` (already used for an assert in `da_ert_synthetic.py` line ~285: extend to the values), same `sw_time`, same ERT survey times (`surveys[*]['t_h_irr']`)
   - [ ] with `--n-times N`: the first N surveys only, and the truth is cut at the same last survey
 - [ ] **Other CATHY inputs**: boundary conditions (nodal / surface), root map / ET parameters, `parm` file (solver tolerances, time stepping, `DELTAT`, `TMAX`), `soil` file ordering, output times (`IPRT`), `delta` -> all identical between truth and DA input folders. *Done for everything `setup_model` writes (no-flow bc, `DTMAX/DELTAT/DTMIN`, `IPRT1`, `VTKF`, `TRAFLAG`, `ic` flags: `test_boundary_conditions_and_solver_settings_are_fixed`). Open: the files as written in the two real `input/` folders.*
-  - [ ] **Found by reading the scripts (not by a test, the block is in the script): the DA run overwrites the `parm` settings after `setup_model`** (`da_ert_synthetic.py` l.536-538) and they differ from the truth (`synthetic_truth_ert.py` l.150, `setup_model`):
+  - [x] **Fixed: one definition `model_config.SOLVER = dict(DTMAX=1e3, DELTAT=1e-1, DTMIN=1e-3)`** used by `setup_model`, the truth run (`run_processor`, new `--dtmax`, recorded as `truth['solver']`) and the DA run (`DELTAT` was `min(100 s, half the shortest window)`; now 0.1 s as the truth, asserted shorter than the shortest window). The DA run warns when its time stepping differs from the recorded one (old truth pkl: warns that it cannot compare) and writes both in `run_meta['solver']`. `IPRT1` (2 vs 4) is output level, left as is. ES-MDA keeps `--esmda-dtmax` (60 s, print lag): for an ES-MDA twin run the truth with `--dtmax 60`. Guard: `test_solver_settings_have_one_definition`. **Consequences: truth pkl made before this change has no `solver` key (re-run `./run_twin.sh truth` to record it; the values are the same as before, so the truth states do not change); the DA runs now start every window with 0.1 s instead of up to 100 s (a few more steps per window, possibly slower), and earlier DA runs are not bit-comparable.** Was: the DA run overwrote the `parm` settings after `setup_model` (`da_ert_synthetic.py` l.536-538) and they differ from the truth (`synthetic_truth_ert.py` l.150, `setup_model`):
     | | truth | DA (EnKF / PF) | DA (ES-MDA) |
     |---|---|---|---|
     | `DELTAT` (first time step) | 0.1 s | `min(1e2, 0.5 × shortest window)` = up to 100 s | `min(that, esmda_dtmax)` |
     | `DTMAX` | 1e3 s | 1e3 s | `--esmda-dtmax` = 60 s |
     | `IPRT1` | 4 | 2 | 2 |
     | print times | dense (every `--out-dt`) + interpolated to the atmbc times | atmbc times only | atmbc times |
-    *Why it may matter: each DA window restarts CATHY, so the first time step of every window is 100 s in the twin and 0.1 s in the truth after the irrigation pulse; the Richards solution can differ by more than the discretisation error you want to test (truth and DA also share the mesh, see the warning in 6). Size of the effect unknown: the open-loop sanity test below measures it (noDA, N=1 at the nominal). If it is not negligible: run the truth with the DA's `DELTAT / DTMAX`, or the DA with the truth's.*
+    *Why it may matter: each DA window restarts CATHY, so the first time step of every window is 100 s in the twin and 0.1 s in the truth after the irrigation pulse; the Richards solution can differ by more than the discretisation error you want to test (truth and DA also share the mesh, see the warning in 6). Size of the effect unknown: the open-loop sanity test below still measures what is left (noDA, N=1 at the nominal).*
 - [ ] **Observations**
   - [ ] ERT data of the twin = the truth data (same electrode sequence, geometry, noise type / % / seed: `truth['noise']` vs `ERT_DATA_ERR`); error model used in the filter = the noise added to the truth
   - [ ] TDR sigma (`tdr_sigma`) in the filter = the one used to perturb the virtual TDR

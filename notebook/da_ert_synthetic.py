@@ -533,9 +533,20 @@ for _p in [p for p in list_parm2update if p in ARCHIE_TRANSF]:
 
 _min_win = float(np.diff(atm_times).min())
 print(f"shortest DA window: {_min_win:.0f} s")
-DELTAT0 = min(1e2, 0.5 * _min_win)
-_dtmax = args.esmda_dtmax if USE_ESMDA else 1e3
-simuDA.update_parm(IPRT1=2, TRAFLAG=0, DTMIN=1e-3, DTMAX=_dtmax, DELTAT=min(DELTAT0, _dtmax), VTKF=2)
+# time stepping = the truth's (model_config.SOLVER; todo.md 5.3). DELTAT used to be min(100 s, half the shortest window)
+# whereas the truth started every run with 0.1 s. ES-MDA keeps its own DTMAX (print lag, --esmda-dtmax): run the truth
+# with the same value (synthetic_truth_ert.py --dtmax) to compare like with like.
+_dtmax = args.esmda_dtmax if USE_ESMDA else MC.SOLVER['DTMAX']
+_deltat = min(MC.SOLVER['DELTAT'], _dtmax)
+assert _deltat < _min_win, f"DELTAT {_deltat} s is not shorter than the shortest DA window {_min_win:.0f} s"
+simuDA.update_parm(IPRT1=2, TRAFLAG=0, DTMIN=MC.SOLVER['DTMIN'], DTMAX=_dtmax, DELTAT=_deltat, VTKF=2)
+_solver_truth = (_truth or {}).get('solver')
+if _solver_truth is None:
+    warnings.warn("the truth does not record its CATHY time stepping (truth made before this check): cannot compare")
+elif not (np.isclose(_solver_truth['DTMAX'], _dtmax) and np.isclose(_solver_truth['DELTAT'], _deltat)):
+    warnings.warn(f"CATHY time stepping differs: truth {_solver_truth}, DA DTMAX={_dtmax:g} DELTAT={_deltat:g}. "
+                  "States of the twin and of the truth then also differ by the solver (re-run the truth with --dtmax).")
+run_meta['solver'] = dict(truth=_solver_truth, da=dict(DTMAX=_dtmax, DELTAT=_deltat, DTMIN=MC.SOLVER['DTMIN']))
 if USE_ESMDA:                                               # state at the survey time = first printed step within 2 x DTMAX
     import pyCATHY.DA.esmda_cathy as _EC
     _EC.PRINT_LAG_TOL = 2.0 * _dtmax

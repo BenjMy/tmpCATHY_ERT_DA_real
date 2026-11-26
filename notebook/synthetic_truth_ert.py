@@ -52,6 +52,8 @@ ap.add_argument('--root', default=None, help='project root (default: data_path.t
 ap.add_argument('--delta', type=float, default=None, help='horizontal cell size [m] (default: the case value)')
 ap.add_argument('--noise-pct', type=float, default=5.0, help='relative noise on rhoa [%%]')
 ap.add_argument('--seed-noise', type=int, default=1234)
+ap.add_argument('--dtmax', type=float, default=M.SOLVER['DTMAX'],
+                help='CATHY DTMAX [s] (default: model_config.SOLVER, the same as the DA run; for an ES-MDA twin pass its --esmda-dtmax)')
 ap.add_argument('--archie', default='prior', choices=['prior', 'offset'],
                 help="truth Archie (a, m, n): 'prior' = the DA prior mean of nb5, 'offset' = shifted by ~1 sigma")
 ap.add_argument('--porosity-mode', default='nodal', choices=['nodal', 'da_node0'])
@@ -147,7 +149,8 @@ OUT_DT_S = args.out_dt
 dense = np.unique(np.round(np.r_[np.asarray(atm_times, float), np.arange(0.0, float(atm_times[-1]), OUT_DT_S)]).astype(int))  # update_parm casts to int
 simu.update_parm(TIMPRTi=dense.tolist())
 simu.run_preprocessor()
-simu.run_processor(IPRT1=4, DTMAX=1e3, DELTAT=1e-1, DTMIN=1e-3, verbose=False)
+SOLVER = dict(M.SOLVER, DTMAX=args.dtmax)                    # recorded in the truth: the DA run compares its own
+simu.run_processor(IPRT1=4, verbose=False, **SOLVER)
 
 df_sw, sw_time_raw = simu.read_outputs('sw')
 df_psi = simu.read_outputs('psi')
@@ -302,7 +305,7 @@ truth = dict(
     params=M.truth_parameters(CASE, args.delta), archie_truth=ARCHIE_TRUTH, archie_prior=ARCHIE_PRIOR,
     rFluid=rFLUID, porosity_mode=args.porosity_mode, surveys=survey_out, rho_nodes=rho_nodes_all,
     ert_frame=dict(signs=ERT_SIGNS, shift=ERT_SHIFT, origin=_origin), fwd_mesh=FWD_MESH, da_mesh=DA_MESH,
-    noise=dict(pct=args.noise_pct, type='lognormal multiplicative', seed=args.seed_noise),
+    noise=dict(pct=args.noise_pct, type='lognormal multiplicative', seed=args.seed_noise), solver=SOLVER,
     tdr_nodes=tdr_nodes, tdr_depths=SENSOR_DEPTHS, tdr_file=tdr_file, tdr_sigma=args.tdr_sigma,
 )
 truth_file = os.path.join(OUT_ROOT, f'truth_{CASE}.pkl')

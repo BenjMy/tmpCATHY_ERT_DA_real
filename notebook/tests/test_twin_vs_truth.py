@@ -230,6 +230,22 @@ def test_boundary_conditions_and_solver_settings_are_fixed(MC, mt_fake):
     assert rec['ic_kw'] == dict(INDP=1, IPOND=0)
 
 
+def test_solver_settings_have_one_definition(MC, mt_fake):
+    """todo.md 5.3: truth, setup_model and the DA run take DTMAX / DELTAT / DTMIN from model_config.SOLVER."""
+    import os
+    import re
+    rec, _, _ = truth_build(MC, 'NC')
+    assert {k: rec['parm'][k] for k in MC.SOLVER} == MC.SOLVER
+    here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    for script in ('synthetic_truth_ert.py', 'da_ert_synthetic.py'):
+        src = open(os.path.join(here, script)).read()
+        compile(src, script, 'exec')                                   # still valid Python
+        assert 'SOLVER' in src, script
+        # no literal time step left next to a CATHY call (the old DA line: DTMIN=1e-3, DELTAT=min(DELTAT0, ...))
+        for call in re.findall(r'(?:update_parm|run_processor)\([^)]*\)', src):
+            assert not re.search(r'(DTMAX|DELTAT|DTMIN)\s*=\s*[0-9]', call), (script, call)
+
+
 def test_first_n_surveys_cuts_truth_and_da_at_the_same_survey(MC):
     times_h = {1: 0.5, 2: 2.0, 3: 26.0, 4: 8.0}
     assert MC.first_n_surveys(times_h, 2) == {1: 0.5, 2: 2.0}
