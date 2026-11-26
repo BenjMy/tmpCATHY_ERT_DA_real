@@ -172,7 +172,12 @@ def fill_soil_df(df, cfg, overrides=None):
 def biased_overrides(case, satcell_factor=1.3, n_shift=-0.08, thetar_shift=0.01, ks_factor=5.0,
                      n_min=1.05):
     """soil_overrides for a BIASED prior model: every (zone, material) of the truth is moved by the
-    given factors (VGPSATCELL x, VGNCELL +, VGRMCCELL +, PERMX/Y/Z x). Pass to setup_model(...)."""
+    given factors (VGPSATCELL x, VGNCELL +, VGRMCCELL +, PERMX/Y/Z x). Pass to setup_model(...).
+
+    Only the (zone, material) entries of CASES[case]['soil'] are biased. HC: zone 2 has material A only, so zone 2
+    B and C (copied from zone 1 by fill_soil_df, zone2_fill_below) stay at the TRUTH values while zone 1 B and C
+    are biased; they are not DA parameters either (make_scenarios.groups). Documented, not changed (todo.md 5.3);
+    pinned by tests/test_twin_vs_truth.py::test_biased_hc_leaves_zone2_below_a_at_truth_values. NC is unaffected."""
     cfg = get_case(case)
     out = {}
     for zone, mats in cfg['soil'].items():

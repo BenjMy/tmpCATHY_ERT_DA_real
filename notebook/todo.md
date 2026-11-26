@@ -30,7 +30,7 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [ ] Interpret the scenarios already run: send the files listed in 7.6
 - [ ] Send a colleague the results: `python export_results.py ~/share/twin_results --zip`
 - [ ] Run `pf_inbreeding.py` on the real PF run (the IC prior fix is done, see 5.1 (a); rerun needed)
-- [ ] Write the series of tests that the twin (DA model) is set up like the truth: mesh and layers, materials, `ic`, `atmbc`, times, observations (see 5.3). *Config-level part done (22 tests, no CATHY); open: the items that need the truth pkl / a run, and two findings (HC zone 2 bias, solver `parm` differs)*
+- [ ] Write the series of tests that the twin (DA model) is set up like the truth: mesh and layers, materials, `ic`, `atmbc`, times, observations (see 5.3). *Config-level part done (22 tests, no CATHY); open: the items that need the truth pkl / a run, and two findings (HC zone 2 bias: documented, HC parked; solver `parm` differs: open)*
 
 ## 2. Repository hygiene
 
@@ -123,7 +123,7 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [ ] **Materials / soil**
   - [x] number of soil zones and materials (`soil_table`) equal; mapping layer -> material (NC `[0-5] [6-8] [9-14]`, see 5.1 (a)) identical (`test_soil_table_rows_follow_the_material_layers`, `test_hc_zone2_below_material_a_is_zone1_in_truth_and_da`)
   - [x] with `--prior-bias none`: every (zone, material) of the DA soil table = truth value (Ks, SATCELL / porosity, n, VGP, thetar, ...); with `--biased`: differs exactly by `biased_overrides()` and nothing else (`test_unbiased_da_model_is_identical_to_the_truth_model`, `test_scenario_nominals_equal_the_soil_table_written_to_cathy`, `test_biased_da_model_differs_from_truth_only_by_biased_overrides`: only PERMX/Y/Z, VGPSATCELL, VGNCELL, VGRMCCELL change, not POROS / ELSTOR). *The factor VALUES (×1.3, −0.08, +0.01, ×5) are not re-checked: they are the definition of the bias*
-  - [ ] **Decide (found by `test_biased_hc_leaves_zone2_below_a_at_truth_values`)**: with `--biased` on HC, `biased_overrides()` only has the entries of `CASES['HC']['soil']`, i.e. zone 2 material A. Zone 2 B and C (copied from zone 1 by `zone2_fill_below`) stay at the TRUTH while zone 1 B and C are biased; they are not DA parameters either (`groups('HC')` = zone 1 A/B/C + zone 2 A). Is the HC biased prior meant to leave the compacted band below 20 cm unbiased? Either bias them too (add the keys in `biased_overrides`) or document it; the test pins the current behaviour
+  - [x] **HC `--biased`: zone 2 below material A stays at the truth: documented, not changed** (found by `test_biased_hc_leaves_zone2_below_a_at_truth_values`). `biased_overrides()` only has the entries of `CASES['HC']['soil']`, i.e. zone 2 material A. Zone 2 B and C (copied from zone 1 by `zone2_fill_below`) keep the TRUTH values while zone 1 B and C are biased; they are not DA parameters either (`groups('HC')` = zone 1 A/B/C + zone 2 A). Note in the `biased_overrides` docstring; the test pins the current behaviour. *Decision: focus on NC for now, **NC is unaffected** (one zone). If HC is run biased later: bias zone 2 B/C too (add the `(2, 'B')`, `(2, 'C')` keys in `biased_overrides`) or keep it and say so in the results*
   - [ ] porosity per node (`porosity_nodes`) and the porosity used by Archie in the ERT forward model (`porosity_mode`) are the same
   - [ ] Archie truth vs prior (`archie_truth`, `archie_prior`, `rFluid`): the DA nominals = truth when unbiased
 - [ ] **Initial condition**
