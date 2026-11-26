@@ -30,7 +30,7 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [ ] Interpret the scenarios already run: send the files listed in 7.6
 - [ ] Send a colleague the results: `python export_results.py ~/share/twin_results --zip`
 - [ ] Run `pf_inbreeding.py` on the real PF run (the IC prior fix is done, see 5.1 (a); rerun needed)
-- [ ] Write the series of tests that the twin (DA model) is set up like the truth: mesh and layers, materials, `ic`, `atmbc`, times, observations (see 5.3)
+- [ ] Write the series of tests that the twin (DA model) is set up like the truth: mesh and layers, materials, `ic`, `atmbc`, times, observations (see 5.3). *Config-level part done (22 tests, no CATHY); open: the items that need the truth pkl / a run, and two findings (HC zone 2 bias, solver `parm` differs)*
 
 ## 2. Repository hygiene
 
@@ -98,7 +98,7 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 - [x] `diag_pf_run.py RUN [--compare RUN_B]`: one report for the checks below from the small files (status, weights, founders, dead members, parameter collapse, ERT data space, next commands); `tests/test_diag_pf_run.py` (9 tests). *First reading of `SYN_NC_full_upd_pf_N32_s1_unbiased` (run interrupted at cycle 10): N_eff very low in every cycle; 12 of 15 parameters lost 60-86 % of their spread and 4 end >= 3 final SDs from the truth; members 15-19 rejected at cycle 1 (CATHY stopped at 95-98 % of the window) and still NaN at cycle 10 (ensemble of 27, slots never refilled); ERT data-space spread is about the size of the misfit but 80-96 % of the variance is in one mode (redundant data, weights collapse, depth profile not constrained)*
 - [ ] **Run `pf_inbreeding.py` on the real N32 run** (and N64) and confirm: founders left, distinct states, spread loss; add `--plot` (`diag_pf_run.py` does it when `<run>_states/` is next to the small files)
 - [ ] Find why members 15-19 died at cycle 1 (consecutive indices: same worker / folder?) and make the PF refill dead slots from live parents
-- [ ] `export_results.py` does not copy `<run>_run.json`, `<run>_rejections.json`, `<run>_ERT_checks.json`: add them so `diag_pf_run.py` works on a shared folder
+- [x] `export_results.py` now copies `<run>_run.json`, `<run>_rejections.json`, `<run>_ERT_checks.json` (when they exist) to `runs/<run>/`, so `python diag_pf_run.py runs/<run>` works on a shared folder (`tests/test_export_results.py::test_copies_the_json_files_diag_pf_run_needs`). *The `_states/` folder is still not exported (big): `pf_inbreeding.py` needs the real run folder*
 - [ ] Log of the reflections prints identical before / after values (SATCELL_*, a_Archie) and the values pile up just below 0.5 while the printed bound is [0.1, 2.0]: check which bound acts
 - [ ] Perturb Ks (and other strictly positive parameters) in log space: negative analysed values (Ks2 -4.3e-07 at cycle 1) are reflected
   - *Found 2026-11-25: the default Ks prior `normal100` (Gaussian, sd = 100 % of nominal, `make_scenarios.py`) gives ~16 % negative draws piled at the lower bound. `KS_PRIOR=lognormal KS_SIGMA_LOG=0.5` (log-normal, always positive) already exists but is untested: run it, README "If the ensembles collapse", test 3*
@@ -113,24 +113,35 @@ Legend: `[x]` done · `[ ]` to do · *italic* = note / answer
 
 *Reference = the `truth_<CASE>.pkl` (keys `delta, atm_times, nodes, soil_table, ic_nodes, params, archie_truth, fwd_mesh, da_mesh, ert_frame, surveys, tdr_nodes, ...`). Target = the DA project built by `setup_model` (CATHY input files in `<run>/input/`) with `--prior-bias none` and the truth parameters. Idea: build the DA model WITHOUT running CATHY (`dry-run` / preprocessor only) and compare it with the truth, for NC and HC. Put them in `tests/test_twin_vs_truth.py`; the ones that need CATHY/pyCATHY are skipped when it is not installed (like `test_nb5_dryrun.py`).*
 
+*Done (config level, **no CATHY needed**): both projects are built by the same `model_config.setup_model`, so `tests/test_twin_vs_truth.py` runs it twice on a recording stand-in of the CATHY object (`FakeCathy`; `pyCATHY.meshtools` faked for these tests only) with the arguments of `synthetic_truth_ert.py` and of `da_ert_synthetic.py`, and compares what is written (mesh inputs, soil table, `ic`, `atmbc`, `parm`, boundary conditions). 22 tests pass for NC and HC; 3 deliberate breaks of `model_config.py` (irrigation hour, ic ignored, bias on POROS) are caught. What still needs the real files / a run is in the unticked items and as 7 skipped tests with the same names.*
+
 - [ ] **Mesh / geometry**
   - [ ] same 3D mesh: number of nodes and elements, node coordinates (`truth['nodes']` vs DA mesh points), same DEM / surface and bottom elevations
-  - [ ] number of layers (z-layers of the CATHY mesh) equal in truth and DA; layer thickness / depth of each layer identical
+  - [x] number of layers (z-layers of the CATHY mesh) equal in truth and DA; layer thickness / depth of each layer identical (`test_mesh_layers_and_nodes`, `test_delta_override_changes_truth_and_da_together`; `ic` node count = (n+1)² × (layers+1))
   - [ ] ERT forward mesh (`fwd_mesh`) and DA mesh (`da_mesh`) are the files the truth records, and the ERT frame (`signs`, `shift`, `origin`) is the same
   - [ ] TDR / sensor nodes (`tdr_nodes`, `tdr_depths`) are the same nodes in the DA observation operator
 - [ ] **Materials / soil**
-  - [ ] number of soil zones and materials (`soil_table`) equal; mapping layer -> material (NC `[0-5] [6-8] [9-14]`, see 5.1 (a)) identical
-  - [ ] with `--prior-bias none`: every (zone, material) of the DA soil table = truth value (Ks, SATCELL / porosity, n, VGP, thetar, ...); with `--biased`: differs exactly by `biased_overrides()` and nothing else (check the factors)
+  - [x] number of soil zones and materials (`soil_table`) equal; mapping layer -> material (NC `[0-5] [6-8] [9-14]`, see 5.1 (a)) identical (`test_soil_table_rows_follow_the_material_layers`, `test_hc_zone2_below_material_a_is_zone1_in_truth_and_da`)
+  - [x] with `--prior-bias none`: every (zone, material) of the DA soil table = truth value (Ks, SATCELL / porosity, n, VGP, thetar, ...); with `--biased`: differs exactly by `biased_overrides()` and nothing else (`test_unbiased_da_model_is_identical_to_the_truth_model`, `test_scenario_nominals_equal_the_soil_table_written_to_cathy`, `test_biased_da_model_differs_from_truth_only_by_biased_overrides`: only PERMX/Y/Z, VGPSATCELL, VGNCELL, VGRMCCELL change, not POROS / ELSTOR). *The factor VALUES (×1.3, −0.08, +0.01, ×5) are not re-checked: they are the definition of the bias*
+  - [ ] **Decide (found by `test_biased_hc_leaves_zone2_below_a_at_truth_values`)**: with `--biased` on HC, `biased_overrides()` only has the entries of `CASES['HC']['soil']`, i.e. zone 2 material A. Zone 2 B and C (copied from zone 1 by `zone2_fill_below`) stay at the TRUTH while zone 1 B and C are biased; they are not DA parameters either (`groups('HC')` = zone 1 A/B/C + zone 2 A). Is the HC biased prior meant to leave the compacted band below 20 cm unbiased? Either bias them too (add the keys in `biased_overrides`) or document it; the test pins the current behaviour
   - [ ] porosity per node (`porosity_nodes`) and the porosity used by Archie in the ERT forward model (`porosity_mode`) are the same
   - [ ] Archie truth vs prior (`archie_truth`, `archie_prior`, `rFluid`): the DA nominals = truth when unbiased
 - [ ] **Initial condition**
-  - [ ] DA `input/ic` at cycle 0 = `truth['ic_nodes']` mapped by layer (per-layer `ic_true`, NC `[-2.4, -1.3, -1.15]`, HC `[-1.4, -1.13, -1.13]`), with the old scalar `--ic-prior-mean` flagged as a known difference
+  - [x] DA `input/ic` at cycle 0 = `truth['ic_nodes']` mapped by layer (per-layer `ic_true`, NC `[-2.4, -1.3, -1.15]`, HC `[-1.4, -1.13, -1.13]`), with the old scalar `--ic-prior-mean` flagged as a known difference (`test_ic_per_layer_prior_mean_equals_the_truth_ic_nodes`, `test_old_scalar_ic_prior_is_the_only_difference_and_is_flagged`: only `ic` differs, +0.9 m = +1.8σ in layer 0). *`truth['ic_nodes']` from the pkl itself is not read yet*
   - [ ] same unit / convention (pressure head vs saturation) and same spin-up / `stabilize_period`
 - [ ] **Atmospheric boundary conditions and time**
-  - [ ] `atmbc` of the DA run = truth `atm_times` and values (rain / irrigation, ETp): same number of rows, same times, same units
+  - [x] `atmbc` of the DA run = truth `atm_times` and values (rain / irrigation, ETp): same number of rows, same times, same units (`test_atmbc_and_parm_times`: ET everywhere, irrigation pulse only in the central 2 × 2 m at `irr_start_hour`; output times `TIMPRTi` = atmbc times). *Against the `atm_times` stored in the pkl: still open, next item*
   - [ ] time vector: `build_times(ert_times)` == `atm_times` (already used for an assert in `da_ert_synthetic.py` line ~285: extend to the values), same `sw_time`, same ERT survey times (`surveys[*]['t_h_irr']`)
   - [ ] with `--n-times N`: the first N surveys only, and the truth is cut at the same last survey
-- [ ] **Other CATHY inputs**: boundary conditions (nodal / surface), root map / ET parameters, `parm` file (solver tolerances, time stepping, `DELTAT`, `TMAX`), `soil` file ordering, output times (`IPRT`), `delta` -> all identical between truth and DA input folders
+- [ ] **Other CATHY inputs**: boundary conditions (nodal / surface), root map / ET parameters, `parm` file (solver tolerances, time stepping, `DELTAT`, `TMAX`), `soil` file ordering, output times (`IPRT`), `delta` -> all identical between truth and DA input folders. *Done for everything `setup_model` writes (no-flow bc, `DTMAX/DELTAT/DTMIN`, `IPRT1`, `VTKF`, `TRAFLAG`, `ic` flags: `test_boundary_conditions_and_solver_settings_are_fixed`). Open: the files as written in the two real `input/` folders.*
+  - [ ] **Found by reading the scripts (not by a test, the block is in the script): the DA run overwrites the `parm` settings after `setup_model`** (`da_ert_synthetic.py` l.536-538) and they differ from the truth (`synthetic_truth_ert.py` l.150, `setup_model`):
+    | | truth | DA (EnKF / PF) | DA (ES-MDA) |
+    |---|---|---|---|
+    | `DELTAT` (first time step) | 0.1 s | `min(1e2, 0.5 × shortest window)` = up to 100 s | `min(that, esmda_dtmax)` |
+    | `DTMAX` | 1e3 s | 1e3 s | `--esmda-dtmax` = 60 s |
+    | `IPRT1` | 4 | 2 | 2 |
+    | print times | dense (every `--out-dt`) + interpolated to the atmbc times | atmbc times only | atmbc times |
+    *Why it may matter: each DA window restarts CATHY, so the first time step of every window is 100 s in the twin and 0.1 s in the truth after the irrigation pulse; the Richards solution can differ by more than the discretisation error you want to test (truth and DA also share the mesh, see the warning in 6). Size of the effect unknown: the open-loop sanity test below measures it (noDA, N=1 at the nominal). If it is not negligible: run the truth with the DA's `DELTAT / DTMAX`, or the DA with the truth's.*
 - [ ] **Observations**
   - [ ] ERT data of the twin = the truth data (same electrode sequence, geometry, noise type / % / seed: `truth['noise']` vs `ERT_DATA_ERR`); error model used in the filter = the noise added to the truth
   - [ ] TDR sigma (`tdr_sigma`) in the filter = the one used to perturb the virtual TDR

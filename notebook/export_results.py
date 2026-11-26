@@ -8,8 +8,9 @@ Reads the paths of data_path.toml (registry, simulations, nb8 folder) and COPIES
   OUT_DIR/README.txt             how to read it (run names, columns, caveats)
   OUT_DIR/tables/                nb8 summary.csv / parameters_summary.csv (one subfolder per case) + the runs registry
   OUT_DIR/figures/               nb8 figures: compare_*.png (default), all of them (--figures all) or none
-  OUT_DIR/runs/<run>/            manifest.json, run_meta.json, <run>_issues.log and the tail of the run log (failed /
-                                 partial runs only): exact command, seed, git state
+  OUT_DIR/runs/<run>/            manifest.json, run_meta.json, <run>_issues.log, <run>_run.json, <run>_rejections.json,
+                                 <run>_ERT_checks.json (those that exist: `python diag_pf_run.py runs/<run>` works on them)
+                                 and the tail of the run log (failed / partial runs only): exact command, seed, git state
   OUT_DIR/synthetic_twin_plan.md meaning of the scenarios
 NOT copied: states (_states/, .npz, .nc), vtk, pickles: big, and unreadable without pyCATHY.
 """
@@ -31,6 +32,8 @@ SCORE_COLS = ['sw_all_rmse', 'sw_all_rmse_ol', 'sw_all_skill_vs_ol', 'sw_all_spr
 REG_COLS = ['run', 'case', 'scenario', 'da_type', 'nens', 'seed', 'prior_bias', 'with_da', 'status', 'duration_min',
             'git_commit', 'git_branch']
 TAIL_LINES = 80
+# same names as diag_pf_run.SUFFIX (issues, run options + parameters, rejected members, ERT data-space checks)
+SMALL_RUN_FILES = ('_issues.log', '_run.json', '_rejections.json', '_ERT_checks.json')
 OK_STATUS = ('finished', 'ok')
 
 README = """Results of the DA twin experiments (exported by export_results.py)
@@ -60,7 +63,7 @@ CAVEATS
     conditioned on all the data: not like for like (column states_kind).
   * Runs with a different N, seed or prior_bias are not directly comparable: compare one option at a time.
   * Empty score cells: run without nb8 scores (failed, no states, or not yet plotted).
-  * runs/<run>/manifest.json has the exact command, seed and git commit; <run>_issues.log / log tail explain failed runs.
+  * runs/<run>/manifest.json has the exact command, seed and git commit; <run>_issues.log / log tail explain failed runs; <run>_run.json, _rejections.json, _ERT_checks.json feed diag_pf_run.py.
 """
 
 
@@ -122,7 +125,9 @@ def collect_run(P, row, out_dir):
 
     cp(os.path.join(meta, 'manifest.json'))
     cp(os.path.join(meta, 'run_meta.json'))
-    cp(_find_one([os.path.join(d, run + '_issues.log') for d in (P.simulations, meta, P.logs, os.path.join(P.simulations, run))]))
+    dirs = (P.simulations, meta, P.logs, os.path.join(P.simulations, run))
+    for suf in SMALL_RUN_FILES:                               # small per-run files: diag_pf_run.py reads them from runs/<run>/
+        cp(_find_one([os.path.join(d, run + suf) for d in dirs]))
     if row.get('status') != 'finished':                       # failed / started / unknown: the end of the log tells why
         log = row.get('log') or os.path.join(P.logs, run + '.log')
         txt = _tail(log) if os.path.isfile(log) else None

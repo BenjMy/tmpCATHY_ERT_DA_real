@@ -107,3 +107,24 @@ def test_empty_project(tmp_path):
     (tmp_path / 'data_path.toml').write_text('[project]\nroot = "."\n')
     runs, _ = E.export(PP.ProjectPaths(str(tmp_path / 'data_path.toml')), str(tmp_path / 'o'))
     assert runs == [] and os.path.isfile(str(tmp_path / 'o' / 'overview.csv'))
+
+
+def test_copies_the_json_files_diag_pf_run_needs(tmp_path):
+    """todo.md 5.2: <run>_run.json / _rejections.json / _ERT_checks.json are exported, so diag_pf_run.py works on the share."""
+    import diag_pf_run as D
+    P = _project(tmp_path)
+    sim = tmp_path / 'simulations'
+    for suf in ('_run.json', '_rejections.json'):                   # in the run folder
+        (sim / OK / (OK + suf)).write_text('{}')
+    (sim / (OK + '_meta') / (OK + '_ERT_checks.json')).write_text('{}')      # in the _meta folder
+    (sim / (BAD + '_run.json')).write_text('{}')                    # in the simulations root
+    (sim / (OK + 'X_run.json')).write_text('{"other": 1}')          # a sibling run must never be picked up
+    out = str(tmp_path / 'out')
+    E.export(P, out)
+    got = sorted(os.listdir(os.path.join(out, 'runs', OK)))
+    assert {OK + '_run.json', OK + '_rejections.json', OK + '_ERT_checks.json'} <= set(got)
+    assert not any(f.startswith(OK + 'X') for f in got)
+    assert os.path.isfile(os.path.join(out, 'runs', BAD, BAD + '_run.json'))
+    assert not os.path.exists(os.path.join(out, 'runs', NOREG, NOREG + '_run.json'))      # nothing to copy: no folder noise
+    loc = D.locate(os.path.join(out, 'runs', OK))
+    assert loc['name'] == OK and all(loc[k] for k in ('run', 'rejections', 'ert'))
